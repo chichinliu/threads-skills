@@ -33,7 +33,7 @@
 |---|---|---|
 | 語言 | 英文 | 繁體中文、台灣用語 |
 | 語氣規則 | 英文 AI 詞彙、破折號密度、小寫句首 | 中文 AI 腔詞表、全形標點、中英間距、語氣詞、台灣用語 |
-| 發佈層 | 以單一第三方服務為預設推薦 | **中立**:預設手動貼上,自建 poster 或選用轉接器皆可 |
+| 發佈層 | 以單一第三方服務為預設推薦 | **不綁定任何服務**:預設手動貼上,進階使用者可接自建 poster |
 | 在地情境 | 無 | 台灣時段、節慶節點、常見搬運來源(標示為待驗證假設) |
 
 > 凡標示「假設」的時段、字數、節慶效果,都是起點,不是平台保證。請用自己帳號的洞察數據校正。
@@ -129,39 +129,20 @@ Threads 每則貼文上限 **500 字元**(附上長文附件可到 10,000)。更
 
 在官方 Threads API 上做串文,要先為第 1 則建立容器並發佈,再為後續每一則帶上 `reply_to_id` 指向前一則,並處理部分失敗。這個 bundle 把「發佈」這一步抽象成**中立的發佈層**:你寫成一整塊(或用 `---` 手動分段),核准後交給你選擇的發佈方式。與 X 不同,Threads 預設不加 `(1/N)` 編號。
 
-## 發佈層:三種選擇,全都是選用
+## 發佈層:手動為預設,自建 poster 為選項
 
-Skill 只呼叫 `lib.publish(...)`,不綁定任何服務。你可以:
+Skill 只呼叫 `lib.publish(...)`,不綁定任何第三方服務。你可以:
 
-1. **維持手動(預設,零設定)。** 核准後得到可複製貼上的區塊,你自己貼到 Threads。
-2. **自建 poster。** 請 Claude Code 或 Codex 用 [Threads 官方 Graph API](https://developers.facebook.com/docs/threads/) 寫一個,並在啟動環境設定 `THREADS_SKILLS_CUSTOM_POSTER`。憑證與流程完全在你手上。
-3. **第三方轉接器。** 目前內建一個 [Publora](https://publora.com/) 轉接器,可自動發佈並自動拆串文。它只是範例之一,沒有任何必要使用;要接別的服務,參考 `lib/publora_client.py` 新增轉接器,並在 `lib/backend_selector.py` 登記。
-
-> **關於回覆:** 回覆他人貼文是另一則獨立貼文,內建轉接器無法指定他人的貼文,所以 Reply Drafter 一律以複製貼上區塊交付。單則貼文與你自己的串文,在有設定發佈層時可自動發佈。
-
-### 設定 Publora 轉接器(僅在你選擇它時)
-
-1. 自行註冊 https://app.publora.com/signup,於 **Channels** 連接 Threads 帳號。
-2. 複製 Threads 連線 ID(形如 `threads-17841412345678`,含 `threads-` 前綴)。
-3. 在 **Settings > API** 建立金鑰(`sk_...`)。
-4. 複製範本並填入:
+1. **維持手動(預設,零設定)。** 核准後得到可複製貼上的區塊,你自己貼到 Threads。不需要任何帳號、金鑰或安裝。
+2. **自建 poster(進階)。** 請 Claude Code 或 Codex 用 [Threads 官方 Graph API](https://developers.facebook.com/docs/threads/) 寫一個,並在**啟動環境**設定:
 
 ```bash
-cp .env.example .env
+export THREADS_SKILLS_CUSTOM_POSTER="python /path/to/my-poster.py"
 ```
 
-```
-PUBLORA_API_KEY=sk_貼上你的金鑰
-THREADS_PLATFORM_ID=threads-貼上你的ID
-```
+核准時,skill 會把草稿以 JSON 從 stdin 交給你的指令,並以 `kind` 與目標網址當參數。串文拆分、重試、配額與部分失敗處理,都由你的 poster 負責。這個變數刻意不能寫在 `.env`:`.env` 只允許憑證,避免 clone 下來的檔案夾帶可執行指令。
 
-5. 安裝套件:
-
-```bash
-pip install -r requirements.txt
-```
-
-6. 測試:請 Claude Code 或 Codex「排程一則測試貼文,24 小時後發佈」,拿到 `postGroupId` 即成功,再到後台取消。HTTP 401 代表金鑰有誤;`Invalid platform ID format` 代表連線 ID 有誤。
+> **關於回覆:** 回覆與引用他人貼文必須指定對方的貼文,不適合無人看管地自動送出,所以不論哪種發佈層,Reply Drafter 一律以複製貼上區塊交付。
 
 ## 選用:用 Pixfaro 產生配圖
 
@@ -210,12 +191,9 @@ https://mcp.apify.com?actors=igview-owner/threads-search-scraper,apify/threads-p
 | 問題 | 處理 |
 |---|---|
 | 問到 Threads 時 skill 沒有啟動 | 確認已透過 Skills 面板、`/plugin install` 或 `codex plugin add` 安裝,並開新對話再試。 |
-| 「PUBLORA_API_KEY not set」 | 只有你選用 Publora 轉接器才需要。`.env` 要放在 `threads-skills/` 根目錄;不想用就維持手動模式。 |
-| Publora 回 401 | 金鑰有誤或已撤銷,到 Publora 的 Settings > API 重新建立。 |
-| 「Invalid platform ID format」 | `THREADS_PLATFORM_ID` 有誤,請複製完整的 `threads-...` 字串。 |
 | 第二個主題標籤不見了 | Threads 每則只允許一個主題標籤,多的會被平台丟掉。只用一個,放在最後。 |
 | 串文沒有串連發出 | Meta 處理 Threads App 重新連線時,多則串連可能暫時無法使用。先發第 1 則,其餘手動以回覆補上。 |
-| 回覆沒有自動發出 | 回覆他人是獨立貼文,轉接器無法指定。Reply Drafter 會給複製貼上區塊,請自己貼。 |
+| 回覆沒有自動發出 | 回覆他人是獨立貼文,一律由 Reply Drafter 給複製貼上區塊,請自己貼。 |
 | 500 字元的邊界跟預期不同 | 中文、英文、標點與 emoji 的計法以 Threads App 為準,請在 App 內實測一次。 |
 | `pip install` 失敗 | 用虛擬環境:`python -m venv venv && source venv/bin/activate && pip install -r requirements.txt` |
 
@@ -258,7 +236,7 @@ from lib import parse_threads_url, publish
 parsed = parse_threads_url("https://www.threads.net/@zuck/post/C8H9abcDEf_")
 print(parsed["handle"], parsed["post_id"])  # zuck C8H9abcDEf_
 
-# 高階包裝:依已設定的發佈層路由(手動 / 轉接器 / 自建 poster)
+# 高階包裝:依已設定的發佈層路由(手動 / 自建 poster)
 publish("thread", draft_text="第一則\n\n---\n\n第二則\n\n---\n\n第三則",
         target_url="https://www.threads.com/")
 ```
@@ -281,14 +259,13 @@ python lib/url_parser.py "https://www.threads.net/@zuck/post/C8H9abcDEf_"
 
 ## 為什麼回覆是獨立貼文
 
-LinkedIn 把回覆串壓成 2 層,且需要頂層留言的 URN 當父節點。Threads 不是:回覆自然巢狀,沒有要解析的父留言 URN。所以 Reply Drafter 只負責起草文字;內建轉接器的 `create-post` 無法指定他人貼文,回覆發佈因此刻意設計成複製貼上。
+LinkedIn 把回覆串壓成 2 層,且需要頂層留言的 URN 當父節點。Threads 不是:回覆自然巢狀,沒有要解析的父留言 URN。所以 Reply Drafter 只負責起草文字;回覆必須指定他人貼文,因此刻意設計成複製貼上。
 
 </details>
 
 ## 參考資料
 
 - [Threads API(Meta for Developers)](https://developers.facebook.com/docs/threads/):2026 年啟發式所依據的官方 Threads Graph API
-- [Publora API 文件](https://docs.publora.com/):選用轉接器的端點參考
 
 ## 授權
 

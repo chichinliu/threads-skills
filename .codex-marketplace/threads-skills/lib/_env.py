@@ -10,7 +10,7 @@ _ENV_LOADED = False
 #: that arrives with a clone, or that lands in a parent directory, is not a
 #: trusted source for the name of a command to run.
 _DOTENV_VARIABLES = (
-    "APIFY_TOKEN", "PUBLORA_API_KEY", "THREADS_PLATFORM_ID", "PIXFARO_TOKEN", "PIXFARO_API_KEY",
+    "APIFY_TOKEN", "PIXFARO_TOKEN", "PIXFARO_API_KEY",
 )
 
 

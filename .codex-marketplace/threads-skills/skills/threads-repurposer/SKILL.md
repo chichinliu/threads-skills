@@ -34,7 +34,7 @@ description: "把既有內容改寫成道地的 Threads 貼文或串文。來源
 7. **清掉他站殘留。** 移除「連結在留言」「歡迎追蹤我的粉絲專頁」「按讚分享訂閱」「詳見下文」「歡迎加入 LINE 社群」、一整排主題標籤(Threads 每則最多 1 個)、只存在於他站的 @帳號,以及「這是我之前在 Facebook 發過的」這類鋪墊。改寫過的貼文不該自己招認是改寫的。
 8. **去 AI 味。** 跑 `threads-humanizer` V3:依密度計分的 AI 腔詞彙、超過上限的破折號、堆疊的三段式、套話開場與揭曉橋段。節奏不要動(Threads 上均勻的節奏表現最好,不要為了變化硬塞一則短句)。保留來源裡使用者真實的數字與專有名詞。
 9. **核准卡。** 顯示:來源到 Threads 的對照(什麼變成什麼)、容器(單則,或 N 則串文與每則字數)、使用的公式、調暖說明、主要目標。確認所有 `---` 斷點。
-10. **核准後。** 呼叫 `lib.publish(kind="post"`(單則)或 `kind="thread"`,`draft_text=<已核准內容>,target_url="https://www.threads.com/",scheduled_time=<iso_或_None>)`。這個包裝層會依目前的發佈層(手動、自建 poster、或使用者自行接上的第三方轉接器)分流。預設是手動模式:輸出一個可複製貼上的區塊。
+10. **核准後。** 呼叫 `lib.publish(kind="post"`(單則)或 `kind="thread"`,`draft_text=<已核准內容>,target_url="https://www.threads.com/",scheduled_time=<iso_或_None>)`。這個包裝層會依目前的發佈層(手動或自建 poster)分流。預設是手動模式:輸出一個可複製貼上的區塊。
 
 ## 在地來源對照(來源 -> Threads)
 

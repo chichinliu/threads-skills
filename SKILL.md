@@ -1,6 +1,6 @@
 ---
 name: threads-marketing
-description: "規劃、撰寫、審稿並發佈 Threads(Meta)的單則貼文與串文。適用於:寫 Threads 貼文或串文、去除 AI 味、拆解爆文鉤子、草擬回覆或引用貼文、規劃一週內容、優化個人檔案。使用者提供筆記或貼文網址,skill 產出草稿,經使用者核准後才發佈。發佈層中立:預設手動貼上,也可接自建 poster 或選用的第三方轉接器。繁體中文、台灣市場版。"
+description: "規劃、撰寫、審稿並發佈 Threads(Meta)的單則貼文與串文。適用於:寫 Threads 貼文或串文、去除 AI 味、拆解爆文鉤子、草擬回覆或引用貼文、規劃一週內容、優化個人檔案。使用者提供筆記或貼文網址,skill 產出草稿,經使用者核准後才發佈。不綁定任何發佈服務:預設手動貼上,進階使用者可接自建 poster。繁體中文、台灣市場版。"
 ---
 
 # Threads(Meta)行銷 Skills・繁體中文台灣版
@@ -31,36 +31,21 @@ Threads 是比 X 更溫暖、更不追新聞的平台。同樣以文字為主,�
 
 ## 發佈層(中立)
 
-Skill 一律呼叫 `lib.publish(kind, draft_text, target_url, ...)`,由它決定走哪一條路。**三種層級,任選其一,都是選用:**
+Skill 一律呼叫 `lib.publish(kind, draft_text, target_url, ...)`,由它決定走哪一條路。**兩種層級,都是選用:**
 
 ### Tier 0:僅草稿(預設,零設定)
 
 不需要任何 API 金鑰或註冊。核准後的草稿以「可複製貼上」區塊加目標網址輸出,你自己貼到 Threads。想先試用 skill、不想綁任何服務時,這是最好的起點。
 
-### Tier 1:轉接器(選用)
+### Tier 1:自建 poster(進階)
 
-目前內建一個 [Publora](https://publora.com/) 轉接器,核准後自動發佈,並把較長內容自動拆成串連的多則貼文。它只是其中一種選項,不是推薦,也不是預設。
+請 Claude Code 或 Codex 用 Threads 官方 Graph API 寫一個 poster,在**啟動環境**中設定 `THREADS_SKILLS_CUSTOM_POSTER=<你的指令>`(不能寫在 `.env`,`.env` 只允許憑證),核准時 skill 會呼叫它。若你想完全掌控憑證與流程,選這條。
 
-1. 自行註冊並連接你的 Threads 帳號
-2. 取得 API 金鑰
-3. 寫入 `.env`:
-   ```
-   PUBLORA_API_KEY=sk_...
-   THREADS_PLATFORM_ID=threads-...
-   ```
-4. 執行 `pip install -r requirements.txt`
-
-要接其他服務,可以參考 `lib/publora_client.py` 新增轉接器,並在 `lib/backend_selector.py` 登記。
-
-### Tier 2:自建 poster(進階)
-
-請 Claude Code 或 Codex 用 Threads 官方 Graph API 寫一個 poster,在啟動環境中設定 `THREADS_SKILLS_CUSTOM_POSTER=<你的指令>`,核准時 skill 會呼叫它。若你想完全掌控憑證與流程,選這條。
-
-> 在官方 Graph API 上做串文,要先為第 1 則建立容器並發佈,再為後續每一則帶上 `reply_to_id` 指向前一則,並處理部分失敗。這些由你的 poster 負責;轉接器則替你代勞。
+> 在官方 Graph API 上做串文,要先為第 1 則建立容器並發佈,再為後續每一則帶上 `reply_to_id` 指向前一則,並處理部分失敗與配額。這些都由你的 poster 負責。
 
 ### 關於回覆
 
-在 Threads 上回覆他人貼文,是另一則獨立貼文,而內建轉接器的 `create-post` 無法指定別人的貼文。因此 `threads-reply-drafter` 一律以複製貼上區塊交付草稿,由你自己貼成回覆或引用。單則貼文與你自己的串文,在有設定發佈層時可以自動發佈。
+在 Threads 上回覆他人貼文,是另一則獨立貼文,而且必須指定別人的貼文,不適合在無人看管時自動送出。因此 `threads-reply-drafter` 一律以複製貼上區塊交付草稿,由你自己貼成回覆或引用。單則貼文與你自己的串文,在你設定了自建 poster 時可以自動發佈。
 
 ## 語氣規則(內建於每個 skill)
 
@@ -104,7 +89,7 @@ Skill 一律呼叫 `lib.publish(kind, draft_text, target_url, ...)`,由它決定
 - `references/voice-rules.md`:語氣規則、術語表、中文 AI 腔詞表
 - `references/story-bank.md`:你有什麼可以說,由訪談填寫
 - `references/voice-profile.md`:你的說話方式,由 `--mode profile` 填寫
-- `lib/publora_client.py`:選用的 Publora 轉接器
+- `lib/backend_selector.py`:發佈層(手動或自建 poster)
 - `lib/url_parser.py`:Threads 網址解析
 
 ## 成功之後

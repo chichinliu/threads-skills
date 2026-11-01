@@ -87,8 +87,8 @@ making changes. Conventions here are mandatory unless the user asks otherwise.
   (`_DOTENV_VARIABLES`); the custom-poster variable the DIY tier executes must come
   from the launch environment, never from a file that can arrive with a clone. No
   module may call `load_dotenv()` itself, and every authenticated request passes
-  `allow_redirects=False` because the Publora key rides a custom header and the
-  Apify token a query parameter, neither of which `requests` strips across hosts.
+  `allow_redirects=False` because the Apify token rides a query parameter, which
+  `requests` does not strip across hosts.
   `scripts/check_security_boundaries.py` enforces all three.
 - `references/mcp-read-layer.md` is the read path for anyone without a shell, which is
   everyone on claude.ai: the filtered `mcp.apify.com?actors=` connector URL, the tool
@@ -103,23 +103,19 @@ making changes. Conventions here are mandatory unless the user asks otherwise.
 
 ## Layer separation
 
-- **Publish layer (vendor-neutral):** manual copy-paste is the default; a custom
-  poster (`THREADS_SKILLS_CUSTOM_POSTER`) and the optional Publora adapter are
-  peers, none is recommended over the others. Publora adapter details: `lib/publora_client.py`. `create_post` (single post
-  or thread; long content auto-splits into a connected multi-post thread, no
-  `(1/N)` markers) and `list_connections` / `threads_connections` (GET
-  /platform-connections). Skills call `lib.publish(kind, draft_text,
-  target_url, ...)`. Real endpoint: `POST /create-post` with
-  `platforms: ["threads-<id>"]` (array of STRING ids), header `x-publora-key`.
-  Threads `platformSettings.threads.replyControl` passes through
-  `platform_settings`.
-- **Threads has no comment/reply/reaction endpoint on Publora**, and
-  `create-post` cannot target another user's post. `kind="reply"` always routes
-  to a manual copy-paste block.
+- **Publish layer (no vendor):** `lib/backend_selector.py`. Two tiers only:
+  manual copy-paste (default) and a user-built custom poster
+  (`THREADS_SKILLS_CUSTOM_POSTER`, launch environment only). Skills call
+  `lib.publish(kind, draft_text, target_url, ...)` rather than inline the
+  dispatch. No third-party publishing service is bundled; do not add one as a
+  default or recommended path. The custom poster receives JSON on stdin and
+  `kind target_url` as argv, and owns thread splitting, retries and quotas.
+- **Replies and quotes** (`kind="reply"` / `"quote"`) always route to a manual
+  copy-paste block in `lib/backend_selector.py`: they must target another
+  user's post.
 - **No read layer ships by default.** `threads-hook-extractor` and
   `threads-reply-drafter` ask the user to paste post text. Any future post-read
   actor stays gated behind `APIFY_TOKEN` with a paste fallback.
-- Keep the publish layer neutral: no single vendor framed as default or recommended.
 
 ## Codex marketplace package
 
@@ -142,7 +138,7 @@ making changes. Conventions here are mandatory unless the user asks otherwise.
 Run from repo root:
 
 ```bash
-python3 -c "from lib import publish, parse_threads_url, PubloraClient; print('OK')"
+python3 -c "from lib import publish, parse_threads_url; print('OK')"
 python3 scripts/sync_codex_marketplace.py
 ls skills/ | wc -l        # must equal 8
 python3 scripts/check_frontmatter.py   # parses; a dir count does not prove a skill loads

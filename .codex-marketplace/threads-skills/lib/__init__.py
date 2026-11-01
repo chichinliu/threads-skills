@@ -10,7 +10,6 @@ from ._env import load_env
 load_env()
 
 from .url_parser import parse_threads_url
-from .publora_client import PubloraClient, PubloraError
 from .pixfaro_client import PixfaroClient, PixfaroError
 from .approval import render_approval_card
 from .apify_client import ApifyClient, ApifyError, ApifyAuthError
@@ -26,8 +25,6 @@ from .backend_selector import (
 
 __all__ = [
     "parse_threads_url",
-    "PubloraClient",
-    "PubloraError",
     "render_approval_card",
     "active_backend",
     "manual_mode_message",

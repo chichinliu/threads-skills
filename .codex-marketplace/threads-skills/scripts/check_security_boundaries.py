@@ -11,8 +11,8 @@ present here in the same shape, because these clients share an ancestor.
    command this bundle would execute. Only credentials load now.
 2. **No module may load a .env behind load_env's back.** A direct load_dotenv()
    call reopens boundary 1 for whatever imports it.
-3. **Authenticated requests may not follow redirects.** The Publora key rides a
-   custom header and the Apify token rides a query parameter; requests strips
+3. **Authenticated requests may not follow redirects.** The Apify token rides a
+   query parameter, and any key sent in a custom header would behave the same; requests strips
    Authorization across hosts but not either of those, so a redirect hands the
    credential, and on POST the body, to whoever answered.
 
@@ -27,7 +27,7 @@ import sys
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 ENV = ROOT / "lib" / "_env.py"
 POSTER = "THREADS_SKILLS_CUSTOM_POSTER"
-CLIENTS = ("publora_client.py", "apify_client.py", "youtube_client.py", "pixfaro_client.py")
+CLIENTS = ("apify_client.py", "youtube_client.py", "pixfaro_client.py")
 DOTENV_CALL = re.compile(r"load_dotenv\s*\(")
 CALL = re.compile(r"((?:self\._session|requests)\.(?:get|post|put|delete)\()")
 

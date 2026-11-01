@@ -68,9 +68,9 @@ description: "撰寫 Threads 單則貼文或多則串文,依目標(回覆、轉�
 
 **預設做法:手動分段。** 用單獨一行的 `---` 把每一則隔開,讓使用者在核准前,就看到串文實際會怎麼斷。核准後,由使用者貼到 Threads 發文框,每個區塊就是一則。
 
-**自動發佈是選項,不是預設。** 如果你設定了發佈層(自建 poster,或某個第三方轉接器),`lib.publish(kind, draft_text, target_url, ...)` 會把整段串文交給它。拆分行為取決於你選的發佈層:有的會依段落、句子自動拆成連續貼文,有的只照你的 `---` 分段。本 skill 不推薦特定廠商,細節見你所用轉接器的文件。
+**自動發佈是選項,不是預設。** 如果你設定了自建 poster,`lib.publish(kind, draft_text, target_url, ...)` 會把整段串文交給它,如何拆成連續貼文由你的 poster 決定。預設則照你的 `---` 分段,由你逐則貼上。
 
-不論哪種發佈層,都不要假設平台會幫你加上 `(1/N)` 編號。想要編號就自己寫進文字裡。
+不論哪種方式,都不要假設平台會幫你加上 `(1/N)` 編號。想要編號就自己寫進文字裡。
 
 > 如果多則串連暫時無法使用(例如 Meta 的 App 重新授權期間),退而求其次:先發第一則單獨貼文,其餘的用回覆手動補上。參考 `../../references/algorithm-heuristics.md`。
 
@@ -98,7 +98,7 @@ description: "撰寫 Threads 單則貼文或多則串文,依目標(回覆、轉�
 9. **核准後。** 呼叫 `lib.publish(kind, draft_text, target_url, ...)`:單則用 `kind="post"`,串文用 `kind="thread"`,`target_url` 填 `https://www.threads.com/`。介面對所有發佈層一致:
    - 沒有設定發佈層時,回傳可複製貼上的版本(預設)。
    - 設定了自建 poster 時,草稿以 JSON 交給你的指令。
-   - 設定了第三方轉接器時,走該轉接器。`platforms`、`scheduled_time`、`platform_settings`(例如回覆權限)等參數**僅特定轉接器使用**,是否支援請看該轉接器的文件。
+   - 額外參數(例如 `scheduled_time`、`media_urls`)只會傳給自建 poster,是否支援由你的 poster 決定。
 
 ## 硬性規則
 

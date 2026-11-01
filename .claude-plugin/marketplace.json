@@ -5,14 +5,14 @@
     "url": "https://chichinliu.com"
   },
   "metadata": {
-    "description": "Claude Code 與 Codex 的 Threads(Meta)成長 skills,繁體中文台灣版:貼文與串文撰寫、去 AI 味與發佈前審稿、爆文鉤子拆解、回覆與引用草擬、每週內容規劃。發佈層中立,預設手動貼上。"
+    "description": "Claude Code 與 Codex 的 Threads(Meta)成長 skills,繁體中文台灣版:貼文與串文撰寫、去 AI 味與發佈前審稿、爆文鉤子拆解、回覆與引用草擬、每週內容規劃。發佈不綁定任何服務,預設手動貼上。"
   },
   "plugins": [
     {
       "name": "threads-skills",
       "source": "./",
-      "description": "8 個 Threads(Meta)行銷 skill 的組合包,繁體中文台灣版,含 Threads 原生鉤子公式、貼文與串文撰寫、統一的 humanizer(改寫加發佈前審稿)、鉤子拆解、回覆草擬、內容改寫、個人檔案優化、受眾洞察與一週規劃。發佈層中立,可手動、自建 poster 或選用轉接器。",
-      "version": "1.0.36",
+      "description": "8 個 Threads(Meta)行銷 skill 的組合包,繁體中文台灣版,含 Threads 原生鉤子公式、貼文與串文撰寫、統一的 humanizer(改寫加發佈前審稿)、鉤子拆解、回覆草擬、內容改寫、個人檔案優化、受眾洞察與一週規劃。發佈不綁定任何服務,可手動或自建 poster。",
+      "version": "1.0.37",
       "author": {
         "name": "chichinliu",
         "url": "https://chichinliu.com"

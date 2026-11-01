@@ -20,7 +20,7 @@ Threads 的語境是口語、社群、來回對話,不是新聞快訊或辯論�
 | soft fold / "more" cut | 「顯示更多」截斷處 | |
 | hashtag / topic tag | 主題標籤 | Threads 每則只能 1 個 |
 | text attachment | 長文附件 | |
-| publish layer / backend | 發佈層 | 中立:手動、自建、第三方轉接器 |
+| publish layer / backend | 發佈層 | 手動貼上或自建 poster |
 | approval card | 核准卡 | |
 | humanizer | 去 AI 味 | skill 名稱 `threads-humanizer` 不變 |
 | voice profile | 語氣檔案 | |

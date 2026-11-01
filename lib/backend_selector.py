@@ -1,27 +1,23 @@
 """偵測目前設定的發佈層(publishing layer),並產生給使用者看的訊息。
 
-發佈層是中立的:skill 只呼叫 `publish()`,不綁定任何廠商。支援三個層級:
+發佈層刻意保持最小且中立:skill 只呼叫 `publish()`,不綁定任何廠商或服務。
+支援兩個層級:
 
   TIER 0 - manual(預設,零設定)
-    沒有任何憑證時,skill 產出草稿,由使用者自行複製貼到 Threads。
+    沒有任何設定時,skill 產出草稿,由使用者自行複製貼到 Threads。
     任何人、任何環境都能用。
 
-  TIER 1 - 轉接器(選用)
-    目前內建一個 Publora 轉接器(`PUBLORA_API_KEY` + `THREADS_PLATFORM_ID`),
-    核准後透過 Publora REST API 自動發佈貼文與串文。它只是其中一種選項,
-    不是推薦或預設;要接別的服務,可新增轉接器或改走 Tier 2。
-
-  TIER 2 - diy(進階)
+  TIER 1 - diy(進階,自建 poster)
     `THREADS_SKILLS_CUSTOM_POSTER` 指向使用者自建的指令
     (例如用 Threads 官方 Graph API 寫的 poster)。skill 把發佈交給該指令。
+    憑證與串文拆分、重試、部分失敗處理,全由使用者自己的 poster 負責。
 
 `active_backend()` 在已設定的層級中選最高的一個。`manual_mode_message()` 是沒有
-任何後端能自動發佈時顯示給使用者的內容。`publish()` 是 skill 該呼叫的高階包裝,
+自建 poster 時顯示給使用者的內容。`publish()` 是 skill 該呼叫的高階包裝,
 SKILL.md 不必重複寫分支。
 
-Threads 備註:自己的串文與單則貼文是同一個呼叫(傳入較長的 `content`,轉接器
-可自動拆成串連的多則貼文)。回覆他人貼文與引用貼文,目前內建轉接器沒有對應端點,
-因此 kind="reply" 與 kind="quote" 一律回傳手動複製貼上區塊。
+Threads 備註:回覆他人貼文與引用貼文,在任何情況下都回傳手動複製貼上區塊,
+因為回覆必須指定他人的貼文,不適合在無人看管時自動送出。
 """
 from __future__ import annotations
 import json
@@ -33,41 +29,18 @@ from ._env import load_env
 
 load_env()
 
-BackendName = Literal["publora", "manual", "diy"]
+BackendName = Literal["manual", "diy"]
 PublishKind = Literal["post", "thread", "reply", "quote"]
 
 
 def active_backend() -> BackendName:
     """Return the active publishing backend.
 
-    Priority: publora adapter > diy > manual. If both an adapter and a custom
-    poster are configured, the adapter wins; unset its env vars to use the
-    custom poster.
+    `diy` when THREADS_SKILLS_CUSTOM_POSTER is set, otherwise `manual`.
     """
-    if os.getenv("PUBLORA_API_KEY") and os.getenv("THREADS_PLATFORM_ID"):
-        return "publora"
     if os.getenv("THREADS_SKILLS_CUSTOM_POSTER"):
         return "diy"
     return "manual"
-
-
-def _half_configured() -> str:
-    """Warn when the Publora adapter is half set up, naming the missing half.
-
-    A present key with a missing platform id looks exactly like no adapter at
-    all, and the user reasonably concludes the key never saved. Say which half
-    is actually missing instead.
-    """
-    key = bool(os.getenv("PUBLORA_API_KEY"))
-    pid = bool(os.getenv("THREADS_PLATFORM_ID"))
-    if key and not pid:
-        return ("\n> **Publora 轉接器只設定了一半。** 已有 `PUBLORA_API_KEY`,"
-                "但缺少 `THREADS_PLATFORM_ID`,所以目前仍是手動發佈。補上後,"
-                "核准時就會自動發佈。\n")
-    if pid and not key:
-        return ("\n> **Publora 轉接器只設定了一半。** 已有 `THREADS_PLATFORM_ID`,"
-                "但缺少 `PUBLORA_API_KEY`,所以目前仍是手動發佈。\n")
-    return ""
 
 
 def manual_mode_message(draft_text: str, target_url: str, kind: str = "post") -> str:
@@ -93,20 +66,15 @@ def manual_mode_message(draft_text: str, target_url: str, kind: str = "post") ->
 
 ---
 
-想改成核准後自動發佈?發佈層可以自由選擇,以下三種任選一種(都是選用):
+想改成核准後自動發佈?可以請 Claude Code 或 Codex 用 Threads 官方 Graph API
+寫一個 poster,再於啟動環境設定:
 
-1. **自建 poster:** 用 Threads 官方 Graph API 請 Claude Code 或 Codex 寫一個,
-   設定環境變數 `THREADS_SKILLS_CUSTOM_POSTER` 指向該指令。
-2. **第三方轉接器:** 目前內建 Publora 轉接器(選用,需要自己註冊),
-   在 `.env` 設定:
-   ```
-   PUBLORA_API_KEY=sk_your_key_here
-   THREADS_PLATFORM_ID=threads-your_id_here
-   ```
-3. **維持手動:** 不設定任何東西,每次核准後自己貼上。這也是預設。
+```
+export THREADS_SKILLS_CUSTOM_POSTER="python /path/to/my-poster.py"
+```
 
-回覆與引用貼文不論哪種發佈層,都需要手動貼上。
-{_half_configured()}"""
+不設定也完全可以,維持手動貼上就是預設行為。回覆與引用貼文一律需要手動貼上。
+"""
 
 
 def publish(
@@ -118,60 +86,36 @@ def publish(
     """Dispatch a draft to the active backend.
 
     One call replaces the per-skill "On approval, adapt to the backend" block.
-    Routes to the publora adapter / manual / diy based on `active_backend()`.
+    Routes to manual / diy based on `active_backend()`.
 
     Args:
         kind: "post" | "thread" | "reply" | "quote".
         draft_text: The approved draft body. For a thread, pass the full text
-            (with `---` separators or paragraph breaks); some adapters auto-split.
+            (with `---` separators or paragraph breaks); a custom poster decides how to split.
         target_url: Where the draft lands. For replies/quotes, the post URL.
             For new posts, the Threads composer URL. Used in manual-mode output.
-        **kwargs: Backend-specific payload. For the publora adapter, post/thread:
-            - platforms: list[str] of platform IDs (defaults to [THREADS_PLATFORM_ID])
-            - scheduled_time: ISO 8601 UTC (optional; omit for a draft)
-            - platform_settings: dict, e.g. {"threads": {"replyControl": "everyone"}}
+        **kwargs: Passed through to the custom poster as part of its JSON
+            payload (e.g. scheduled_time, media_urls). Ignored in manual mode.
 
     Returns:
-        - publora: dict from PubloraClient.create_post ({success, postGroupId}).
         - manual:  {"mode": "manual", "message": <copy-paste block>}.
         - diy:     {"mode": "diy", "returncode": int, "stdout": str, "stderr": str}.
-        Returns None only if the chosen backend cannot run (missing deps).
+        Returns None only if the chosen backend cannot run.
 
-    Note: a reply to another user's post and a quote post have no adapter
-    endpoint, so kind="reply" and kind="quote" always return a manual copy-paste
+    Note: a reply to another user's post and a quote post have no automatic
+    path, so kind="reply" and kind="quote" always return a manual copy-paste
     block regardless of the active backend.
     """
     backend = active_backend()
 
-    # Replies and quotes are draft-only everywhere: the built-in adapter's
-    # create-post cannot target another account's post (no quote/embed field),
-    # so it would silently auto-post the text as a standalone post and drop
-    # target_url. Surface the copy-paste block so the user posts it against
-    # the right target by hand.
+    # Replies and quotes are draft-only everywhere: they must target another
+    # account's post, so surface the copy-paste block and let the user post it
+    # against the right target by hand.
     if kind in ("reply", "quote") or backend == "manual":
         return {
             "mode": "manual",
             "message": manual_mode_message(draft_text, target_url, kind=kind),
         }
-
-    if backend == "publora":
-        # Local import so manual-tier users never need `requests` installed.
-        from .publora_client import PubloraClient
-
-        client = PubloraClient()
-        platform_id = kwargs.get("platform_id") or os.getenv("THREADS_PLATFORM_ID")
-        platforms = kwargs.get("platforms") or ([platform_id] if platform_id else [])
-
-        if kind in ("post", "thread"):
-            return client.create_post(
-                content=draft_text,
-                platforms=platforms,
-                scheduled_time=kwargs.get("scheduled_time"),
-                platform_settings=kwargs.get("platform_settings"),
-                media_urls=kwargs.get("media_urls"),
-            )
-
-        raise ValueError(f"unknown publish kind: {kind!r}")
 
     if backend == "diy":
         cmd = os.getenv("THREADS_SKILLS_CUSTOM_POSTER")
