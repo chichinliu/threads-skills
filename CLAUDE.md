@@ -115,6 +115,10 @@ otherwise.
   dispatch. No third-party publishing service is bundled; do not add one as a
   default or recommended path. The custom poster receives JSON on stdin and
   `kind target_url` as argv, and owns thread splitting, retries and quotas.
+  `examples/threads_graph_poster.py` is a reference poster (stdlib + requests);
+  it is NOT verified against live Meta docs or a real account, keep that
+  disclaimer until someone does. Its token (`THREADS_ACCESS_TOKEN`) is in the
+  `.env` allowlist; the poster command itself never is.
 - **Replies and quotes** (`kind="reply"` / `"quote"`) always route to a manual
   copy-paste block in `lib/backend_selector.py`: they must target another
   user's post.

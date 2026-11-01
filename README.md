@@ -140,7 +140,9 @@ Skill 只呼叫 `lib.publish(...)`,不綁定任何第三方服務。你可以:
 export THREADS_SKILLS_CUSTOM_POSTER="python /path/to/my-poster.py"
 ```
 
-核准時,skill 會把草稿以 JSON 從 stdin 交給你的指令,並以 `kind` 與目標網址當參數。串文拆分、重試、配額與部分失敗處理,都由你的 poster 負責。這個變數刻意不能寫在 `.env`:`.env` 只允許憑證,避免 clone 下來的檔案夾帶可執行指令。
+核准時,skill 會把草稿以 JSON 從 stdin 交給你的指令,並以 `kind` 與目標網址當參數。串文拆分、重試、配額與部分失敗處理,都由你的 poster 負責。
+
+**範例:** [`examples/threads_graph_poster.py`](examples/threads_graph_poster.py) 是一個用官方 Graph API 發單則貼文與串文的可用起點(以 `---` 分段、用 `reply_to_id` 串連、可附 1 張圖、沒有 token 時只做 dry-run)。**它尚未對照官方文件逐項驗證,也沒有對真實帳號發過文**,第一次請先用 `THREADS_POSTER_DRY_RUN=1`,再核對檔頭「API 常數」區塊。需要的環境變數:`THREADS_ACCESS_TOKEN`(可放 `.env`)與 `THREADS_SKILLS_CUSTOM_POSTER`(必須在啟動環境)。這個變數刻意不能寫在 `.env`:`.env` 只允許憑證,避免 clone 下來的檔案夾帶可執行指令。
 
 > **關於回覆:** 回覆與引用他人貼文必須指定對方的貼文,不適合無人看管地自動送出,所以不論哪種發佈層,Reply Drafter 一律以複製貼上區塊交付。
 

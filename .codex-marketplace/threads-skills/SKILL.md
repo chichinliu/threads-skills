@@ -41,7 +41,7 @@ Skill 一律呼叫 `lib.publish(kind, draft_text, target_url, ...)`,由它決定
 
 請 Claude Code 或 Codex 用 Threads 官方 Graph API 寫一個 poster,在**啟動環境**中設定 `THREADS_SKILLS_CUSTOM_POSTER=<你的指令>`(不能寫在 `.env`,`.env` 只允許憑證),核准時 skill 會呼叫它。若你想完全掌控憑證與流程,選這條。
 
-> 在官方 Graph API 上做串文,要先為第 1 則建立容器並發佈,再為後續每一則帶上 `reply_to_id` 指向前一則,並處理部分失敗與配額。這些都由你的 poster 負責。
+> 在官方 Graph API 上做串文,要先為第 1 則建立容器並發佈,再為後續每一則帶上 `reply_to_id` 指向前一則,並處理部分失敗與配額。這些都由你的 poster 負責。可參考 `examples/threads_graph_poster.py`(未對照官方文件驗證,請先 dry-run)。
 
 ### 關於回覆
 
