@@ -18,8 +18,8 @@ mishandles credentials, or an unsafe command pattern), please report it
 privately:
 
 - **Preferred:** open a private report via
-  [GitHub Security Advisories](https://github.com/sergebulaev/threads-skills/security/advisories/new)
-- **Alternative:** email `s@bulaev.org` with subject `[SECURITY] threads-skills`
+  [GitHub Security Advisories](https://github.com/chichinliu/threads-skills/security/advisories/new)
+- **Alternative:** contact the maintainer via https://chichinliu.com with subject `[SECURITY] threads-skills`
 
 Please include:
 

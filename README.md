@@ -5,16 +5,16 @@
 # Threads Marketing Skills for Claude Code and Codex
 
 <p align="center">
-  <img src="https://img.shields.io/github/v/release/sergebulaev/threads-skills?color=111827&label=release" alt="Latest release">
+  <img src="https://img.shields.io/github/v/release/chichinliu/threads-skills?color=111827&label=release" alt="Latest release">
   <img src="https://img.shields.io/badge/Claude_Code-Compatible-D97757?logo=anthropic&logoColor=white" alt="Claude Code Compatible">
   <img src="https://img.shields.io/badge/Codex-Compatible-111827" alt="Codex Compatible">
   <img src="https://img.shields.io/badge/Claude-Skills-8A63D2" alt="Claude Skills">
   <img src="https://img.shields.io/badge/License-MIT-22C55E.svg" alt="MIT License">
-  <img src="https://img.shields.io/github/stars/sergebulaev/threads-skills?style=social" alt="GitHub stars">
+  <img src="https://img.shields.io/github/stars/chichinliu/threads-skills?style=social" alt="GitHub stars">
   <img src="https://img.shields.io/badge/PRs-welcome-F59E0B.svg" alt="PRs Welcome">
 </p>
 
-> **Part of the [linkedin-skills](https://github.com/sergebulaev/linkedin-skills) family (400+ stars).** Same voice engine and approve-before-publish flow, now for Threads. Also available for [Instagram](https://github.com/sergebulaev/instagram-skills) · [X](https://github.com/sergebulaev/x-skills) · [YouTube](https://github.com/sergebulaev/youtube-skills) · [TikTok](https://github.com/sergebulaev/tiktok-skills) · [Facebook](https://github.com/sergebulaev/facebook-skills).
+> **Maintained by [chichinliu](https://chichinliu.com).** Built on the open-source [threads-skills](https://github.com/chichinliu/threads-skills) bundle (MIT, originally by Sergey Bulaev). More AI and strategy resources at [chichinliu.com](https://chichinliu.com).
 
 **8 skills that turn Claude Code and Codex into your Threads content team.** They write posts and threads in your voice with corpus-validated hooks, draft replies, read your niche from real data, and plan a week of content. Every draft gets the AI tells stripped and waits for your approval before anything publishes. No coding required.
 
@@ -34,14 +34,14 @@ Pick whichever way you use Claude Code or Codex:
 ### Codex CLI
 
 ```bash
-codex plugin marketplace add sergebulaev/threads-skills
+codex plugin marketplace add chichinliu/threads-skills
 codex plugin add threads-skills@threads-skills
 ```
 
 To test a local clone before publishing changes:
 
 ```bash
-git clone https://github.com/sergebulaev/threads-skills.git
+git clone https://github.com/chichinliu/threads-skills.git
 cd threads-skills
 codex plugin marketplace add .
 codex plugin add threads-skills@threads-skills
@@ -52,7 +52,7 @@ codex plugin add threads-skills@threads-skills
 1. Open https://claude.ai/code
 2. Go to **Skills** in the sidebar
 3. Click **Add from GitHub**
-4. Paste: `sergebulaev/threads-skills`
+4. Paste: `chichinliu/threads-skills`
 5. Done. The skills activate automatically when you ask about Threads.
 
 ### Claude Desktop (Mac / Windows)
@@ -61,20 +61,20 @@ codex plugin add threads-skills@threads-skills
 2. Open **Settings** (gear icon)
 3. Go to **Skills**
 4. Click **Add from GitHub**
-5. Paste: `sergebulaev/threads-skills`
+5. Paste: `chichinliu/threads-skills`
 6. Done. Start a new conversation and ask Claude to write a Threads post.
 
 ### Claude Code (CLI / VS Code / JetBrains)
 
 ```
-/plugin marketplace add sergebulaev/threads-skills
+/plugin marketplace add chichinliu/threads-skills
 /plugin install threads-skills@threads-skills
 ```
 
 Or clone the repo and open it as your working directory:
 
 ```bash
-git clone https://github.com/sergebulaev/threads-skills.git
+git clone https://github.com/chichinliu/threads-skills.git
 cd threads-skills
 ```
 
@@ -83,7 +83,7 @@ cd threads-skills
 1. Open your OpenClaw working directory
 2. Clone the skills into it:
    ```bash
-   git clone https://github.com/sergebulaev/threads-skills.git
+   git clone https://github.com/chichinliu/threads-skills.git
    ```
 3. In OpenClaw settings, add this to your system prompt:
    ```
@@ -98,7 +98,7 @@ cd threads-skills
 Hermes Agent (Nous Research) follows the agentskills.io open standard and loads `skills/*/SKILL.md` directly. Clone the bundle into your Hermes skills folder:
 
 ```bash
-git clone https://github.com/sergebulaev/threads-skills.git ~/.hermes/skills/threads-skills
+git clone https://github.com/chichinliu/threads-skills.git ~/.hermes/skills/threads-skills
 ```
 
 Coming from OpenClaw? `hermes claw migrate` imports these skills automatically. Then call `/<skill-name>` from any of your Hermes chat surfaces.
@@ -108,10 +108,10 @@ Coming from OpenClaw? `hermes claw migrate` imports these skills automatically. 
 One command that works across Claude Code, Codex, Cursor, and any other agent that reads SKILL.md files:
 
 ```bash
-npx skills add sergebulaev/threads-skills
+npx skills add chichinliu/threads-skills
 ```
 
-> **Found this useful? [Star the repo](https://github.com/sergebulaev/threads-skills).** Curated Claude Code and Codex directories rank and gate by star count, so a star is what makes these skills findable for the next person. It is the only thing we ask. No signup, no email.
+> **Found this useful? [Star the repo](https://github.com/chichinliu/threads-skills)** and visit [chichinliu.com](https://chichinliu.com) for more AI and strategy resources. No signup, no email.
 
 ## What you can do
 
@@ -154,7 +154,7 @@ Every skill shows you a draft first and waits for your OK. Nothing gets posted w
 
 Threads caps a post at **500 characters** (10,000 if you attach the longer-form text). For anything longer, you build a multi-post thread. Doing that on the native Threads API means creating a container for post 1, publishing it, then creating each next post with a `reply_to_id` pointing at the previous one, and handling partial failures.
 
-This bundle hands the whole chain to [Publora](https://publora.com/?utm_source=github&utm_medium=readme&utm_campaign=threads-skills). You write the thread as one block (or split it with `---`), and Publora auto-splits it into a connected multi-post thread at paragraph then sentence boundaries, and posts it in one call. Unlike X, Threads does not add `(1/N)` markers by default. The Post Writer skill uses this on approval.
+This bundle hands the whole chain to [Publora](https://publora.com/). You write the thread as one block (or split it with `---`), and Publora auto-splits it into a connected multi-post thread at paragraph then sentence boundaries, and posts it in one call. Unlike X, Threads does not add `(1/N)` markers by default. The Post Writer skill uses this on approval.
 
 ## Optional: auto-post with Publora
 
@@ -162,13 +162,13 @@ By default, the skills draft content for you to copy-paste into Threads. If you 
 
 ### What is Publora?
 
-[Publora](https://publora.com/?utm_source=github&utm_medium=readme&utm_campaign=threads-skills) is a publishing API that turns one `create-post` call into a full Threads thread (and can cross-post the same content to X, LinkedIn, Instagram, and more).
+[Publora](https://publora.com/) is a publishing API that turns one `create-post` call into a full Threads thread (and can cross-post the same content to X, LinkedIn, Instagram, and more).
 
 Publora also ships [official MCP skills](https://github.com/publora/skills) (`npx skills add publora/skills`): one skill per platform, covering the publish side only. This bundle is the layer above them, adding the reading, the writing craft and the approval flow.
 
 ### Setup (2 minutes)
 
-**Step 1.** Sign up at https://app.publora.com/signup?utm_source=github&utm_medium=readme&utm_campaign=threads-skills (free)
+**Step 1.** Sign up at https://app.publora.com/signup (free)
 
 **Step 2.** Connect Threads: click **Channels** in the left sidebar, then **Add Channel**, pick **Threads**, authorize.
 
@@ -282,7 +282,7 @@ threads-skills/
 | Runtime | Auto-discovers skills? | Setup |
 |---|---|---|
 | **Claude Code** (CLI, Desktop, Web, IDE) | Yes | Install via plugin or clone. Skills activate on matching prompts. |
-| **Codex CLI** | Yes | `codex plugin marketplace add sergebulaev/threads-skills` and `codex plugin add threads-skills@threads-skills`. |
+| **Codex CLI** | Yes | `codex plugin marketplace add chichinliu/threads-skills` and `codex plugin add threads-skills@threads-skills`. |
 | **Anthropic Managed Agents** (`/v1/agents`) | Yes | Pass skill files in the agent context. |
 | **Cursor / Cline / Aider** | Manual | Read `SKILL.md` files as prompt context; import `lib/` as Python. |
 | **LangChain / AutoGen** | No | Use `lib/` as a package; feed `references/` as prompt context. |
@@ -330,7 +330,7 @@ LinkedIn flattens reply threads to 2 levels and needs the top-level comment URN 
 
 ## References
 
-- [Publora API docs](https://docs.publora.com/?utm_source=github&utm_medium=readme&utm_campaign=threads-skills) - endpoint reference for the publishing layer
+- [Publora API docs](https://docs.publora.com/) - endpoint reference for the publishing layer
 - [Threads API (Meta for Developers)](https://developers.facebook.com/docs/threads/) - the official Threads Graph API behind the 2026 heuristics
 
 ## Who builds this
@@ -339,22 +339,13 @@ These skills come out of [Creative Content Crafts](https://cccrafts.ai), an engi
 
 We call that layer **content engineering**. Writing collapsed to the price of a chat subscription. What stayed valuable is everything below it: pulling every post your market wrote this week, keeping a live list of the people who matter, engaging on it daily with judgment in the loop, and catching the risky drafts before the platform does.
 
-This repo is the thin top layer of that stack, open-sourced. The engine underneath is what we build for clients.
+This repo is the thin top layer of that stack, open-sourced. For the engine underneath and consulting on AI adoption, see [chichinliu.com](https://chichinliu.com).
 
 ## License
 
-MIT. Powered by [Publora](https://publora.com/?utm_source=github&utm_medium=readme&utm_campaign=threads-skills).
+MIT. Maintained by [chichinliu.com](https://chichinliu.com). Publishing powered by [Publora](https://publora.com/).
 
-## Related open-source skill bundles
+## More from chichinliu
 
-Part of a family of AI social-media marketing skill bundles for Claude Code and Codex:
-
-- [linkedin-skills](https://github.com/sergebulaev/linkedin-skills) - LinkedIn
-- [x-skills](https://github.com/sergebulaev/x-skills) - X (Twitter)
-- [instagram-skills](https://github.com/sergebulaev/instagram-skills) - Instagram
-- [youtube-skills](https://github.com/sergebulaev/youtube-skills) - YouTube
-- **threads-skills - Threads (this repo)**
-- [tiktok-skills](https://github.com/sergebulaev/tiktok-skills) - TikTok
-- [facebook-skills](https://github.com/sergebulaev/facebook-skills) - Facebook Pages
-
-Also: [Anthropic Skills repo](https://github.com/anthropics/skills), the `awesome-claude-skills` directory.
+- [chichinliu.com](https://chichinliu.com) - AI strategy, adoption and training resources
+- [Anthropic Skills repo](https://github.com/anthropics/skills), the `awesome-claude-skills` directory.

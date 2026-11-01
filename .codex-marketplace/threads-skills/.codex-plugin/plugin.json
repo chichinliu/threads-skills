@@ -1,14 +1,14 @@
 {
   "name": "threads-skills",
   "description": "8 Claude Code and Codex skills for Threads (Meta) marketing: single-post and multi-post thread writing, AI-tell humanizer with pre-publish audit, viral hook extraction, reply and quote drafting, profile optimization, content repurposing, audience insights, and weekly content planning. Publora is the default publish layer for Threads posts and threads.",
-  "version": "1.0.34",
+  "version": "1.0.35",
   "author": {
-    "name": "Serge Bulaev",
-    "url": "https://github.com/sergebulaev"
+    "name": "chichinliu",
+    "url": "https://chichinliu.com"
   },
   "license": "MIT",
-  "homepage": "https://github.com/sergebulaev/threads-skills",
-  "repository": "https://github.com/sergebulaev/threads-skills",
+  "homepage": "https://github.com/chichinliu/threads-skills",
+  "repository": "https://github.com/chichinliu/threads-skills",
   "keywords": [
     "threads",
     "meta-threads",
@@ -26,14 +26,14 @@
     "displayName": "Threads (Meta) Skills",
     "shortDescription": "Threads (Meta) marketing skills for Claude Code and Codex.",
     "longDescription": "A bundle of 8 Threads (Meta) marketing skills for Claude Code and Codex: single-post and multi-post thread writing, humanizing, hook extraction, reply and quote drafting, and content planning.",
-    "developerName": "Serge Bulaev",
+    "developerName": "chichinliu",
     "category": "Productivity",
     "capabilities": [
       "Interactive",
       "Read",
       "Write"
     ],
-    "websiteURL": "https://github.com/sergebulaev/threads-skills",
+    "websiteURL": "https://chichinliu.com",
     "defaultPrompt": [
       "Draft a Threads post from my notes.",
       "Turn this into a multi-post Threads thread.",
