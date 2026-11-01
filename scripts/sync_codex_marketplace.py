@@ -24,6 +24,7 @@ PATHS_TO_COPY = [
     "skills",
     "references",
     "lib",
+    "examples",
     "scripts",
     "requirements.txt",
     ".env.example",

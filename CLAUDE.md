@@ -135,7 +135,7 @@ otherwise.
   root remains the Claude-facing source layout.
 - `.agents/plugins/marketplace.json` points to `.codex-marketplace/threads-skills`.
 - `scripts/sync_codex_marketplace.py` copies the root Codex manifest, `SKILL.md`,
-  `skills/`, `references/`, `lib/`, `scripts/`, `requirements.txt`, `.env.example`,
+  `skills/`, `references/`, `lib/`, `examples/`, `scripts/`, `requirements.txt`, `.env.example`,
   and `LICENSE` into the hidden package.
 - After editing any copied file, run the sync script before testing or committing.
 
