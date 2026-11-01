@@ -1,87 +1,70 @@
-# Worked Teardowns
+# 拆解範例
 
-## Example 1 - Single post (T1 Warm Contrarian)
+## 範例 1 - 單則貼文(T1 溫暖反差)
 
-**Source (pasted by user):**
-> most people optimize their resume. the ones who get hired optimize their
-> network six months before they need it. who taught you that one?
+**來源(使用者貼上):**
+> 多數人都在優化履歷。真正被錄取的人，是在需要之前半年就開始經營人脈。
+> 你是從誰身上學到這件事的？
 
-**Teardown:**
-- **Container:** single post.
-- **Formula:** T1 Warm Contrarian (confidence high).
-- **Structure:** line 1 names the common behavior ("optimize their resume");
-  line 2 flips it with a specific, defensible contrarian move ("optimize their
-  network six months before"); line 3 is a warm invite that turns the read into a
-  reply. The specificity ("six months") makes it repostable instead of a
-  platitude.
-- **Primary goal:** reposts, with replies as a strong second from the invite.
-- **Why it worked:** no setup, lands in the first line, the claim is defensible,
-  and the closing question fits Threads' conversation-first register.
-- **Source audit:** clean. Em dashes under the cap, no AI vocab cluster, no hashtags, warm tone.
+**拆解:**
+- **容器:** 單則貼文。
+- **公式:** T1 溫暖反差(信心高)。
+- **結構:** 第 1 行點出常見行為(「優化履歷」);第 2 行用具體、站得住腳的反差動作翻轉它(「需要之前半年就開始經營人脈」);第 3 行是溫暖的邀請,把閱讀變成回覆。「半年」這個具體度,讓它可以被轉發,而不是一句空話。
+- **主要目標:** 轉發,邀請帶來的回覆是強力的第二目標。
+- **為什麼有效:** 沒有鋪陳,第一行就落地,主張站得住腳,結尾的問題符合 Threads 以對話為先的語境。
+- **來源審核:** 乾淨。破折號在上限內,沒有 AI 腔詞彙成堆,沒有主題標籤,語氣溫暖。
 
-**Blank template for your topic:**
+**對應你主題的空白範本:**
 ```
-most {group} {common behavior}.
+多數{族群}都在{常見行為}。
 
-the ones who {win} {contrarian move with a specific detail}. {warm invite to talk}
+真正{成功}的人，是{帶具體細節的反差動作}。{邀請對話的溫暖提問}
 ```
 
-## Example 2 - Thread (T7 Listicle-Thread Promise)
+## 範例 2 - 串文(T7 清單串文承諾)
 
-**Source (post 1, pasted by user):**
-> i have reviewed 400+ landing pages this year.
+**來源(第 1 則,使用者貼上):**
+> 我今年看過 400 多個登陸頁。
 >
-> 9 mistakes show up on almost all of them. number 4 quietly kills the most
-> signups.
+> 幾乎每一頁都有同樣的 9 個錯誤。第 4 個默默害掉最多註冊。
 
-**Teardown:**
-- **Container:** thread.
-- **Formula:** T7 Listicle-Thread Promise (confidence high).
-- **Structure:** post 1 stacks an authority number ("400+"), a promise ("9
-  mistakes"), and an open loop ("number 4 quietly kills the most"). The body
-  delivers one mistake per post. The reader taps in to find number 4.
-- **Primary goal:** reposts. A teaching thread with concrete examples is the
-  save-style repost-bait Threads rewards; readers repost the whole chain.
-- **Why it worked:** the authority number earns trust, the open loop earns the
-  tap, and front-loading the strongest mistakes keeps tap-through high.
-- **Source audit:** clean opener. Check the body posts for an external link (move
-  any to a reply) and for staccato stacks; similar post lengths are fine on
-  Threads.
+**拆解:**
+- **容器:** 串文。
+- **公式:** T7 清單串文承諾(信心高)。
+- **結構:** 第 1 則疊了三樣東西:權威數字(「400 多個」)、承諾(「9 個錯誤」)和懸念(「第 4 個默默害掉最多註冊」)。主體一則講一個錯誤。讀者為了找第 4 個而點進去。
+- **主要目標:** 轉發。附有具體例子的教學串文,正是 Threads 獎勵的那種收藏型轉發誘因;讀者會把整串轉出去。
+- **為什麼有效:** 權威數字建立信任,懸念賺到點擊,把最強的幾個錯誤放前面,點進率才會維持。
+- **來源審核:** 開頭乾淨。檢查主體貼文是否有外部連結(有的話移到回覆),以及是否有斷奏堆疊;長度相近的貼文在 Threads 上沒有問題。
 
-**Blank template for your topic:**
+**對應你主題的空白範本:**
 ```
-i have {authority action with a number} this year.
+我今年{帶數字的權威動作}。
 
-{N} {mistakes/lessons} show up on almost all of them. number {k} {open-loop consequence}.
+幾乎每一{單位}都有同樣的 {N} 個{錯誤或教訓}。第 {k} 個{帶後果的懸念}。
 
 ---
 
-1. {Mistake name}
+1. {錯誤名稱}
 
-{2-3 lines that teach it, with a concrete example.}
+{2 到 3 行說明它,附一個具體例子。}
 ```
 
-## Example 3 - Quote post (T4 Add-Value)
+## 範例 3 - 引用貼文(T4 引用加值)
 
-**Source:** a quote post of a "just ship it" take, adding:
-> true, but "ship it" without a way to measure whether it worked is just gambling
-> with extra steps. ship it AND instrument it.
+**來源:** 引用一則「先上線再說」觀點的引用貼文,補上:
+> 沒錯，不過上線後沒有辦法衡量有沒有用，就只是換個方式賭運氣。上線，而且要能量測。
 
-**Teardown:**
-- **Container:** quote post.
-- **Formula:** T4 Quote-Post Add-Value (confidence high).
-- **Structure:** concedes the original ("true, but"), then adds the missing
-  nuance (measurement), then lands a memorable reframe ("gambling with extra
-  steps").
-- **Primary goal:** quotes. The quote borrows the original's reach and the added
-  nuance gives the reader a reason to quote this version.
-- **Why it worked:** added value, did not dunk. The reframe line is the
-  screenshot. The warm "true, but" opener keeps it Threads-native.
-- **Source audit:** clean.
+**拆解:**
+- **容器:** 引用貼文。
+- **公式:** T4 引用加值(信心高)。
+- **結構:** 先承認原文(「沒錯，不過」),再補上被漏掉的細節(衡量),最後落在一句讓人記得住的重新定義(「換個方式賭運氣」)。
+- **主要目標:** 引用。引用借用了原貼文的觸及,補上的細節讓讀者有理由引用這個版本。
+- **為什麼有效:** 有加價值,沒有嗆。重新定義的那句就是會被截圖的句子。溫暖的「沒錯，不過」開頭保有 Threads 原生的口吻。
+- **來源審核:** 乾淨。
 
-**Blank template:**
+**空白範本:**
 ```
-{Concede the quoted take in 3-5 words}, but {the missing nuance}.
+{用 3 到 5 個字承認被引用的觀點}，不過{被漏掉的細節}。
 
-{One memorable reframe line.}
+{一句讓人記得住的重新定義。}
 ```

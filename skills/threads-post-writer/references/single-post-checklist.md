@@ -1,64 +1,54 @@
-# Single-Post Checklist
+# 單則貼文檢查清單
 
-Run every single-post draft through this before showing the approval card.
+每一則單篇草稿在顯示核准卡之前,都先跑過這份清單。
 
-## Fit
+## 長度
 
-- [ ] Under 500 chars (10,000 only if a text attachment is attached).
-- [ ] If over 500 and no attachment: tighten, or escalate to a thread. Never ship
-      a truncated thought.
-- [ ] First line stops the scroll on its own (the feed truncates with "more").
+- [ ] 在 500 字元內(只有附上長文附件時才到 10,000)。**以 Threads App 內的計數為準**,中文、英文、標點與 emoji 的計法請實際確認一次。
+- [ ] 超過 500 且沒有長文附件:精簡,或升級成串文。絕不發出被截斷的想法。
+- [ ] 第一行單獨就能讓人停下來(動態消息會在「顯示更多」截斷)。
+- [ ] 有效長度的假設是 80 到 250 字。超過就問自己:這是一個想法,還是兩個?(這是待驗證的假設,不是平台規則。)
 
-## Voice scrub
+## 語氣清稿
 
-- [ ] At most one em dash (`—`) in the post, and none if it reads fine
-      without it. Replace the excess with a comma, colon or `..`, never a
-      period. No en dashes (`–`) between clauses, no double dashes (`--`).
-- [ ] No cluster of 2026 AI vocab (3+ markers in one post = rewrite the
-      post; one is fine): significant, crucial, notably, comprehensive,
-      insights, robust, leverage, foster, landscape, nuanced, streamline,
-      elevate, empower, fundamentally, essentially, ultimately; plus "-ing"
-      clause openers and "the X-tion of" nominalisations.
-- [ ] No reveal bridge ("The result?", "Here's what", "Stop X, start Y") and
-      no "It's not X, it's Y".
-- [ ] No sincerity announcement ("let me be honest", "not gonna lie",
-      "unpopular opinion:" on a popular take) and no hedge the author did not
-      write.
-- [ ] No staccato stack ("Short. Punchy. Done.", "No X. No Y. Just Z.") and
-      no one-word line for drama. Do not chop a sentence to add punch; uniform
-      rhythm wins on Threads.
-- [ ] At most one rule-of-three triplet, with concrete items.
-- [ ] Names capitalized (Stripe, Claude, Vercel). Lowercase sentence starts are
-      fine if the voice calls for it.
-- [ ] Warm and conversational, not a transplanted X dunk.
+- [ ] 破折號「——」最多一個,沒有它也通順就不用。多餘的改成逗號、冒號或換行,絕不改成句號。不用「--」。
+- [ ] 沒有成堆的 AI 腔詞彙(同一則出現 3 個以上標記就整則重寫,1 個沒關係):賦能、助力、打造、深耕、解鎖、全方位、一站式、閉環、抓手、底層邏輯、值得注意的是、不可否認、事實上、本質上、歸根結底、總而言之、綜上所述;另外也包含「乾貨滿滿」「建議收藏」這類大陸社媒腔。
+- [ ] 沒有揭曉橋段(「結果呢?」「重點來了」「別再 X,開始 Y」),也沒有「這不只是 X,而是 Y」「不僅 X,更 Y」。
+- [ ] 沒有表態式真誠(「老實說」「坦白講」「我必須承認」「說真的」),後面卻沒有任何帶日期的事實;也沒有作者自己沒寫的保留語氣。
+- [ ] 沒有斷奏堆疊(「簡單。直接。完成。」「沒有 X。沒有 Y。只有 Z。」),也沒有為了戲劇效果單獨成行的一個字。不要為了加力道把句子剁碎;Threads 上整齊的節奏比較有利。
+- [ ] 最多一組三段式,而且內容要具體。
+- [ ] 英文品牌與產品名維持官方寫法(Stripe、Claude、Vercel、iPhone);人名、公司名、地名用台灣慣用寫法。
+- [ ] 台灣用語,沒有簡體字或大陸用詞(使用者、資訊、影片、品質、軟體)。
+- [ ] 全形標點,中英數字之間有半形空格。
+- [ ] 句尾語氣詞(啦、喔、欸、吧)最多 1 到 2 個,而且確實是口語。
+- [ ] 溫暖、口語,不是移植 X 的嗆聲腔。
 
-## Substance
+## 內容
 
-- [ ] One idea only. Two ideas means two posts.
-- [ ] At least one specific number or named entity where the claim allows it.
-- [ ] A clear primary goal: replies, reposts, likes, or quotes. Not all four.
+- [ ] 只有一個想法。兩個想法就是兩則。
+- [ ] 主張允許時,至少有一個具體數字或具名實體。
+- [ ] 有明確的主要目標:回覆、轉發、按讚或引用,不是四個全要。
+- [ ] 沒有捏造數字、日期或客戶名稱;所有細節都來自素材庫或使用者本次提供。
 
-## Format
+## 格式
 
-- [ ] 0 or 1 hashtag, at the end. A second hashtag is rejected by Threads.
-- [ ] 0-2 emoji, and only if each earns its place. None on a serious take.
-- [ ] No external link in post 1 (offer to drop it in a reply). Up to 5 links
-      allowed per post, but a link in the opener costs reach.
-- [ ] Line breaks used as beats, not decoration.
+- [ ] 0 或 1 個主題標籤,放最後。第二個會被 Threads 拒絕。
+- [ ] 0 到 2 個 emoji,而且每個都有存在的理由。嚴肅議題不用。
+- [ ] 第一則不放外部連結(提議放進回覆)。每則最多可放 5 個連結,但開頭那行放連結會損失觸及。
+- [ ] 換行當節拍,不是裝飾。
 
-## Close
+## 收尾
 
-- [ ] Ends on a landing or a specific, answerable question, never "what do you
-      think?".
+- [ ] 用落點或一個具體、答得出來的問題收尾,絕不用「你覺得呢?」。
+- [ ] 沒有互動誘餌(「按讚收藏」「求轉發」)。
 
-## Char-count quick reference
+## 字元數速查
 
-| Element | Limit |
+| 項目 | 上限 |
 |---|---|
-| Per post | 500 chars |
-| Per post with text attachment | 10,000 chars |
-| Hashtags | 1 (platform hard cap) |
-| Links | up to 5 |
+| 每則貼文 | 500 字元 |
+| 每則貼文(含長文附件) | 10,000 字元 |
+| 主題標籤 | 1 個(平台硬性上限) |
+| 連結 | 最多 5 個 |
 
-Publora auto-splits a long draft into a connected multi-post thread at paragraph
-then sentence boundaries. Unlike X, it does not add `(1/N)` markers.
+長草稿如何拆成多則,取決於你選用的發佈層:預設由你用 `---` 手動分段;有的轉接器會依段落、句子自動拆分。不論哪一種,都不要假設平台會自動加 `(1/N)` 編號。

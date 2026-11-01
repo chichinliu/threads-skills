@@ -1,116 +1,118 @@
-# Voice Rules for Threads (Meta)
+# Threads 語氣規則(繁體中文・台灣市場版)
 
-These are the canonical voice rules for the whole bundle. Every skill inherits
-them. Skill-local "Hard rules" sections only add format-specific overrides
-(char ranges, threading rules) and point back here.
+這是整個 bundle 的標準語氣規則,所有 skill 都繼承它。各 skill 內的「硬性規則」只補充該格式專屬的覆寫(字數區間、串文規則),並指回這裡。
 
-Threads is the warmer, less newsy sibling of X. Same text-first shape, but the
-register is conversational and community-driven, not hot-take combat. The
-platform rewards genuine back-and-forth over dunks. Write like you are talking
-to people who already like you, not performing for strangers.
+Threads 的語境是口語、社群、來回對話,不是新聞快訊或辯論場。平台獎勵真實的互動,不獎勵嗆聲。寫的時候,想像你在跟已經喜歡你的人聊天,不是對陌生人表演。
 
-## Hard rules
+> 本版為台灣市場改寫,不是逐字翻譯。原版的英文規則(破折號密度、小寫句首、專有名詞大寫)在中文裡沒有對應物,已改成中文真正會出問題的點:AI 腔、大陸用語混入、標點與中英間距、語氣詞。凡標示「假設」的數字,是待你用自己帳號驗證的起點,不是平台保證。
 
-1. **Em dashes (`—`) capped at one per post** (about 1 per 100 words in a
-   long text-attachment post), and none in a post that reads fine without one.
-   The character is no longer a tell (2026 models use fewer than humans); the
-   density is, and on Threads em dashes are rare in top posts (7% of our
-   corpus). Replace the excess with a comma, colon or `..`, never a period. No
-   en dashes (`–`) between clauses, no double dashes (`--`).
-2. **Use `..` as a soft pause** when you would reach for a second em dash.
-   Reads human and matches how people actually type on Threads.
-3. **Capitalize personal names, company names, product names** (Stripe, Claude,
-   Vercel). Lowercase a brand name and it reads as careless.
-4. **Sentence starts can be lowercase.** Lowercase openers are native to the
-   Threads register and often outperform capitalized ones. Names inside are
-   always capitalized.
-5. **Specific numbers beat adjectives.** 2.4x beats "way better". $873.47 beats
-   "cheap". One real number per post where the claim allows it.
-6. **One idea per post.** A post with two ideas is two posts, or a thread.
-7. **Don't hard-sell your own product** in a reply or a quote on someone else's
-   post. Describe what you do instead.
+## 術語表(全 bundle 統一用這套)
 
-## Vocabulary markers (density-scored)
+| 英文 | 本 bundle 用詞 | 備註 |
+|---|---|---|
+| post | 貼文 | |
+| thread(多則串連) | 串文 | 指自己串起來的多則貼文 |
+| reply | 回覆 | |
+| quote post | 引用貼文 | 平台介面用「引用」 |
+| repost | 轉發 | |
+| like | 按讚 | |
+| hook | 鉤子 | 第一行吸引停留的句子 |
+| soft fold / "more" cut | 「顯示更多」截斷處 | |
+| hashtag / topic tag | 主題標籤 | Threads 每則只能 1 個 |
+| text attachment | 長文附件 | |
+| publish layer / backend | 發佈層 | 中立:手動、自建、第三方轉接器 |
+| approval card | 核准卡 | |
+| humanizer | 去 AI 味 | skill 名稱 `threads-humanizer` 不變 |
+| voice profile | 語氣檔案 | |
+| story bank | 素材庫 | |
+| niche | 利基領域 | |
+| engagement | 互動 | |
+| creator | 創作者 | |
+| follower | 追蹤者 | |
+| bio | 簡介 | |
+| pinned post | 置頂貼文 | |
 
-Count these per post. One is English; two is borderline (flag it in the report, leave the words);
-three in one post reads as AI and the whole post gets rewritten (see `threads-humanizer` V3).
-The durable 2026 set (significant, crucial, notably, particularly,
-comprehensive, insights, robust, leverage, foster, landscape, nuanced,
-streamline, elevate, empower) counts alongside the older corporate words:
-- leverage, utilize, facilitate, streamline, robust, seamless, delve, navigate,
-  unlock, harness, foster, cultivate
-- fundamentally, essentially, ultimately, crucially, notably
-- landscape, ecosystem, paradigm, realm, tapestry, journey
+Skill 名稱(`threads-post-writer` 等)、檔案路徑、程式識別字、`T1` 到 `T13` 公式代號一律保留英文,這是公開介面。
 
-## Always forbidden (single hit, regardless of density)
+## 硬性規則
 
-These are scrubbed on sight. They are reveal bridges, negative parallelism,
-dead phrases or performed sincerity, not vocabulary:
-- "It's not just X, it's Y"
-- "In today's fast-paced world"
-- "game-changer", "deep dive", "at the end of the day", "needle-mover"
-- Sincerity announcements as an opener or pivot: "let me be honest", "I'll be
-  real", "honestly?", "real talk", "not gonna lie", "unpopular opinion:" on a
-  take that is actually popular. State the fact flat instead.
+1. **一律繁體中文、台灣用語。** 不混簡體,不用大陸慣用詞。常見對照:
+   使用者(不是用戶)、資訊(不是信息)、影片(不是視頻)、品質(不是質量)、軟體(不是軟件)、網路(不是網絡)、資料(不是數據,指 data 時)、程式(不是程序,指 program 時)、專案(不是項目,指 project 時)、預設(不是默認)、支援(不是支持,指 support 時)。
+2. **標點用全形。** 逗號、句號、問號、驚嘆號、冒號、分號用「,。?!:;」,引述用「」,書名用《》。連續標點不超過一個,不用「!!!」。
+3. **中英數字之間加半形空格。** 例如「用 Claude 寫了 3 篇貼文」。品牌與產品名維持官方寫法(Stripe、Claude、Threads、iPhone),不要全小寫,也不要硬翻譯。
+4. **破折號「——」每則最多 1 個**(長文附件約每 300 字 1 個),沒有它也通順就不用。多餘的改成逗號、冒號或換行。不用「--」。
+5. **軟停頓用「⋯⋯」或換行**,一則最多 1 處。不要滿篇刪節號。
+6. **具體數字勝過形容詞。** 「回覆率從 3% 到 11%」勝過「大幅提升」。金額用 NT$ 或明確幣別,日期用實際日期。一則至少想一個真數字,前提是你真的有。
+7. **一則一個想法。** 兩個想法就拆成兩則,或做成串文。
+8. **不要在別人的貼文底下硬銷。** 描述你做什麼,不要推銷。
 
-## Threads-native style
+## 語氣詞與口語
 
-- **Warm beats sharp.** X rewards the contrarian one-liner; Threads rewards the
-  same idea framed as an invitation to talk. "Most agents fail on retries, not
-  reasoning. what broke for you?" out-performs the bare dunk.
-- **Lowercase-casual is the default register.** It signals you are a person, not
-  a brand account. Use it freely; only go formal for a genuinely serious take.
-- **Line breaks are punctuation.** A single hard return between two short lines
-  reads as a beat. Use whitespace to control pacing inside a post.
-- **Emoji: 0-2 per post.** Threads tolerates a slightly warmer emoji register
-  than X, but a post sprinkled with 5 still reads as a brand account or AI.
-  Serious takes use zero.
-- **Hashtags: 0 or 1. Threads allows only ONE per post.** A second hashtag is
-  rejected by the platform, not just frowned on. If you use one, put it at the
-  end.
-- **Links: up to 5 per post are allowed,** but a link in the opening line still
-  costs reach. Keep links out of the first post of anything you want to travel.
+- 句尾語氣詞(啦、喔、欸、吧、耶、嘛)可以用,一則最多 1 到 2 個,放在確實是口語的句子上。連續堆疊會像刻意賣萌。
+- 不用注音文、火星文、過度諧音梗,除非那是你一貫的個人風格並已寫進語氣檔案。
+- 台語、粵語借詞只在你本來就這樣講話時使用,不要為了「接地氣」硬加。
+- 第一人稱用「我」。避免「筆者」「本人」這類公文腔。
 
-## Length
+## AI 腔詞彙(依密度計分)
 
-- **Per post: 500 characters.** Write to land the whole idea inside it. A post
-  that needs 540 chars needs an edit, or it should become a thread.
-- **Text attachment: up to 10,000 chars** when you attach the longer-form text,
-  but a wall of text still underperforms a tight one. Length is a ceiling, not a
-  target. Reach for a thread before a 2,000-char monolith.
-- **Thread posts: keep each one able to stand alone.** A reader who lands on
-  post 4 from a repost should still get something.
+每則計數。出現 1 個:正常。2 個:邊緣,在報告中標記但不動它。3 個以上:整則判定為 AI 腔,整則重寫(見 `threads-humanizer` V3)。
 
-## Structure
+- **企業黑話:** 賦能、助力、打造、深耕、解鎖、全方位、一站式、閉環、抓手、顆粒度、底層邏輯、賽道、破圈、心智、引爆、生態、範式、版圖
+- **填充副詞與轉折:** 值得注意的是、不可否認、毋庸置疑、顯而易見、不難發現、事實上、本質上、歸根結底
+- **收尾套話:** 總而言之、綜上所述、總的來說、讓我們一起
+- **大陸社媒腔:** 乾貨滿滿、建議收藏、幹貨、爆款、硬核、絕絕子、誰懂啊(台灣使用者讀起來是外來腔)
 
-- The **first line of a single post, or post 1 of a thread, carries the whole
-  load.** Threads truncates long posts in feed with a "more" cut, so front-load
-  the hook into the first line.
-- **End on a landing, not a dead prompt.** "What do you think?" is dead. A
-  specific question that invites a real answer, a sharp closing line, or a clean
-  stop all beat it. On Threads a genuine question is stronger than on X because
-  the audience actually replies.
-- For threads, **the last post earns the repost.** Close with the most quotable
-  line or a clear call to repost/follow, not a limp "that's it".
+## 一次命中就刪(不論密度)
 
-## Anti-patterns
+這些是揭曉橋段、否定式對仗、死套話或表演式真誠,不是詞彙問題:
 
-- Thesis restatement of someone else's post ("so true, this changes
-  everything").
-- Generic praise in replies ("great thread!", "love this").
-- Overused openers: "This.", "100%", "Couldn't agree more", "Unpopular opinion:"
-  on a take that is actually popular.
-- Stacked or hollow rule of three ("faster, cheaper, better"); one natural
-  triple with concrete items is fine.
-- Padding a one-line idea into a thread.
-- ALL CAPS first lines for intensity. Carry intensity with word choice.
-- X-transplant tone: importing a cold, newsy, dunk-heavy X voice onto Threads
-  reads as out of place. Warm it up.
+- 「這不只是 X,而是 Y」「不僅 X,更 Y」「X 不是問題,Y 才是」當作整則的骨架
+- 「在這個快速變遷的時代」「在當今⋯⋯的時代」「隨著 AI 的發展」
+- 「深入探討」「深度解析」「一文讀懂」「帶你看懂」
+- 把真誠當開場或轉折:「老實說」「坦白講」「我必須承認」「說真的」「不誇張」,後面卻沒有任何有日期、有細節的事實。直接講事實。
+- 「這個觀點可能不受歡迎」,但其實是多數人同意的觀點。
+- 互動誘餌:「按讚收藏」「求轉發」「同意的留言 1」。
 
-## Algorithmic note (NLP-level)
+## Threads 原生風格
 
-Threads' ranker leans hard on replies and on relationships (it surfaces posts
-from accounts you and your network engage with). A post that earns real replies
-(not one-word "this") and gets reposted travels further than one that only
-collects likes. Before posting, check: does this give a reader a reason to
-reply, repost, or quote? If it only earns a passive like, sharpen it.
+- **溫暖勝過尖銳。** 把同一個觀點包成邀請對話,而不是單純的嗆。「很多 AI agent 壞在重試,不是推理。你踩過什麼坑?」勝過單純的結論句。
+- **口語是預設音域。** 像在對朋友講話。只有真的嚴肅的議題才用正式語氣。
+- **換行就是標點。** 兩個短句之間一個換行就是一個節拍,用空白控制節奏。
+- **Emoji:每則 0 到 2 個。** 一則塞 5 個就像官方帳號或機器產出。嚴肅議題用 0 個。
+- **主題標籤:0 或 1 個。** Threads 每則只允許 1 個,第二個會被平台拒絕,不只是風格問題。要用就放最後。
+- **連結:** 每則最多 5 個,但開頭那行放連結會損失觸及。想讓它傳出去的貼文,連結放在回覆或串文的後段。
+
+## 長度
+
+- **每則上限 500 字元。** 以 Threads App 內顯示的計數為準(中文、英文、標點、emoji 的計法請在 App 內實際確認一次)。要塞進 540 字,就該剪,或改成串文。
+- **長文附件:最多 10,000 字元。** 但一大面牆還是輸給精實的一則。長度是天花板,不是目標。
+- **中文的有效長度:假設單則 80 到 250 字最容易被讀完。** 中文每字資訊量高,500 字其實很長。這是待驗證的假設,請用你自己的貼文數據校正。
+- **串文每一則要能獨立成立。** 從轉發點進第 4 則的讀者,也該有所收穫。
+
+## 結構
+
+- **單則或串文第一則的第一行承擔全部重量。** 動態消息會在「顯示更多」處截斷,把鉤子放在前 1 到 2 行(假設:約 30 到 50 字內)。
+- **用落點收尾,不要用死問句。** 「你覺得呢?」是死的。一個具體、能引出真實回答的問題,或一句俐落的結尾,或乾淨地停住,都比它好。Threads 的受眾真的會回,所以真誠的提問比在其他平台更有效。
+- **串文的最後一則要能賺到轉發。** 用最值得引用的一句收尾,或一個明確的轉發、追蹤請求,不要用「就這樣」。
+
+## 台灣語境提醒
+
+- 時間用台灣時間(UTC+8)。常見的假設時段:通勤早晨、午休、晚上 9 點到 11 點。以你帳號的洞察數據為準,不要照抄。
+- 在地節點可以成為鉤子:報稅季、連假、雙 11、母親節、中秋、農曆新年、颱風假。不要硬蹭,沒有真實關聯就不用。
+- 稱呼他人用「你」而非「您」,除非對方是長輩或正式合作對象。
+- 人名、公司名、地名用台灣慣用寫法(台積電、桃園、板橋)。
+
+## 反模式
+
+- 對別人貼文的觀點複述(「說得太對了,這改變一切」)。
+- 空泛稱讚(「好文」「推」「受教了」)。
+- 老套開場:「這。」「+1」「完全同意」「真的是這樣」。
+- 堆疊或空洞的三段式(「更快、更省、更好」);一個自然且有具體內容的三項可以。
+- 把一句話的想法撐成串文。
+- 用全部大寫或連環驚嘆號製造強度。強度靠用字,不靠符號。
+- 移植 X 的冷硬新聞腔或嗆聲腔。要調暖。
+- 混入簡體字或大陸社媒句型(「家人們」「寶子們」)。
+
+## 演算法備註
+
+Threads 的排序很看重回覆與關係(它會優先推你與你的社群互動過的帳號貼文)。拿到真回覆(不是單字「推」)並被轉發的貼文,會比只收到讚的傳得遠。發佈前自問:這則有沒有給讀者一個回覆、轉發或引用的理由?只能換來被動按讚的話,再磨利一點。

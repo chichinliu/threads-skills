@@ -1,180 +1,146 @@
-# 2026 Threads (Meta) Posting Heuristics
+# 2026 Threads 發文啟發法(台灣市場版)
 
-Synthesized from public statements by Adam Mosseri and the Threads team, Meta's
-documented ranking principles, the Threads API publishing limits, and observed
-creator data. Numbers marked "reported" are community-measured, not officially
-confirmed.
+綜合自 Adam Mosseri 與 Threads 團隊的公開說法、Meta 已公開的排序原則、Threads API 的發佈限制，以及觀察到的創作者數據。標示「回報」的數字是社群自行測得，不是官方確認。
 
-## Contents
+> 本檔的權重與限制數字來自英文市場與官方文件，台灣特有的時段與節點一律標示「假設，待以自己帳號洞察驗證」。原文沒有來源的數字，這裡沒有新增。
 
-- Signal weights (relative reach impact)
-- The first 30-60 minutes
-- Reach suppressors (avoid)
-- Reach amplifiers
-- Character and format limits
-- Threads (multi-post)
-- Rate limits
-- Reply vs quote post
-- Timing
-- Reposts are the underrated lever
-- Pre-publish checklist
+## 目錄
 
-## Signal weights (relative reach impact)
+- 訊號權重(相對觸及影響)
+- 前 30 到 60 分鐘
+- 抑制觸及的因素(避免)
+- 放大觸及的因素
+- 字元與格式限制
+- 串文(多則)
+- 發佈頻率限制
+- 回覆 vs 引用貼文
+- 發文時間
+- 轉發是被低估的槓桿
+- 發佈前檢查清單
 
-Threads' ranker predicts engagement and surfaces posts from accounts you and
-your network interact with. The engagement types are not equal. Reported
-relative weights from creator testing and Meta's stated priorities:
+## 訊號權重(相對觸及影響)
 
-| Signal | Relative weight | Note |
+Threads 的排序系統預測互動，並優先顯示你與你的人脈有互動的帳號貼文。各種互動類型並不等價。以下是來自創作者測試與 Meta 公開優先順序的相對權重(回報值):
+
+| 訊號 | 相對權重 | 備註 |
 |---|---|---|
-| **Reply** (esp. with author reply back) | highest positive | Threads is conversation-first; a real back-and-forth is the strongest signal |
-| **Repost** | high | re-injects into a new network and is the closest thing to a save |
-| **Quote** | high | a new post on the quoter's timeline embedding yours, with their take |
-| **Profile click then follow** | high | "this account is worth following" signal |
-| **Long dwell / "more" expand** | medium-high | reading the whole thing counts |
-| **Video completion** | medium-high | for video posts |
-| **Like** | low | cheap affirmation, light reach |
-| **Negative: "Not interested", mute, block, report** | heavy penalty | one report outweighs many likes |
+| **回覆**(尤其作者有回覆回去) | 最高正向 | Threads 是對話優先；真實的來回是最強的訊號 |
+| **轉發** | 高 | 重新送進新的人脈圈，也是最接近收藏的動作 |
+| **引用** | 高 | 在引用者的時間軸上產生一則新貼文，內嵌你的貼文並附上他們的觀點 |
+| **點進個人檔案再追蹤** | 高 | 「這個帳號值得追蹤」的訊號 |
+| **長停留 / 展開「顯示更多」** | 中高 | 把整則讀完也算 |
+| **影片完整觀看** | 中高 | 針對影片貼文 |
+| **按讚** | 低 | 低成本的肯定，輕微觸及 |
+| **負面:「不感興趣」、靜音、封鎖、檢舉** | 重度扣分 | 一次檢舉的影響勝過許多讚 |
 
-Takeaway: optimize the first post for **replies, reposts, and quotes**, not
-likes. Likes are social proof for the next reader but barely move distribution.
-Threads weights replies even more heavily than X does.
+結論:第一則貼文要為**回覆、轉發、引用**優化，不是按讚。讚是對下一位讀者的社會認同，但幾乎不影響分發。Threads 對回覆的權重比 X 更重。
 
-## The first 30-60 minutes
+## 前 30 到 60 分鐘
 
-- The opening window sets the trajectory. Early replies and reposts tell the
-  ranker to widen distribution.
-- **Reply to early replies fast.** Author engagement back on a reply is a strong
-  signal and pulls the conversation up. Threads rewards the author who actually
-  talks back.
-- A handful of substantive replies in the first 30 minutes earns a second
-  distribution test.
+- 開頭這段時間決定走勢。早期的回覆與轉發會告訴排序系統放寬分發。
+- **趕快回覆早期的回覆。** 作者對回覆的回應是強訊號，會把對話拉上來。Threads 獎勵真的會回話的作者。
+- 前 30 分鐘內有幾則有內容的回覆，能換來第二輪的分發測試。
+- 台灣特有的「何時有人在線」屬於**假設，待以自己帳號洞察驗證**；請先看你帳號的洞察，再決定要在哪個時段守著回覆。
 
-## Reach suppressors (avoid)
+## 抑制觸及的因素(避免)
 
-- **External links in the opening post** cost reach. Up to 5 links per post are
-  allowed by the platform, but a link in post 1 still suppresses distribution.
-  Put the link in a reply to your own post, or in post 2+ of a thread.
-- **Engagement bait** ("repost if you agree", "reply YES") is downranked, not
-  rewarded.
-- **Repeated near-duplicate posts** (same post reworded) trip a similarity
-  penalty.
-- **High mute/block/report rate** collapses distribution fast and is slow to
-  recover from.
-- **More than one hashtag.** Threads allows ONE hashtag (tag) per post; a second
-  is rejected by the platform.
-- **A transplanted combative X voice.** Threads' audience skews warmer and
-  flags dunk-heavy content as not-interested faster.
+- **開頭貼文放外部連結**會損失觸及。平台允許每則最多 5 個連結，但第一則放連結仍會壓低分發。連結放在自己貼文的回覆，或串文的第 2 則以後。
+- **互動誘餌**(「同意的請轉發」「想要的留言 1」)會被降權，不是被獎勵。
+- **重複的近似貼文**(同一則換句話說)會觸發相似度懲罰。
+- **高靜音/封鎖/檢舉率**會讓分發迅速崩塌，且恢復很慢。
+- **超過一個主題標籤。** Threads 每則只允許 1 個標籤，第二個會被平台拒絕。
+- **移植 X 的嗆聲腔。** Threads 的受眾偏溫暖，把酸人內容標成「不感興趣」的速度更快。
+- **簡體字或大陸社媒句型混入**(「家人們」「乾貨」):對台灣受眾是外來腔，容易被劃出同溫層。這是寫作建議，不是平台已公布的懲罰機制。
 
-## Reach amplifiers
+## 放大觸及的因素
 
-- **Replies you seed and sustain.** A post where the author keeps the
-  conversation alive compounds reach over hours.
-- **Native media** is favored. Upload images or video directly; a single image
-  or short video lifts a text post.
-- **Threads that get fully read** (deep tap-through) signal quality.
-- **Cross-network gravity.** Threads can surface your posts to your Instagram
-  graph, so an account with an engaged Instagram following gets an early lift.
+- **你種下並維持的回覆。** 作者持續讓對話活著的貼文，觸及會隨時數複利成長。
+- **原生媒體**更受青睞。直接上傳圖片或影片；一張圖或一支短影片能拉抬純文字貼文。
+- **被完整讀完的串文**(深層點擊)代表品質。
+- **跨平台引力。** Threads 可以把你的貼文推給你的 Instagram 人脈，所以 Instagram 追蹤者互動活躍的帳號，會得到早期的助攻。
 
-## Character and format limits
+## 字元與格式限制
 
-| Item | Value |
+| 項目 | 數值 |
 |---|---|
-| Post text | 500 chars (10,000 with a text attachment) |
-| Hashtags | 1 per post (platform hard limit) |
-| Links | up to 5 per post |
-| Images per post | 10 (carousel) |
-| Image size | 8 MB (JPEG, PNG; WebP auto-converted) |
-| Video length | 5 min |
-| Video size | 500 MB (MP4, MOV) |
+| 貼文文字 | 500 字元(長文附件最多 10,000) |
+| 主題標籤 | 每則 1 個(平台硬性限制) |
+| 連結 | 每則最多 5 個 |
+| 每則圖片數 | 10(輪播) |
+| 圖片大小 | 8 MB(JPEG、PNG;WebP 自動轉檔) |
+| 影片長度 | 5 分鐘 |
+| 影片大小 | 500 MB(MP4、MOV) |
 
-- Publora auto-splits long `content` into a connected multi-post thread at
-  paragraph breaks first, then sentence endings, then word boundaries. Unlike X,
-  **no `(1/N)` markers are added by default.** Add them yourself in the text if
-  you want them.
+- 中文、英文、標點、emoji 的字元計法,請在 Threads App 的編輯器內實際確認一次，以 App 的計數為準。
+- **發佈層的切分行為各有不同。** 手動貼上時，用 `---` 自己決定每則的斷點，再逐則貼成串文。若你接了自建 poster 或第三方轉接器，並且它支援自動切分，通常會依段落、再依句子斷點把長內容切成連串多則。Threads **不會像 X 那樣預設加 `(1/N)` 編號**,想要就自己寫進文字裡。
 
-## Threads (multi-post)
+## 串文(多則)
 
-- **Post 1 is the entire funnel.** It must promise a payoff and open a loop.
-  Everything else only matters if post 1 earns the tap.
-- **Front-load the value.** Tap-through decays with depth, so the strongest item
-  or beat goes at position 1 or 2, not saved for the finale.
-- **Optimal thread length: 4-7 posts** for a teaching or list thread. Longer
-  works for a strong story but tap-through keeps dropping.
-- **Each post should stand alone** enough that a reader landing mid-thread from a
-  repost still gets value.
-- **The last post earns the repost and the follow.** Close with the most quotable
-  line, then a single clear ask (repost, follow, or "reply with yours"), not
-  both.
-- **Each post in a thread counts toward your posting quota** (see rate limits).
-  A 5-post thread uses 5 of your daily 250.
+- **第一則就是整個漏斗。** 它必須承諾一個收穫並開出迴圈。第一則沒換來點擊，後面都不重要。
+- **把價值放前面。** 點擊會隨深度衰減，所以最強的項目或節拍放在第 1 或第 2 位，不要留到壓軸。
+- **最佳串文長度:教學或清單串文 4 到 7 則。** 強的故事可以更長，但點進的比例會持續下降。
+- **每一則都該能獨立成立**,讓從轉發點進中段的讀者仍然有收穫。
+- **最後一則要賺到轉發與追蹤。** 用最值得引用的一句收尾，再給單一明確的請求(轉發、追蹤，或「回覆你的版本」)，不要兩個一起要。
+- **串文裡每一則都算進你的發文額度**(見發佈頻率限制)。5 則的串文用掉每日 250 則中的 5 則。
 
-> **Note on nested multi-post threads:** Publora's auto-split into a connected
-> thread is documented but, as of mid-2026, multi-post nesting can be
-> temporarily unavailable while Meta works through Threads app reconnection.
-> Single posts and standalone posts always publish. When multi-post is paused,
-> write the thread as separate single posts, or post the opener and add the rest
-> as replies by hand.
+> **關於巢狀多則串文:** 自動切分成連串串文在發佈層是有文件記載的功能，但截至 2026 年中，Meta 處理 Threads App 重新連線期間，多則巢狀可能暫時無法使用。單則貼文與獨立貼文一向可以發佈。多則暫停時，把串文寫成各自獨立的單則貼文，或發出第一則，再手動把其餘當成回覆接上。
 
-## Rate limits
+## 發佈頻率限制
 
-| Limit | Value |
+| 限制 | 數值 |
 |---|---|
-| Posts per 24 hours | 250 |
-| Posts per hour | 50 |
-| Replies per 24 hours | 1,000 |
+| 每 24 小時發文數 | 250 |
+| 每小時發文數 | 50 |
+| 每 24 小時回覆數 | 1,000 |
 
-- Each post in a thread counts toward the post quota.
-- Space posts out rather than bulk-posting; implement backoff on rate-limit
-  errors. Publora queues and distributes posts to help stay inside the limits.
+- 串文裡的每一則都計入發文額度。
+- 發文要分散開，不要一次大量灌；遇到頻率限制錯誤要實作退避重試。若你的發佈層（自建 poster 或轉接器）有排程與佇列功能，可以用它來幫忙把發文分散到限制內。
 
-## Reply vs quote post
+## 回覆 vs 引用貼文
 
-- **Reply** stays inside the original conversation. Use it to add to a thread,
-  answer a question, or engage a creator. Lower reach, higher intimacy. Threads
-  surfaces good replies prominently, so a sharp reply can out-travel a mediocre
-  post.
-- **Quote post** creates a new post on your own timeline with the original
-  embedded. Use it when your addition deserves its own reach and your followers
-  should see the original for context. Higher reach, more public.
-- Replying to another user's post is a separate post on Threads. Publora's
-  `create-post` cannot target someone else's post, so a reply or quote on
-  another account is drafted here and posted by hand.
+- **回覆**留在原本的對話裡。用來補充串文、回答問題、與創作者互動。觸及較低、親密度較高。Threads 會突顯好的回覆，所以一則犀利的回覆可能比平庸的貼文傳得更遠。
+- **引用貼文**在你自己的時間軸上建立一則新貼文，並內嵌原文。當你的補充值得獨立的觸及、而且你的追蹤者應該看到原文當背景時使用。觸及較高、更公開。
+- 回覆別人的貼文,在 Threads 上是獨立的一則貼文。多數發佈層無法指定「回覆到別人的貼文」，所以對其他帳號的回覆或引用，在這裡寫好草稿，由你手動貼上。
 
-## Timing
+## 發文時間
 
-| Audience | Best windows (local) |
+| 受眾 | 最佳時段(當地時間) |
 |---|---|
-| US tech / builders / founders | weekday mornings 8-11 AM, and a lunch bump 12-1 PM |
-| Global mixed | weekday mornings in the audience timezone |
-| Evening / lifestyle crowd | 7-10 PM performs for relatable and story content |
+| 美國科技 / 打造者 / 創業者 | 平日早上 8 到 11 點，加上中午 12 到 1 點的小高峰 |
+| 全球混合 | 平日早上,以受眾所在時區為準 |
+| 晚間 / 生活風格族群 | 晚上 7 到 10 點適合共鳴與故事類內容 |
 
-- Threads skews more evening-and-weekend friendly than X for personal and
-  relatable content, because the audience treats it as a calmer, off-the-clock
-  feed.
-- Threads moves fast like X: a post's active life is hours, not a day. Posting
-  2-3 times a day is normal for an active account.
+以上是英文市場的原有參考。**台灣時段(UTC+8)的建議如下，全部是假設，待以自己帳號洞察驗證:**
 
-## Reposts are the underrated lever
+| 假設時段 | 適合內容 | 狀態 |
+|---|---|---|
+| 平日通勤早晨(約 7:30 到 9:00) | 短觀點、數據鉤子 | 假設,待驗證 |
+| 午休(約 12:00 到 13:30) | 清單、輕鬆共鳴 | 假設,待驗證 |
+| 晚間(約 21:00 到 23:00) | 共鳴、故事、需要來回對話的內容 | 假設,待驗證 |
+| 週末午後 | 個人、生活風格內容 | 假設,待驗證 |
 
-- Threads has no separate bookmark. The **repost is the save**: it is how readers
-  keep and re-surface reference-worthy content.
-- A repost is a stronger quality signal than a like because it puts the post in
-  front of a new network.
-- Design repost-bait deliberately: the Mini-List (T5), Listicle-Thread (T7),
-  How-I Teardown (T10), and Data-Point (T2) formulas all target reposts.
+- 在地節點(報稅季、連假、雙 11、母親節、中秋、農曆新年、颱風假)可以放大共鳴，但只在你與該節點有真實關聯時使用。哪些節點對你的受眾有效，同樣是假設，需要自己驗證。
+- Threads 偏向晚間與週末友善，比 X 更明顯，用於個人與共鳴內容，因為受眾把它當作下班後較平靜的動態消息(回報)。
+- Threads 跟 X 一樣節奏快:貼文的活躍期是以小時計，不是以天計。活躍帳號一天發 2 到 3 則是常態。
 
-## Pre-publish checklist
+## 轉發是被低估的槓桿
 
-- [ ] First line stops the scroll on its own (the feed truncates with "more").
-- [ ] At most one em dash (`—`) per post (never swap one for a period); no en dashes (`–`) between clauses or double dashes (`--`).
-- [ ] No AI vocabulary cluster (3+ markers in one post: leverage, fundamentally, significant, etc.).
-- [ ] At least one odd-precision number with a named referent where the claim allows it.
-- [ ] No external link in post 1 (move it to a reply or post 2+).
-- [ ] 0 or 1 hashtag (Threads allows only one), at the end.
-- [ ] 0-2 emoji, and only if each earns its place. None on a serious take.
-- [ ] Single post under 500 chars, or a deliberate thread.
-- [ ] Thread post 1 opens a loop; the body closes it.
-- [ ] Close is a landing or a specific invite, not "what do you think?".
-- [ ] A clear primary goal (replies / reposts / likes / quotes), not all at once.
-- [ ] The tone is warm and conversational, not a transplanted X dunk.
+- Threads 沒有獨立的書籤。**轉發就是收藏**:讀者靠它保留並重新找到值得參考的內容。
+- 轉發是比按讚更強的品質訊號，因為它把貼文送到新的人脈圈面前。
+- 刻意設計轉發誘因:Mini-List(T5)、Listicle-Thread(T7)、How-I Teardown(T10)、Data-Point(T2)這幾個公式都瞄準轉發。
+
+## 發佈前檢查清單
+
+- [ ] 第一行自己撐得住，能讓人停下來(動態消息會在「顯示更多」處截斷)。
+- [ ] 破折號「——」每則最多 1 個(不要拿句號去替換它);不用「--」。
+- [ ] 沒有 AI 腔詞彙聚集(一則出現 3 個以上標記:賦能、助力、值得注意的是、總而言之等)。
+- [ ] 主張允許時，至少有一個帶零頭、有明確指涉對象的具體數字。
+- [ ] 第一則沒有外部連結(移到回覆,或串文第 2 則以後)。
+- [ ] 主題標籤 0 或 1 個(Threads 只允許一個),放在最後。
+- [ ] Emoji 0 到 2 個,而且每個都有存在的理由。嚴肅議題不用。
+- [ ] 中英數字之間有半形空格,全形標點,沒有簡體字或大陸用語。
+- [ ] 單則在 500 字元內,或是刻意設計的串文。
+- [ ] 串文第一則開出迴圈;內文把它收掉。
+- [ ] 結尾是落點或具體的邀請,不是「你覺得呢?」。
+- [ ] 有一個明確的主要目標(回覆 / 轉發 / 按讚 / 引用),不是全都要。
+- [ ] 語氣溫暖、口語,不是移植過來的 X 嗆聲。

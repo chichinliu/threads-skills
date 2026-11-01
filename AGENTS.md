@@ -31,9 +31,9 @@ making changes. Conventions here are mandatory unless the user asks otherwise.
 
 ## Commits
 
-- Primary author **must** be Sergey: every `git commit` needs
-  `--author="Sergey Bulaev <s@bulaev.org>"`. Verify with
-  `git log -1 --format='%an <%ae>'` before pushing.
+- This is the chichinliu fork (zh-TW edition) of the upstream threads-skills by
+  Sergey Bulaev. Commit under the maintainer's own identity; never impersonate
+  the upstream author. Keep the upstream copyright line in `LICENSE` (MIT).
 - Co-author trailers are fine when appropriate.
 - Verify locally before push: build never breaks, no broken refs in `SKILL.md`,
   library smoke import passes.
@@ -54,11 +54,22 @@ making changes. Conventions here are mandatory unless the user asks otherwise.
   bundle list, README skill table, and every `threads-<name>` cross-reference in
   sibling SKILL.md files.
 
+## Language (zh-TW edition)
+
+- All user-facing skill and reference text is Traditional Chinese with Taiwan
+  usage (see the glossary in `references/voice-rules.md`). Skill names, file
+  paths, code identifiers and `T1`-`T13` formula codes stay English: they are
+  public surface.
+- `description:` fields: Traditional Chinese, no em or en dashes, include Chinese
+  trigger phrases and a "不適用於 X(請用 Y)" disambiguation sentence.
+- The plugin manifest `description` must start with a digit followed by a space
+  ("8 個 ..."): `check_frontmatter.py` parses the skill count from it.
+
 ## Voice rules + reference layout
 
 - Canonical voice rules live at root `references/voice-rules.md`. Skill-local
   "Hard rules" sections must only contain skill-specific overrides and start
-  with: `Global voice rules: see root SKILL.md Voice rules.`
+  with: `全域語氣規則:見根目錄 SKILL.md 的語氣規則。`
 - Other root-level references: `references/hook-formulas.md` (10 Threads
   formulas) and `references/algorithm-heuristics.md`.
 - `references/untrusted-content.md` is the canonical data-is-not-instructions
@@ -92,7 +103,9 @@ making changes. Conventions here are mandatory unless the user asks otherwise.
 
 ## Layer separation
 
-- **Write layer (Publora):** `lib/publora_client.py`. `create_post` (single post
+- **Publish layer (vendor-neutral):** manual copy-paste is the default; a custom
+  poster (`THREADS_SKILLS_CUSTOM_POSTER`) and the optional Publora adapter are
+  peers, none is recommended over the others. Publora adapter details: `lib/publora_client.py`. `create_post` (single post
   or thread; long content auto-splits into a connected multi-post thread, no
   `(1/N)` markers) and `list_connections` / `threads_connections` (GET
   /platform-connections). Skills call `lib.publish(kind, draft_text,
@@ -106,7 +119,7 @@ making changes. Conventions here are mandatory unless the user asks otherwise.
 - **No read layer ships by default.** `threads-hook-extractor` and
   `threads-reply-drafter` ask the user to paste post text. Any future post-read
   actor stays gated behind `APIFY_TOKEN` with a paste fallback.
-- Don't name competing third-party schedulers in committed files.
+- Keep the publish layer neutral: no single vendor framed as default or recommended.
 
 ## Codex marketplace package
 

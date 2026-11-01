@@ -32,10 +32,9 @@ otherwise.
 
 ## Commits
 
-- Primary author **must** be Sergey: every `git commit` needs
-  `--author="Sergey Bulaev <s@bulaev.org>"`. The harness defaults to the Claude
-  identity if you forget; verify with `git log -1 --format='%an <%ae>'` before
-  pushing.
+- This is the chichinliu fork (zh-TW edition) of the upstream threads-skills by
+  Sergey Bulaev. Commit under the maintainer's own identity; never impersonate
+  the upstream author. Keep the upstream copyright line in `LICENSE` (MIT).
 - Co-author trailer (`Co-Authored-By: Claude ...`) is fine and welcomed.
 - Verify locally before push: build never breaks, no broken refs in `SKILL.md`,
   library smoke import passes.
@@ -58,12 +57,22 @@ otherwise.
   `.claude-plugin/marketplace.json`, root `SKILL.md` bundle list, README skill
   table, and every `threads-<name>` cross-reference in sibling SKILL.md files.
 
+## Language (zh-TW edition)
+
+- All user-facing skill and reference text is Traditional Chinese with Taiwan
+  usage (see the glossary in `references/voice-rules.md`). Skill names, file
+  paths, code identifiers and `T1`-`T13` formula codes stay English: they are
+  public surface.
+- `description:` fields: Traditional Chinese, no em or en dashes, include Chinese
+  trigger phrases and a "不適用於 X(請用 Y)" disambiguation sentence.
+- The plugin manifest `description` must start with a digit followed by a space
+  ("8 個 ..."): `check_frontmatter.py` parses the skill count from it.
+
 ## Voice rules + reference layout
 
 - Canonical voice rules live at root `references/voice-rules.md`. Skill-local
   "Hard rules" sections must only contain skill-specific overrides (char ranges,
-  thread rules, format constraints) and start with: `Global voice rules: see root
-  SKILL.md Voice rules.`
+  thread rules, format constraints) and start with: `全域語氣規則:見根目錄 SKILL.md 的語氣規則。`
 - Other root-level references shared across skills:
   `references/hook-formulas.md` (10 Threads formulas) and
   `references/algorithm-heuristics.md`.
@@ -99,7 +108,9 @@ otherwise.
 
 ## Layer separation
 
-- **Write layer (Publora):** `lib/publora_client.py`. Two methods used by the
+- **Publish layer (vendor-neutral):** manual copy-paste is the default; a custom
+  poster (`THREADS_SKILLS_CUSTOM_POSTER`) and the optional Publora adapter are
+  peers, none is recommended over the others. Publora adapter details: `lib/publora_client.py`. Two methods used by the
   bundle: `create_post` (single post or thread; pass long content and Publora
   auto-splits into a connected multi-post thread, no `(1/N)` markers) and
   `list_connections` / `threads_connections` (GET /platform-connections). Skills
@@ -116,8 +127,8 @@ otherwise.
   post-read actor wired in. `threads-hook-extractor` and `threads-reply-drafter`
   ask the user to paste the post text. If a post-read actor is added later, gate
   it behind `APIFY_TOKEN` and keep the paste fallback.
-- Don't name competing third-party schedulers in committed files. The bundle is
-  positioned around the Publora write integration.
+- Keep the publish layer neutral: do not frame any single vendor as the default or
+  recommended path, and keep vendor-specific text inside its own adapter.
 
 - **Image layer (Pixfaro):** `lib/pixfaro_client.py`. Call `lib.illustrate(prompt, kind=...)` / `lib.refine(image_id, instruction)` (not the client directly); the returned hosted URL feeds `lib.publish(..., media_urls=[url])`. `refine` edits by `img_...` id (not URL); `aspect_ratio` is a ratio like `16:9` (not pixel dims). PIXFARO_TOKEN-or-manual fallback, keyed singleton + LRU cache; `overlay` brand fields come from `references/voice-profile.md` §6.
 

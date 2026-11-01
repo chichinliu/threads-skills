@@ -1,92 +1,74 @@
-# Thread Structure: Pacing and the Closer
+# 串文結構:節奏與收尾
 
-A Threads thread is a funnel. Each post's only job is to earn the tap to the next
-one. Design for the drop-off, not the ideal reader who reads every post.
+Threads 的串文是一個漏斗。每一則唯一的任務,是讓讀者點進下一則。要針對流失來設計,不是針對理想中每則都讀完的讀者。
 
-## Per-position roles
+## 各位置的角色
 
-| Position | Role | Rule |
+| 位置 | 角色 | 規則 |
 |---|---|---|
-| Post 1 | The hook. Promise + open loop. | Carries 80% of the outcome. Must stop the scroll alone, under 500 chars. |
-| Post 2 | The strongest payoff or first beat. | Front-load value here; do not save it. Tap-through is highest at 2. |
-| Posts 3 to N-1 | The body. One item or beat each. | Each stands alone. Concrete examples, real numbers. |
-| Post N | The closer. | Most quotable line + one clear ask. Earns the repost and follow. |
+| 第 1 則 | 鉤子。承諾加懸念。 | 決定 80% 的結果。要能單獨讓人停下來,500 字元內。 |
+| 第 2 則 | 最強的回報或第一拍。 | 把價值放在這裡,不要留到最後。點進率在第 2 則最高。 |
+| 第 3 到 N-1 則 | 主體。一則一項或一拍。 | 每則都能獨立成立。要有具體例子與真實數字。 |
+| 第 N 則 | 收尾。 | 最值得引用的一句,加一個明確的請求。賺取轉發與追蹤。 |
 
-## Tap-through decay
+## 點進率衰減
 
-Readers leak out at every post. Reported pattern: a meaningful share drop by
-post 3, and again by post 6. Consequences:
+讀者每過一則就流失一批。英文語料觀察到的型態:到第 3 則有相當比例流失,到第 6 則又掉一次。**台灣市場是否相同未經驗證,請看你自己的洞察數據。** 因此:
 
-- Put the best item at position 1 or 2, never the finale.
-- 4-7 posts is the sweet spot for teaching and list threads.
-- A story thread can run longer if every beat raises the stakes, but tap-through
-  still falls, so the turn should not be buried at post 12.
+- 最好的一項放在第 1 或第 2 則,絕不留作壓軸。
+- 教學與清單型串文,4 到 7 則最合適。
+- 故事型串文可以更長,前提是每一拍都在提高賭注;但點進率還是會下降,所以轉折不該埋在第 12 則。
 
-## Opening a loop (post 1 patterns)
+## 打開懸念(第 1 則的寫法)
 
-- A count with a catch: "7 X that Y. most people get 3 wrong."
-- A withheld mechanism: "{result}. i did not expect why."
-- A first-person result: "how i {number result} in {timeframe}. the exact steps."
-- A story tension: "{the moment it nearly broke}. here is what happened."
+- 帶但書的數量:「7 個讓 Y 更順的 X。多數人會做錯 3 個。」
+- 先不揭曉的機制:「{結果}。我自己也沒想到原因。」
+- 第一人稱結果:「我怎麼在{時間}內做到{數字結果}。完整步驟如下。」
+- 故事張力:「{差點出事的那一刻}。事情是這樣的。」
 
-The loop must stay open. If post 1 answers itself, nobody taps in.
+懸念必須保持開著。第 1 則如果自己把答案講完,就沒人會點進去。
 
-## The closer playbook
+## 收尾手冊
 
-The last post does two things and stops:
+最後一則做兩件事就收:
 
-1. The single most quotable line of the whole thread (this is what gets
-   screenshotted and reposted).
-2. One ask, not three. Pick one:
-   - "if this was useful, repost it and follow for more like this."
-   - "reply with the one you would add."
-   - "repost the first post if it helped someone."
+1. 整串裡最值得引用的一句(這句會被截圖、被轉發)。
+2. 一個請求,不是三個。擇一:
+   - 「如果有幫上忙,歡迎轉發,也歡迎追蹤我看更多。」
+   - 「留言告訴我,你會再補哪一點。」
+   - 「如果這串幫得上某個人,把第一則轉給他。」
 
-Never stack all three asks. Never end on "that's it" or "hope this helps".
+絕不把三種請求疊在一起。絕不用「就這樣」「希望對你有幫助」收尾。
 
-## Per-post scrub (apply to every post)
+## 每則的清稿(套用到每一則)
 
-- [ ] Under 500 chars.
-- [ ] At most one em dash per post (replace the excess with a comma, colon
-      or `..`, never a period). No en dashes between clauses, no double dashes.
-- [ ] No cluster of 2026 AI vocab (3+ markers in one post = rewrite it; one
-      is fine): significant, crucial, notably, comprehensive, insights,
-      robust, leverage, foster, landscape, nuanced, streamline, elevate,
-      fundamentally, essentially; "-ing" clause openers; nominalisations.
-- [ ] No reveal bridge ("The result?", "Here's what"), no "It's not X, it's
-      Y", no sincerity opener ("not gonna lie", "let me be honest").
-- [ ] Stands alone if read in isolation.
-- [ ] At least one concrete detail (a number with a referent, a name, an
-      example) in the body posts.
-- [ ] At most one hashtag anywhere in the post.
+- [ ] 在 500 字元內(以 App 內計數為準)。
+- [ ] 每則破折號最多一個(多餘的改成逗號、冒號或換行,絕不改成句號)。不用「--」。
+- [ ] 沒有成堆的 AI 腔詞彙(同一則 3 個以上標記就重寫,1 個沒關係):賦能、助力、打造、深耕、解鎖、全方位、一站式、閉環、抓手、底層邏輯、值得注意的是、不可否認、事實上、本質上、歸根結底;沒有大陸社媒腔。
+- [ ] 沒有揭曉橋段(「結果呢?」「重點來了」),沒有「這不只是 X,而是 Y」,沒有表態式真誠開頭(「老實說」「坦白講」)。
+- [ ] 單獨閱讀也成立。
+- [ ] 主體各則至少有一個具體細節(帶明確對象的數字、名稱、例子)。
+- [ ] 每則最多一個主題標籤。
+- [ ] 台灣用語、全形標點、中英之間半形空格。
 
-## Rhythm across the thread
+## 整串的節奏
 
-Let post length follow the material. A teaching post runs long because it
-teaches; a transition runs short because it transitions. Do not engineer
-variance on top of that: on Threads uniform rhythm wins at every length in our
-corpus (Spearman -0.31 between sentence-length variance and engagement), and a
-manufactured seesaw with a 3-word "punch post" dropped in for rhythm is the
-humanizer fingerprint. A thread of similar-length posts is fine. Never insert
-a punch post, never pad a short one, never alternate long/short on purpose.
+讓每則的長短跟著素材走。教學的那一則會長,因為它在教;轉場的那一則會短,因為它只是轉場。不要在這之上硬造變化:英文語料中,句長變異與互動之間的斯皮爾曼相關是 -0.31(整齊的節奏較有利),硬湊的長短交錯、為了節奏插進一則三個字的「重擊貼文」,正是去 AI 味過頭的指紋。**中文是否同樣成立尚未驗證。** 長度相近的一串貼文沒有問題。絕不插入重擊貼文、絕不灌水補短的一則、絕不刻意長短交替。
 
-## Hand-splitting with `---`
+## 用 `---` 手動分段
 
-Default to hand-splitting so the user approves the exact breaks:
+預設手動分段,讓使用者核准時看到確切的斷點:
 
 ```
-Post 1 text here, the hook.
+第 1 則的文字,鉤子。
 
 ---
 
-Post 2 text, the strongest payoff.
+第 2 則的文字,最強的回報。
 
 ---
 
-Post 3 text, the next beat.
+第 3 則的文字,下一拍。
 ```
 
-Publora treats each `---`-delimited block as one post in the connected thread.
-If you instead pass flowing prose with no separators, Publora auto-splits at
-paragraph then sentence boundaries. It does not add `(1/N)` markers, so add them
-yourself in the text if you want numbering.
+核准後,使用者可以逐則貼到 Threads。如果你設定了發佈層,是否把每個 `---` 區塊當成連續串文中的一則,取決於該發佈層;沒有 `---` 分隔、直接給一整段文字時,有的轉接器會依段落、句子自動拆分。不論哪一種,都不要假設平台會幫你加 `(1/N)` 編號,想要編號就自己寫進文字裡。

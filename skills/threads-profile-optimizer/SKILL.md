@@ -1,104 +1,89 @@
 ---
 name: threads-profile-optimizer
-description: "Audit and rewrite a Threads (Meta) profile end-to-end for 2026: profile photo, name with a searchable keyword, @handle, bio (150 chars, warm and specific), link, pinned post, and the connected-Instagram cross-pull that feeds Threads discovery. Triggers on \"review my Threads profile\", \"fix my Threads bio\", \"what to pin on Threads\", and \"profile audit\". Turns a default profile into one that converts visitors into followers. Not for writing posts (use threads-post-writer)."
+description: "完整檢視並重寫 Threads 個人檔案:大頭貼、含可搜尋關鍵字的名稱、@帳號、簡介(150 字元內,溫暖且具體)、連結、置頂貼文,以及與 Instagram 連動帶來的探索流量。觸發詞:檢視我的 Threads 檔案、幫我改簡介、Threads 要置頂什麼、檔案健檢。把預設檔案改成能讓訪客變追蹤者的檔案。不適用於寫貼文(請用 threads-post-writer)。"
 ---
 
-# Threads Profile Optimizer
+# Threads 個人檔案優化(Profile Optimizer)
 
-Audit the parts of a Threads profile (photo, name, @handle, bio, link, pinned
-post) against what actually converts a profile-visitor into a follower in 2026,
-then rewrite each part that needs it. On Threads the whole decision happens in a
-couple of seconds on the profile card: name, bio, pinned post. Threads runs
-warmer than X, so the bio should read like a person, not a company. And because a
-Threads account is stapled to an Instagram account, a strong Instagram presence
-feeds Threads discovery, so this skill checks that cross-pull too.
+依「什麼能讓檔案訪客變成追蹤者」檢視 Threads 檔案的各個部分(大頭貼、名稱、@帳號、簡介、連結、置頂貼文),再重寫需要修的地方。在 Threads 上,整個決定發生在檔案卡片的短短幾秒內:名稱、簡介、置頂貼文。Threads 比 X 溫暖,所以簡介要讀起來像一個人,不像一間公司。又因為 Threads 帳號與 Instagram 帳號綁在一起,Instagram 經營得好,會為 Threads 帶來探索流量,所以本 skill 也檢查這條連動。
 
-## When to use
+> 以下關於平台欄位上限與推薦機制的說法,以你在 App 內實際看到的為準。中文字數與英文字數的計法請在編輯畫面確認一次。
 
-- User pastes their Threads profile or handle and asks for an audit
-- "Fix my Threads bio", "rewrite my bio", "what should I pin on Threads"
-- User is starting to post seriously and wants the profile to match
-- Any of: "review my Threads profile", "profile audit", "what to pin on Threads"
+## 何時使用
 
-Not for writing posts (use `threads-post-writer`) or auditing a single draft
-(use `threads-humanizer`).
+- 使用者貼上自己的 Threads 檔案或帳號,要求檢視
+- 「幫我改 Threads 簡介」「重寫我的簡介」「Threads 要置頂什麼」
+- 使用者開始認真經營,想讓檔案跟上
+- 任一觸發詞:「檢視我的 Threads 檔案」「檔案健檢」「Threads 要置頂什麼」
 
-## Input
+不適用於寫貼文(請用 `threads-post-writer`),也不適用於審單一草稿(請用 `threads-humanizer`)。
 
-- Profile URL / handle (or a screenshot of the profile card)
-- Goal: **grow a following** / **drive signups** / **land clients** / **build
-  authority**. The bio close and the pinned post change by goal.
-- Optional: their best-performing posts, to pick a pin
-- Optional: the connected Instagram handle, to score the cross-pull
+## 輸入
 
-## Output
+- 檔案網址或帳號(或檔案卡片截圖)
+- 目標:**增加追蹤** / **導流報名** / **接案** / **建立專業形象**。簡介的收尾與置頂貼文會依目標改變。
+- 選填:他表現最好的貼文,用來挑置頂
+- 選填:連動的 Instagram 帳號,用來評分連動效果
 
-1. **Scorecard** (each part: pass / needs-work / fail)
-2. **Priority fixes** ranked by impact (bio and pin first, always)
-3. **Before -> After** rewrites for each failing part
-4. **Pinned-post pick** with the reason
-5. **Instagram cross-pull note**: what to fix on IG so it feeds Threads
+## 輸出
 
-## Steps
+1. **評分表**(各部分:通過、待改進、不及格)
+2. **優先修正**,依影響大小排序(簡介與置頂永遠優先)
+3. 每個不及格部分的**改前 -> 改後**對照
+4. **置頂貼文推薦**與理由
+5. **Instagram 連動備註:** 在 IG 上修什麼,才能為 Threads 帶來探索
 
-1. **Intake.** Collect the profile state, the goal, and the connected Instagram
-   handle if they want the cross-pull scored.
-2. **Score each part** against the scorecard below.
-3. **Rewrite the bio (150 chars).** Shape: `who you help or what you post about +
-   one specific + a warm human line`. Lead with the value, not a job title. Write
-   it like you talk. No "I help X do Y" cliche opener unless the rest is specific.
-   Fit inside 150 chars, tight wins.
-4. **Fix the name.** Real name plus a searchable keyword people actually type
-   (e.g. "Sam Rivera, AI agents"). The name field is searchable; the @handle
-   mostly is not, so the keyword belongs in the name.
-5. **Check the @handle.** Short, memorable, matches the Instagram handle if
-   possible (Threads and Instagram share the handle, so consistency helps
-   discovery). No stray numbers or underscores if avoidable.
-6. **Pick the pinned post.** Their single best proof of what a new follower gets:
-   a top post, a mini-thread that teaches, or a clear offer matched to the goal.
-   You can pin up to 3 on Threads; lead with the strongest. An empty pin slot
-   wastes the most valuable real estate on the card.
-7. **Set the link.** One link matched to the goal (newsletter / offer / site). If
-   they need several, a single link-hub, not a bare homepage.
-8. **Photo check.** Clear face, fills the frame, recent, high contrast. It renders
-   as a small circle for most viewers, so detail is wasted but contrast is not.
-   Match the Instagram photo so the two profiles read as one person.
-9. **Score the Instagram cross-pull.** A connected, active Instagram with an
-   aligned name, photo, and bio feeds Threads suggestions and "who to follow".
-   Flag a dormant or mismatched IG as a discovery leak, and name the one fix.
-10. **Deliver the before/after diff** plus the two-second test: read only name,
-    bio, and pin, and ask "would a stranger follow from this alone?"
+## 步驟
 
-## Scorecard
+1. **盤點。** 收集檔案現況、目標,以及(若想評分連動)連動的 Instagram 帳號。
+2. **逐項評分**,依下方評分表。
+3. **重寫簡介(150 字元內)。** 結構:`你幫助誰或你發什麼 + 一個具體細節 + 一句有溫度的話`。先寫價值,不要先寫職稱。像平常說話一樣寫。除非後面具體,否則避免「我幫助 X 做到 Y」的老套開頭。中文每字資訊量高,實務上 40 到 80 字通常就夠(假設,待驗證),越精實越好。
+4. **修名稱。** 本名加一個人們真的會搜尋的關鍵字,例如「小安|AI 客服工具」「Sam 陳,做 AI agent」。名稱欄位可被搜尋,@帳號通常不行,所以關鍵字放在名稱。
+5. **檢查 @帳號。** 短、好記,盡量與 Instagram 帳號一致(Threads 與 Instagram 共用帳號名稱,一致有助於被找到)。能避免多餘的數字與底線就避免。中文使用者常用拼音或英文縮寫,挑一個別人唸得出來、打得出來的。
+6. **挑置頂貼文。** 他最能證明「新追蹤者會得到什麼」的一則:一則高表現貼文、一則有教學價值的迷你串文,或一個符合目標的明確提案。Threads 最多可置頂 3 則,最強的放第一。空著的置頂位置浪費了卡片上最值錢的版面。
+7. **設定連結。** 一個符合目標的連結(電子報、方案、網站)。若需要好幾個,用單一的連結整合頁,不要只放首頁。
+8. **大頭貼檢查。** 清楚的臉、填滿畫面、近期、高對比。大多數人只會看到小圓圈,細節沒用,對比有用。與 Instagram 頭貼一致,讓兩個檔案讀起來像同一個人。
+9. **評分 Instagram 連動。** 一個已連動、持續經營、名稱頭貼簡介一致的 Instagram,會為 Threads 帶來推薦與「可能想追蹤」的曝光。休眠或不一致的 IG 是探索流量的破口,指出最該先修的一件。
+10. **交付改前改後對照**,加上兩秒測試:只讀名稱、簡介、置頂,問自己「陌生人光看這些就會追蹤嗎?」
 
-| # | Part | Pass criteria (2026) |
-|---|------|----------------------|
-| 1 | **Photo** | Clear face filling the frame, recent, high contrast at small size, matches the Instagram photo |
-| 2 | **Name** | Real name plus a searchable keyword, reads human, inside the name limit |
-| 3 | **@handle** | Short, memorable, matches the Instagram handle, no stray numbers/underscores |
-| 4 | **Bio** | Value plus one specific plus a warm line, inside 150 chars, no cliche opener, leads with what a follower gets |
-| 5 | **Link** | One, goal-matched; a link-hub if several are needed |
-| 6 | **Pinned post** | Present (up to 3), and the lead pin is their best proof matched to the goal, not a random recent post |
-| 7 | **Instagram cross-pull** | Connected IG is active, with an aligned name, photo, and bio, so it feeds Threads discovery |
+## 評分表
 
-## Hard rules
+| # | 項目 | 通過標準 |
+|---|------|----------|
+| 1 | **大頭貼** | 清楚的臉填滿畫面、近期、縮小後仍高對比,與 Instagram 頭貼一致 |
+| 2 | **名稱** | 本名加可搜尋關鍵字,讀起來像人,未超過名稱上限 |
+| 3 | **@帳號** | 短、好記,與 Instagram 帳號一致,沒有多餘數字與底線 |
+| 4 | **簡介** | 價值加一個具體細節加一句溫暖的話,在 150 字元內,沒有老套開頭,先寫追蹤者能得到什麼 |
+| 5 | **連結** | 只有一個且符合目標;需要多個時用連結整合頁 |
+| 6 | **置頂貼文** | 有置頂(最多 3 則),第一則是最能證明價值、符合目標的貼文,不是隨手挑的近期貼文 |
+| 7 | **Instagram 連動** | 連動的 IG 有在經營,名稱、頭貼、簡介一致,能為 Threads 帶來探索 |
 
-Global voice rules: see root `SKILL.md` Voice rules. Additional skill-specific
-rules:
+## 改前 -> 改後範例(示意,請換成使用者的真實資訊)
 
-- The bio must pass the two-second test: a stranger reading only name plus bio
-  plus pin should know who this is for and want to follow.
-- Lead the bio with the reader's benefit, not the user's job title.
-- Keep the bio warm and human, not corporate. It reads like the person talks.
-- One specific or one number in the bio where the account allows it.
-- Keep every rewrite inside the platform limits (bio 150 chars). Never ship a
-  truncated bio.
-- Treat the connected Instagram as part of the profile, not a separate thing. A
-  dormant or mismatched IG is a discovery leak worth flagging.
-- At most one em dash in the bio (a short bio rarely needs one). No "leverage", "fundamentally", "game-changer".
+| 項目 | 改前 | 改後 |
+|---|---|---|
+| 名稱 | 王小明 | 小明|幫小店家做 AI 客服 |
+| 簡介 | 熱愛科技與創新,致力於賦能中小企業數位轉型 🚀 | 幫小店家把重複問題交給 AI。每週公開我的實驗數字,包含失敗的。 |
+| 置頂 | (空白) | 那則「客服回覆從 9 分鐘降到 2 分鐘」的串文 |
+| 連結 | 公司首頁 | 電子報訂閱頁 |
 
-## Related skills
+改前那句簡介有「熱愛」「致力於」「賦能」這類 AI 腔與企業黑話,也沒有說明追蹤者能得到什麼。
 
-- `threads-post-writer` - write the posts and threads the optimized profile hosts
-- `threads-hook-extractor` - find a pin-worthy hook in a post that already worked
-- `threads-content-planner` - plan the cadence that keeps the profile active
+## 硬性規則
+
+全域語氣規則:見根目錄 `SKILL.md` 的語氣規則。另外補充本 skill 專屬規則:
+
+- 簡介必須通過兩秒測試:陌生人只讀名稱、簡介、置頂,就知道這是寫給誰的,而且想追蹤。
+- 簡介先寫讀者的好處,不先寫使用者的職稱。
+- 簡介要溫暖、像人,不要公司口吻,像本人說話的樣子。
+- 簡介中,帳號允許的話放一個具體細節或一個數字。
+- 所有改寫都要落在平台限制內(簡介 150 字元)。不要交出被截斷的簡介。
+- 把連動的 Instagram 當作檔案的一部分,不是另一件事。休眠或不一致的 IG 是值得標出的探索破口。
+- 簡介中破折號最多一個(短簡介通常用不到)。不用「賦能」「打造」「深耕」「全方位」這類 AI 腔詞彙。
+- 一律繁體中文、台灣用語,全形標點,中英數之間加半形空格。
+
+## 相關 skill
+
+- `threads-post-writer` - 寫優化後的檔案要承載的貼文與串文
+- `threads-hook-extractor` - 從已經有效的貼文裡找出適合置頂的鉤子
+- `threads-content-planner` - 規劃讓檔案保持活躍的發文節奏

@@ -1,128 +1,117 @@
 ---
 name: threads-content-planner
-description: "Generate a weekly Threads (Meta) content plan from a theme, audience, and content pillars. Produces per-day recommendations (single post vs thread, Threads hook formula, angle, posting time, primary goal), a single-to-thread mix, daily reply and quote-post targets, and a goal-mix balance check across replies, reposts, likes, and quotes. Use when the user wants to plan a week of Threads content instead of ad-hoc posting. Not for drafting one post or thread (use threads-post-writer)."
+description: "依主題、受眾與內容支柱,產出一週的 Threads 內容計畫。每天給出建議:單則或串文、使用的鉤子公式、切角、發文時段(皆為假設,待驗證)、主要目標;含單則與串文比例、每日回覆與引用目標,以及回覆、轉發、按讚、引用的目標平衡檢查,並可標註台灣在地節點。觸發詞:規劃一週 Threads、這週要發什麼、內容月曆。不適用於起草單一貼文或串文(請用 threads-post-writer)。"
 ---
 
-# Threads Content Planner
+# Threads 內容規劃(Content Planner)
 
-Produce a weekly Threads plan built around a pillar discipline and the warm,
-conversation-first cadence Threads rewards. Threads moves fast like X and rewards
-posting multiple times a day, so the plan mixes single posts, threads, and
-reply/quote-post targets.
+圍繞「內容支柱」紀律,規劃一週的 Threads 計畫,配合 Threads 偏愛的溫暖、以對話為先的節奏。Threads 節奏快,獎勵一天發多次,所以計畫會混合單則貼文、串文,以及回覆與引用的目標。
 
-## When to use
+> **關於時段與節慶:** 本 skill 內所有發文時段、節慶與在地節點的建議,都是**假設,待以自己帳號的洞察數據驗證**。先照做兩週,再用 Threads 內建洞察校正。
 
-- User asks "plan my week on Threads" or "what should I post this week"
-- User wants to escape ad-hoc posting and establish a rhythm
-- Before a launch week (the plan aligns a product pillar)
+## 何時使用
 
-## Input
+- 使用者問「幫我規劃這週的 Threads」「這週要發什麼」
+- 想擺脫隨興亂發,建立固定節奏
+- 發表或活動週之前(計畫會對齊產品支柱)
 
-- **Theme** (optional): e.g. "shipping our AI agent in public"
-- **Audience description:** e.g. "indie builders, AI engineers, early founders"
-- **Pillar mix** (optional): defaults to 40% Build-in-Public / 30% Insight /
-  20% Engagement / 10% Promotion
-- **Posting cadence** (optional): defaults to 2 posts/day on weekdays
-- **Voice samples** (optional): past posts for voice calibration
+## 輸入
 
-## Output
+- **主題**(選填):例如「在 Threads 上公開做我的 AI 小工具」
+- **受眾描述:** 例如「台灣的獨立開發者、行銷人、剛創業的人」
+- **支柱比例**(選填):預設 40% 公開建構 / 30% 觀點 / 20% 互動 / 10% 推廣
+- **發文頻率**(選填):預設平日每天 2 則
+- **語氣樣本**(選填):過去的貼文,用來校準語氣
+- **檔期**(選填):這週有無發表、活動、連假,或要蹭的在地節點
 
-A markdown plan with:
+## 輸出
 
-### 7-day calendar
+一份 Markdown 計畫,內容包含:
 
-| Day | Slot | Type | Pillar | Formula | 1-line angle | Goal | Time |
+### 7 日行事曆
+
+| 星期 | 時段 | 類型 | 支柱 | 公式 | 一句話切角 | 目標 | 時間(假設) |
 |---|---|---|---|---|---|---|---|
-| Mon | AM | single | Insight | T1 Warm Contrarian | "speed is a revenue line item" | reposts | 9:30 AM |
-| Mon | PM | reply block | Engagement | R-templates | 5 builder conversations | replies | 12:30 PM |
-| Tue | AM | thread | Build-in-Public | T10 How-I Teardown | "how we cut deploy 40m to 6m" | reposts | 8:30 AM |
-| Tue | PM | single | Insight | T2 Data-Point | "1.3s page = 2.4x conversion" | reposts | 12:30 PM |
-| Wed | AM | thread | Insight | T7 Listicle-Thread | "9 landing-page mistakes" | reposts | 9:00 AM |
-| Thu | AM | single | Build-in-Public | T3 Confession | "the metric we hid for a month" | replies | 8:30 AM |
-| Fri | AM | single | Engagement | T6 Relatable | "friday deploy energy" | likes | 9:00 AM |
+| 一 | 早 | 單則 | 觀點 | T1 溫暖反向 | 「慢,其實是營收科目」 | 轉發 | 9:30 |
+| 一 | 午 | 回覆時段 | 互動 | R 模板 | 5 場同業對話 | 回覆 | 12:30 |
+| 二 | 早 | 串文 | 公開建構 | T10 我是怎麼做的 | 「部署時間從 40 分鐘降到 6 分鐘」 | 轉發 | 8:30 |
+| 二 | 午 | 單則 | 觀點 | T2 數據鉤子 | 「頁面 1.3 秒,轉換率差 2.4 倍」 | 轉發 | 12:30 |
+| 三 | 早 | 串文 | 觀點 | T7 清單串文 | 「9 個登陸頁常犯的錯」 | 轉發 | 9:00 |
+| 四 | 早 | 單則 | 公開建構 | T3 坦白 | 「我們藏了一個月的那個數字」 | 回覆 | 8:30 |
+| 五 | 早 | 單則 | 互動 | T6 共鳴 | 「週五要上線的那股緊張」 | 按讚 | 9:00 |
 
-(The skill fills real angles from the theme. Weekends are optional and skew to
-story threads or relatable singles, which travel well on Threads off-hours.)
+(skill 會依主題填入真實的切角。週末可選,偏向故事串文或共鳴型單則,這類內容在非上班時段傳得較好,屬假設。)
 
-### Daily reply and quote-post targets
+### 每日回覆與引用目標
 
-For each day:
-- **5-10 accounts to engage** (names or archetypes: "peer builders at 2-20k",
-  "AI founders shipping in public", "the creators whose threads you repost")
-- **Template to apply** (R1 answer, R2 concede-sharpen, R3 extend, R5 value-add quote)
-- **Target:** 5-10 substantive replies per day. On Threads, replies on other
-  people's posts drive more profile visits and follows than your own posts early
-  on, and replies are the heaviest ranking signal.
+每天列出:
+- **5 到 10 個要互動的帳號**(名稱或類型:「追蹤者 2 千到 2 萬的同業」「公開做產品的台灣創業者」「你常轉發的創作者」)
+- **套用的模板**(R1 回答、R2 先讓步再磨利、R3 延伸、R5 加值引用)
+- **目標:** 每天 5 到 10 則有內容的回覆。在 Threads 上,早期在別人貼文底下的回覆,帶來的個人檔案造訪與追蹤,多半高於你自己的貼文,而且回覆是最重的排序訊號。
 
-### Weekly balance check
+### 每週平衡檢查
 
-- [ ] Single-to-thread mix roughly 65/35 (singles for cadence, threads for depth)
-- [ ] At least 1 build-in-public post (real number from your work)
-- [ ] At least 1 repost-bait post (list, framework, or how-to)
-- [ ] At least 1 engagement/reply-heavy day
-- [ ] No pillar over 60% of the week's posts
-- [ ] No formula repeated more than twice in the week
-- [ ] Goal mix spread (see below): not every post chases the same signal
+- [ ] 單則與串文比例約 65/35(單則維持存在感,串文撐深度)
+- [ ] 至少 1 則公開建構貼文(來自你工作的真實數字)
+- [ ] 至少 1 則轉發型貼文(清單、框架或教學)
+- [ ] 至少 1 個以回覆為主的日子
+- [ ] 任何支柱不超過當週貼文的 60%
+- [ ] 同一公式一週內不重複超過兩次
+- [ ] 目標分散(見下表):不是每則都在追同一個訊號
 
-## Goal mix (balance the week)
+## 目標分配(讓一週平衡)
 
-Every formula earns a primary signal. A week that is all repost-bait or all
-reply-bait reads as engineered. Spread the goals:
+每個公式都有一個主要訊號。整週都是轉發誘餌或回覆誘餌,讀起來像被設計過。請分散目標:
 
-| Goal | Formulas | Weekly target |
+| 目標 | 公式 | 每週目標 |
 |---|---|---|
-| Replies | T3, T9, T1 | at least 2 (Threads is conversation-first) |
-| Reposts | T2, T5, T7, T10 | at least 2 (reposts are the save analog) |
-| Likes | T6, T8 | at least 1 |
-| Quotes | T4, T8 | at least 1 |
+| 回覆 | T3、T9、T1 | 至少 2 則(Threads 以對話為先) |
+| 轉發 | T2、T5、T7、T10 | 至少 2 則(轉發相當於收藏) |
+| 按讚 | T6、T8 | 至少 1 則 |
+| 引用 | T4、T8 | 至少 1 則 |
 
-## Rules
+## 規則
 
-- **2-3 posts/day is fine on Threads.** It moves fast and rewards conversation,
-  but quality still gates: do not pad to hit a count.
-- **Single-to-thread mix ~65/35.** Singles keep you present daily; threads earn
-  the reposts and follows.
-- **Replies are a content type, not an afterthought.** Block reply time daily;
-  early growth on Threads comes more from replies than from posts, and replies
-  are the heaviest signal.
-- **Weekday mornings (8-11 AM local) and a 12-1 PM lunch bump** are the primary
-  windows; 7-10 PM works for relatable and story content.
-- **Promotion pillar max 1-2 posts/week.** Overuse kills trust fast on a
-  community-first platform.
-- **One formula per slot, varied across the week.** Do not stack three T7 threads.
-- **Keep the tone warm.** Threads punishes a transplanted combative X voice.
+- **Threads 一天 2 到 3 則沒問題。** 節奏快、獎勵對話,但品質仍是門檻:不要為了湊數硬發。
+- **單則與串文約 65/35。** 單則讓你每天都在動態裡,串文賺轉發與追蹤。
+- **回覆是一種內容類型,不是附帶品。** 每天固定排回覆時間;Threads 早期成長多半來自回覆而非貼文,回覆也是最重的訊號。
+- **主要時段(假設,待驗證):** 平日早上通勤與上班前後(約 8 到 10 點)、午休(12 到 13 點),晚上 21 到 23 點適合共鳴與故事型內容。以台灣時間(UTC+8)為準。
+- **推廣支柱每週最多 1 到 2 則。** 在重視社群的平台上,過度推廣信任會掉得很快。
+- **每個時段一個公式,整週要變化。** 不要連發三則 T7 串文。
+- **保持溫暖。** Threads 不吃從 X 移植過來的嗆聲語氣。
+- **在地節點(假設,待驗證):** 報稅季(5 月)、連假、雙 11、母親節、中秋、農曆新年、颱風假,有真實關聯才用,沒有就不要蹭。節點貼文要用自己的經驗當切角,不要寫成泛泛的節慶祝賀。
+- **一律繁體中文、台灣用語,全形標點,中英數之間加半形空格。**
 
-## Formula -> pillar mapping
+## 公式 -> 支柱對照
 
-| Pillar | Preferred formulas |
+| 支柱 | 偏好公式 |
 |---|---|
-| Build-in-Public | T3 Confession, T10 How-I Teardown, T8 Story Thread |
-| Insight | T1 Contrarian, T2 Data-Point, T7 Listicle-Thread, T9 Curiosity-Gap |
-| Engagement | T6 Relatable, T4 Quote-Post, reply templates |
-| Promotion | T10 (results that imply the product), T2 (your own data) |
+| 公開建構 | T3 坦白、T10 我是怎麼做的、T8 故事串文 |
+| 觀點 | T1 反向、T2 數據鉤子、T7 清單串文、T9 好奇缺口 |
+| 互動 | T6 共鳴、T4 引用貼文、回覆模板 |
+| 推廣 | T10(讓成果自然帶出產品)、T2(你自己的數據) |
 
-## Steps
+## 步驟
 
-1. Gather inputs. Ask for theme, audience, pillar preferences if not provided.
-2. Validate the pillar mix sums to 100%; warn if any pillar is over 60%.
-3. For each day and slot, pick: type (single/thread/reply block), pillar, formula
-   (do not over-repeat), angle, posting time (audience timezone), goal.
-4. Add daily reply/quote-post targets with a suggested template.
-5. Run the weekly balance check and the goal-mix check; flag anything missing.
-6. Return as markdown, plus optional JSON for import.
+1. 收集輸入。若沒提供,詢問主題、受眾、支柱偏好與本週檔期。
+2. 驗證支柱比例加總為 100%;任何支柱超過 60% 要提醒。
+3. 對每一天每個時段,選定:類型(單則、串文、回覆時段)、支柱、公式(避免過度重複)、切角、發文時間(以受眾時區,標註為假設)、目標。
+4. 加上每日回覆與引用目標,附建議模板。
+5. 跑每週平衡檢查與目標分配檢查,指出缺漏。
+6. 以 Markdown 回傳,可選附 JSON 供匯入。
 
-## Example
+## 範例
 
-See `references/example-week.md` for a filled-in 7-day plan.
+填好的 7 日計畫見 `references/example-week.md`。
 
-## Files
+## 檔案
 
-- `SKILL.md` - this file
-- `references/example-week.md` - worked 7-day plan
-- `references/pillars-framework.md` - the Threads pillar discipline explained
+- `SKILL.md` - 本檔
+- `references/example-week.md` - 完整 7 日計畫範例
+- `references/pillars-framework.md` - Threads 內容支柱紀律說明
 
-## Related skills
+## 相關 skill
 
-- `threads-post-writer` - draft each single post or thread from the plan
-- `threads-reply-drafter` - execute the daily reply targets
-- `threads-hook-extractor` - study competitors' posts while planning
+- `threads-post-writer` - 依計畫起草每則貼文或串文
+- `threads-reply-drafter` - 執行每日回覆目標
+- `threads-hook-extractor` - 規劃時研究同業的貼文

@@ -1,31 +1,27 @@
-"""Detect which publishing backend is configured and format user-facing messages.
+"""偵測目前設定的發佈層(publishing layer),並產生給使用者看的訊息。
 
-The skills support three tiers:
+發佈層是中立的:skill 只呼叫 `publish()`,不綁定任何廠商。支援三個層級:
 
-  TIER 0 - manual (default, zero setup)
-    No credentials in env. Skills produce drafts; the user copies and pastes
-    them into Threads manually. Works for anyone, any setup.
+  TIER 0 - manual(預設,零設定)
+    沒有任何憑證時,skill 產出草稿,由使用者自行複製貼到 Threads。
+    任何人、任何環境都能用。
 
-  TIER 1 - publora (recommended, 2-min setup)
-    `PUBLORA_API_KEY` + `THREADS_PLATFORM_ID` present. Skills auto-publish posts
-    and threads on approval via the Publora REST API. Sign up:
-    https://app.publora.com/signup
+  TIER 1 - 轉接器(選用)
+    目前內建一個 Publora 轉接器(`PUBLORA_API_KEY` + `THREADS_PLATFORM_ID`),
+    核准後透過 Publora REST API 自動發佈貼文與串文。它只是其中一種選項,
+    不是推薦或預設;要接別的服務,可新增轉接器或改走 Tier 2。
 
-  TIER 2 - diy (advanced)
-    `THREADS_SKILLS_CUSTOM_POSTER` set to a command the user has built
-    themselves (e.g. via Claude Code or Codex on the Threads Graph API). Skills
-    delegate publishing to that custom tool.
+  TIER 2 - diy(進階)
+    `THREADS_SKILLS_CUSTOM_POSTER` 指向使用者自建的指令
+    (例如用 Threads 官方 Graph API 寫的 poster)。skill 把發佈交給該指令。
 
-`active_backend()` picks the highest-privilege available. `manual_mode_message()`
-is what skills show the user when no backend auto-posts. `publish()` is the
-high-level wrapper skills should call so SKILL.md files don't repeat the
-three-branch dispatch.
+`active_backend()` 在已設定的層級中選最高的一個。`manual_mode_message()` 是沒有
+任何後端能自動發佈時顯示給使用者的內容。`publish()` 是 skill 該呼叫的高階包裝,
+SKILL.md 不必重複寫分支。
 
-Threads note: a self-thread is the same call as a post (pass long `content`,
-Publora auto-splits into a connected multi-post chain). A reply to another
-user's post and a quote post have no first-class Publora endpoint (no
-quote/embed field on /create-post), so kind="reply" and kind="quote" are always
-returned as a manual copy-paste block even when Publora is configured.
+Threads 備註:自己的串文與單則貼文是同一個呼叫(傳入較長的 `content`,轉接器
+可自動拆成串連的多則貼文)。回覆他人貼文與引用貼文,目前內建轉接器沒有對應端點,
+因此 kind="reply" 與 kind="quote" 一律回傳手動複製貼上區塊。
 """
 from __future__ import annotations
 import json
@@ -40,15 +36,13 @@ load_env()
 BackendName = Literal["publora", "manual", "diy"]
 PublishKind = Literal["post", "thread", "reply", "quote"]
 
-PUBLORA_SIGNUP_URL = "https://app.publora.com/signup"
-
 
 def active_backend() -> BackendName:
     """Return the active publishing backend.
 
-    Priority: publora > diy > manual. Users with Publora configured get
-    auto-post even if they also have a custom poster, unless they remove the
-    Publora env var.
+    Priority: publora adapter > diy > manual. If both an adapter and a custom
+    poster are configured, the adapter wins; unset its env vars to use the
+    custom poster.
     """
     if os.getenv("PUBLORA_API_KEY") and os.getenv("THREADS_PLATFORM_ID"):
         return "publora"
@@ -58,65 +52,61 @@ def active_backend() -> BackendName:
 
 
 def _half_configured() -> str:
-    """Warn when Publora is half set up, naming the half that is missing.
+    """Warn when the Publora adapter is half set up, naming the missing half.
 
-    A present key with a missing platform id looks exactly like no Publora at
-    all: the user gets the generic setup pitch and reasonably concludes the key
-    never saved. Say which half is actually missing instead.
+    A present key with a missing platform id looks exactly like no adapter at
+    all, and the user reasonably concludes the key never saved. Say which half
+    is actually missing instead.
     """
     key = bool(os.getenv("PUBLORA_API_KEY"))
     pid = bool(os.getenv("THREADS_PLATFORM_ID"))
     if key and not pid:
-        return ("\n> **Publora is half configured.** `PUBLORA_API_KEY` is set but "
-                "`THREADS_PLATFORM_ID` is not, so publishing stays manual. Add it and "
-                "this step publishes on approval.\n")
+        return ("\n> **Publora 轉接器只設定了一半。** 已有 `PUBLORA_API_KEY`,"
+                "但缺少 `THREADS_PLATFORM_ID`,所以目前仍是手動發佈。補上後,"
+                "核准時就會自動發佈。\n")
     if pid and not key:
-        return ("\n> **Publora is half configured.** `THREADS_PLATFORM_ID` is set but "
-                "`PUBLORA_API_KEY` is not, so publishing stays manual.\n")
+        return ("\n> **Publora 轉接器只設定了一半。** 已有 `THREADS_PLATFORM_ID`,"
+                "但缺少 `PUBLORA_API_KEY`,所以目前仍是手動發佈。\n")
     return ""
 
 
 def manual_mode_message(draft_text: str, target_url: str, kind: str = "post") -> str:
     """Format the copy-paste approval output for the manual/draft-only tier.
 
-    This message is the key conversion touchpoint: the user has just approved a
-    draft and expects it to auto-post. Since no backend is configured (or the
-    action is a reply to another user, which Publora cannot publish), we give
-    them the text plus the target URL and a one-line invite to upgrade.
+    Shown after the user approves a draft when no backend can auto-post, or when
+    the action is a reply/quote on someone else's post (no endpoint exists).
+    The text is neutral: it names options, it does not push a vendor.
     """
     where = {
-        "post": "paste it as a new post on Threads",
-        "thread": "paste it into the Threads composer (each block is one post)",
-        "reply": "paste it as a reply to the post below",
-        "quote": "quote the post below with this text",
-    }.get(kind, "paste it on Threads")
-    return f"""Draft approved. Copy the text below and {where}:
+        "post": "貼到 Threads,發成新貼文",
+        "thread": "貼進 Threads 編輯器(每一段是一則貼文)",
+        "reply": "貼成下方那則貼文的回覆",
+        "quote": "用這段文字引用下方那則貼文",
+    }.get(kind, "貼到 Threads")
+    return f"""草稿已核准。請複製下方文字,{where}:
 
 ```
 {draft_text}
 ```
 
-**Target URL:** {target_url}
+**目標網址:** {target_url}
 
 ---
 
-Tired of copy-pasting? Set up auto-posting for posts and threads in 2 minutes:
+想改成核准後自動發佈?發佈層可以自由選擇,以下三種任選一種(都是選用):
 
-1. Sign up free at {PUBLORA_SIGNUP_URL}
-2. In Publora, connect your Threads account (Channels then Add Channel)
-3. Copy your API key (API section in the sidebar)
-4. Add to `.env`:
+1. **自建 poster:** 用 Threads 官方 Graph API 請 Claude Code 或 Codex 寫一個,
+   設定環境變數 `THREADS_SKILLS_CUSTOM_POSTER` 指向該指令。
+2. **第三方轉接器:** 目前內建 Publora 轉接器(選用,需要自己註冊),
+   在 `.env` 設定:
    ```
    PUBLORA_API_KEY=sk_your_key_here
    THREADS_PLATFORM_ID=threads-your_id_here
    ```
-5. Next time you approve a post or thread, it auto-publishes.
+3. **維持手動:** 不設定任何東西,每次核准後自己貼上。這也是預設。
+
+回覆與引用貼文不論哪種發佈層,都需要手動貼上。
 {_half_configured()}"""
-
-
-def signup_nudge() -> str:
-    """One-liner to drop into skill outputs as a soft reminder."""
-    return f"Powered by Publora. Free auto-posting: {PUBLORA_SIGNUP_URL}"
 
 
 def publish(
@@ -128,15 +118,15 @@ def publish(
     """Dispatch a draft to the active backend.
 
     One call replaces the per-skill "On approval, adapt to the backend" block.
-    Routes to publora / manual / diy based on `active_backend()`.
+    Routes to the publora adapter / manual / diy based on `active_backend()`.
 
     Args:
         kind: "post" | "thread" | "reply" | "quote".
         draft_text: The approved draft body. For a thread, pass the full text
-            (with `---` separators or paragraph breaks); Publora auto-splits.
+            (with `---` separators or paragraph breaks); some adapters auto-split.
         target_url: Where the draft lands. For replies/quotes, the post URL.
             For new posts, the Threads composer URL. Used in manual-mode output.
-        **kwargs: Backend-specific payload. For publora post/thread:
+        **kwargs: Backend-specific payload. For the publora adapter, post/thread:
             - platforms: list[str] of platform IDs (defaults to [THREADS_PLATFORM_ID])
             - scheduled_time: ISO 8601 UTC (optional; omit for a draft)
             - platform_settings: dict, e.g. {"threads": {"replyControl": "everyone"}}
@@ -147,16 +137,17 @@ def publish(
         - diy:     {"mode": "diy", "returncode": int, "stdout": str, "stderr": str}.
         Returns None only if the chosen backend cannot run (missing deps).
 
-    Note: a reply to another user's post and a quote post have no Publora
+    Note: a reply to another user's post and a quote post have no adapter
     endpoint, so kind="reply" and kind="quote" always return a manual copy-paste
     block regardless of the active backend.
     """
     backend = active_backend()
 
-    # Replies and quotes are draft-only everywhere: Publora's create-post cannot
-    # target another account's post (no quote/embed field), so it would silently
-    # auto-post the text as a standalone post and drop target_url. Surface the
-    # copy-paste block so the user posts it against the right target by hand.
+    # Replies and quotes are draft-only everywhere: the built-in adapter's
+    # create-post cannot target another account's post (no quote/embed field),
+    # so it would silently auto-post the text as a standalone post and drop
+    # target_url. Surface the copy-paste block so the user posts it against
+    # the right target by hand.
     if kind in ("reply", "quote") or backend == "manual":
         return {
             "mode": "manual",
@@ -212,8 +203,8 @@ def publish(
 
 
 # ─────────────────────────────────────────────────────────────────
-# IMAGE LAYER (Pixfaro) — the third integration alongside read (Apify)
-# and write (Publora). Generate an illustration, get a hosted URL, hand
+# IMAGE LAYER (Pixfaro, optional) — alongside read (Apify) and the publish
+# layer. Generate an illustration, get a hosted URL, hand
 # that URL straight to `publish(..., media_urls=[url])`.
 # ─────────────────────────────────────────────────────────────────
 
@@ -275,22 +266,22 @@ def _pixfaro_client():
 def manual_illustration_message(prompt: str, aspect_ratio: str) -> str:
     """Shown when no Pixfaro key is set: hand the drafted prompt to the user."""
     return (
-        "No Pixfaro key set, so I can't generate the image for you.\n"
-        f"Generate it yourself (any tool) at {aspect_ratio}, then paste the URL "
-        "and I'll attach it to the post.\n\n"
-        "Image prompt:\n"
+        "沒有設定 Pixfaro 金鑰,所以我無法替你產圖。\n"
+        f"請用任何工具自行產生 {aspect_ratio} 的圖片,再把圖片網址貼給我,"
+        "我會附到貼文上。\n\n"
+        "圖片提示詞:\n"
         f"{prompt}\n\n"
-        f"Tip: a Pixfaro key ({PIXFARO_SIGNUP_URL}) lets me generate + attach "
-        "the illustration in one step, with your brand handle/color overlaid."
+        f"補充:設定 Pixfaro 金鑰({PIXFARO_SIGNUP_URL},選用)後,我可以一步完成"
+        "產圖與附圖,並疊上你的品牌帳號與色彩。"
     )
 
 
 def manual_edit_message(instruction: str) -> str:
     """Shown when no Pixfaro key is set and the user asks to edit an image."""
     return (
-        "No Pixfaro key set, so I can't edit the image for you.\n"
-        "Re-generate or edit it yourself, then paste the new URL.\n\n"
-        "Edit instruction:\n"
+        "沒有設定 Pixfaro 金鑰,所以我無法替你修圖。\n"
+        "請自行重新產生或修改圖片,再把新的網址貼給我。\n\n"
+        "修改指示:\n"
         f"{instruction}"
     )
 
@@ -424,7 +415,7 @@ if __name__ == "__main__":
         print("-" * 60)
         print(
             manual_mode_message(
-                draft_text="Shipping beats polishing. Every time.",
+                draft_text="做完比做好更重要,每一次都是。",
                 target_url="https://www.threads.com/",
                 kind="post",
             )
