@@ -1,136 +1,87 @@
 ---
 name: threads-repurposer
-description: "Repurpose existing content into a native Threads post or thread. Take a LinkedIn post, X thread, blog, YouTube script, or newsletter and rewrite it for Threads: warm the tone, de-corporate it, refit to a short post or light thread, rebuild the hook to clear the soft fold, strip off-platform artifacts, run the humanizer, publish via Publora on approval. Not for writing from scratch (use threads-post-writer), auditing a draft (use threads-humanizer), or a hook teardown (use threads-hook-extractor)."
+description: "把既有內容改寫成道地的 Threads 貼文或串文。來源可以是 Facebook 貼文、Instagram 文案、LinkedIn、部落格或方格子、Podcast 逐字稿、YouTube 腳本、電子報、LINE 社群公告、PTT 或 Dcard 風格長文。去公文腔與行銷腔、縮到適合的長度、重建鉤子、清掉他站殘留,再跑去 AI 味,核准後交給發佈層。觸發詞:改寫成 Threads、搬運到 Threads、轉成串文。不適用於從零開始寫(請用 threads-post-writer)、審稿(請用 threads-humanizer)、拆解鉤子(請用 threads-hook-extractor)。"
 ---
 
-# Threads Repurposer
+# Threads 內容改寫(Repurposer)
 
-Turn something you already made into a Threads post or thread that reads like it
-was born on Threads. Repurposing is not copy-paste. A post that killed on
-LinkedIn or landed on X will read wrong on Threads if you paste it: too polished,
-too cold, wrong length, and artifacts ("link in bio", hashtag walls, "smash
-subscribe") that scream off-platform.
+把你已經做過的內容,變成讀起來像生在 Threads 的貼文或串文。改寫不是複製貼上。在 Facebook 或 LinkedIn 表現很好的文章,直接貼到 Threads 會讀起來不對:太正式、太冷、太長,還帶著「連結在留言」「歡迎追蹤我的專頁」這類他站殘留。
 
-This skill transforms, it does not generate. It reads your source, keeps the
-idea, and rebuilds the delivery for Threads: warmer, lowercase-casual,
-reply-driven.
+這個 skill 負責轉換,不負責憑空生成。它讀你的來源,留下想法,重建表達方式,讓它更口語、更像一個人在說話、更容易引來回覆。
 
-## When to use
+## 何時使用
 
-- "Turn this LinkedIn post into a Threads post / thread"
-- "Repurpose my blog post / newsletter / YouTube script for Threads"
-- "This X thread did well, adapt it for Threads"
-- "I have a rough idea in another format, make it native here"
+- 「把這篇 Facebook 貼文改成 Threads 貼文或串文」
+- 「把我的方格子文章、部落格、電子報改寫成 Threads」
+- 「Podcast 逐字稿或 YouTube 腳本,幫我抽出可以發 Threads 的內容」
+- 「我在 PTT 或 Dcard 寫了一篇長文,想轉成 Threads 版」
+- 「LinkedIn 那篇反應不錯,幫我改成這裡的口氣」
 
-Not for a blank-page draft (use `threads-post-writer` for a post or thread), not
-for reviewing an already-Threads draft (use `threads-humanizer`, plus
-`--mode audit`), and not for reverse-engineering a hook (use
-`threads-hook-extractor`).
+不適用於空白頁起稿(請用 `threads-post-writer`),不適用於審已經是 Threads 格式的草稿(請用 `threads-humanizer`,可加 `--mode audit`),也不適用於拆解鉤子(請用 `threads-hook-extractor`)。
 
-## How it works
+## 運作方式
 
-**Voice profile first (all drafts).** If `../../references/voice-profile.md` has `filled: yes`, load it and match the user's voice fingerprint, hard rules, and CTA/link style throughout. If it is not filled, mention once that `threads-humanizer --mode profile` can learn their voice from a few posts, then proceed with the generic voice rules.
+**先看語氣檔案(所有草稿)。** 若 `../../references/voice-profile.md` 的 `filled: yes`,載入它,全程對齊使用者的語氣指紋、硬性規則與 CTA、連結習慣。若尚未填寫,提醒一次 `threads-humanizer --mode profile` 可以從幾則貼文學出使用者的語氣,然後先用通用語氣規則進行。
 
-**Story bank next.** If `../../references/story-bank.md` has `filled: yes`, load it and take every concrete detail (numbers, dates, named projects, positions) from there instead of asking mid-draft. **Never invent a figure, a date or a client name that is not in the bank or supplied by the user in this conversation.** If the bank has nothing that fits, ask the user, or say once that `threads-humanizer --mode interview` fills it in 20 to 40 minutes. A draft with a plausible invented number is worse than a draft with none: one is vague, the other is a retraction.
+**再看素材庫。** 若 `../../references/story-bank.md` 的 `filled: yes`,載入它,所有具體細節(數字、日期、專案名稱、立場)都從這裡取,不要寫到一半才回頭問。**凡是素材庫沒有、使用者在本次對話也沒給的數字、日期、客戶名稱,一律不得編造。** 若素材庫沒有合適的內容,直接問使用者,或提醒一次 `threads-humanizer --mode interview` 約 20 到 40 分鐘可以填好。帶著看似合理的假數字的草稿,比沒有數字的草稿更糟:前者是被收回的錯誤,後者只是不夠具體。
 
-1. **Take the source.** Any format: a post, a paragraph, a script, a caption, a
-   transcript, a bullet list, a link to read. Ask for the source and the goal
-   (replies / reposts / likes / quotes) if not given.
-2. **Extract the spine.** Strip the source platform's shell and pull out the one
-   claim, the one story, or the one number worth keeping. Most repurposing fails
-   because it keeps the words instead of the point.
-3. **Choose the container.** One claim or number -> single post. A teach or a
-   build -> a light thread (hand structure to `threads-post-writer`'s shapes). A
-   LinkedIn carousel or a listicle -> a short thread, one item per post, hook
-   rebuilt. A long video -> a thread that delivers the payoff, not a summary.
-   Threads leans short: prefer one warm post over a long thread when the idea
-   fits.
-4. **Warm the tone.** Threads is conversational and lowercase-casual. De-corporate
-   a LinkedIn source (cut the polish and the humble-brag frame), and turn a
-   transplanted X dunk into an invitation to talk. The register is a person
-   talking, not a brand broadcasting.
-5. **Rebuild the hook.** Threads has a soft fold (the feed truncates long posts
-   with a "more" cut), so line one must land the whole punch and stand alone. The
-   source's hook almost never survives; write a new first line using a 2026
-   Threads formula (see `../../references/hook-formulas.md`), picked by the goal.
-6. **Refit the format.** Under 500 chars per post (10,000 only with a text
-   attachment). One idea per post, line breaks as beats. Cut the source's
-   connective tissue. For a thread, hand-split with `---` so the user sees the
-   breaks before approving.
-7. **Strip off-platform artifacts.** Remove "link in bio", "smash subscribe",
-   "read more below", hashtag walls (Threads allows one hashtag max), @-handles
-   that only exist elsewhere, and any "as I wrote on LinkedIn" throat-clearing. A
-   repurposed post should not admit it was repurposed.
-8. **Humanizer pass.** Run `threads-humanizer` V3: 2026 AI vocab by density,
-   em dashes above the cap (at most one per post, never swapped for a
-   period), stacked rule-of-three triads, generic openers and reveal bridges.
-   Leave the rhythm alone (uniform rhythm wins on Threads; never insert a
-   punch post for variance). Keep the user's real numbers and named entities
-   from the source.
-9. **Approval card.** Show: source -> Threads mapping (what became what), the
-   container (single post or N-post thread with per-post char counts), formula
-   used, warmed-tone note, primary goal. Confirm any `---` breaks.
-10. **On approval.** Publish via `lib.publish(kind="post"` (single) or
-    `kind="thread"`, `draft_text=<approved>,
-    target_url="https://www.threads.com/", platforms=[<THREADS_PLATFORM_ID>],
-    scheduled_time=<iso_or_None>)`. The wrapper handles Publora / manual / diy
-    routing. Publora auto-splits an over-length draft into a connected thread at
-    paragraph then sentence boundaries.
+1. **接收來源。** 任何格式都行:一則貼文、一段文字、一份腳本、一段文案、逐字稿、條列、一個要讀的連結。若沒給,詢問來源與目標(回覆、轉發、按讚、引用)。
+2. **抽出骨幹。** 剝掉來源平台的外殼,只留下一個主張、一個故事或一個值得留的數字。大多數改寫失敗,是因為留下了字句,卻丟了重點。
+3. **選容器。** 一個主張或一個數字,做成單則貼文。要教學或有建構過程,做成輕量串文(結構交給 `threads-post-writer` 的形狀)。輪播或清單,做成短串文,一項一則,鉤子重建。長影片或長 Podcast,做成交出重點的串文,不是摘要。Threads 偏短:想法塞得進去時,一則溫暖的貼文勝過一串長文。
+4. **調暖語氣。** Threads 是口語的。把來源的公文腔、行銷腔、「各位朋友大家好」式開場拿掉,把嗆聲式的觀點改成邀請對話。口氣是一個人在說話,不是品牌在廣播。
+5. **重建鉤子。** Threads 在動態消息會於「顯示更多」處截斷長貼文,所以第一行就要把整個重點打出來,而且能獨立成立。來源的標題或開頭幾乎都撐不過來,請依 `../../references/hook-formulas.md` 的公式,依目標重寫第一行。
+6. **重排版面。** 每則不超過 500 字元(只有長文附件才能到 10,000)。中文每字資訊量高,單則假設 80 到 250 字最容易被讀完(待用自己的帳號驗證)。一則一個想法,換行當節拍。砍掉來源的連接段落與鋪陳。串文用 `---` 手動分段,讓使用者在核准前看到斷點。
+7. **清掉他站殘留。** 移除「連結在留言」「歡迎追蹤我的粉絲專頁」「按讚分享訂閱」「詳見下文」「歡迎加入 LINE 社群」、一整排主題標籤(Threads 每則最多 1 個)、只存在於他站的 @帳號,以及「這是我之前在 Facebook 發過的」這類鋪墊。改寫過的貼文不該自己招認是改寫的。
+8. **去 AI 味。** 跑 `threads-humanizer` V3:依密度計分的 AI 腔詞彙、超過上限的破折號、堆疊的三段式、套話開場與揭曉橋段。節奏不要動(Threads 上均勻的節奏表現最好,不要為了變化硬塞一則短句)。保留來源裡使用者真實的數字與專有名詞。
+9. **核准卡。** 顯示:來源到 Threads 的對照(什麼變成什麼)、容器(單則,或 N 則串文與每則字數)、使用的公式、調暖說明、主要目標。確認所有 `---` 斷點。
+10. **核准後。** 呼叫 `lib.publish(kind="post"`(單則)或 `kind="thread"`,`draft_text=<已核准內容>,target_url="https://www.threads.com/",scheduled_time=<iso_或_None>)`。這個包裝層會依目前的發佈層(手動或自建 poster)分流。預設是手動模式:輸出一個可複製貼上的區塊。
 
-## Native-fit rules (source -> Threads)
+## 在地來源對照(來源 -> Threads)
 
-- **LinkedIn post -> Threads:** warm it, cut the polish. Drop the corporate frame
-  and the humble-brag. The LinkedIn hook is too long and too formal; rewrite it
-  lowercase-casual as a person talking.
-- **X thread -> Threads:** soften the combat tone. A sharp dunk becomes an
-  invitation to talk. Keep the point, lose the edge that reads cold here.
-- **Blog / newsletter -> Threads:** pick the one human take, lead with it, and end
-  on a question. Do not summarize the whole piece.
-- **YouTube script -> Threads:** lead with the payoff, not the intro. "here's what
-  surprised me" beats "in this video".
-- **Carousel / listicle -> thread:** one item per post, each with its own
-  micro-hook, not a wall.
-- **Instagram / TikTok caption -> Threads:** strip emoji density and hashtag
-  blocks; Threads reads them as noise and caps hashtags at one.
+- **Facebook 貼文 -> Threads:** Facebook 的長貼文常有「各位朋友」「今天想跟大家分享」的開場和一大段鋪陳。刪掉開場,把最後那句結論或最有畫面的那一句拉到第一行。留言區導流句全部拿掉。
+- **Instagram 文案 -> Threads:** 去掉 emoji 密度與主題標籤區塊;Threads 把它們讀成雜訊,而且每則只允許 1 個主題標籤。圖片說明常依賴圖,文字單獨要能成立。
+- **LinkedIn -> Threads:** 調暖、去掉精緻感。拿掉企業框架與謙虛式炫耀(「很榮幸」「感謝這段旅程」)。LinkedIn 的鉤子太長太正式,改寫成一個人在說話。
+- **部落格、方格子、Medium、電子報 -> Threads:** 挑出一個最有人味的觀點,放第一行,用一個問題收尾。不要摘要全文。付費牆文章不要洩漏付費內容全文。
+- **Podcast 逐字稿、YouTube 腳本 -> Threads:** 從結論或最讓人意外的一句開頭,不是從開場白。「我自己最意外的是」勝過「在這支影片中」。逐字稿的口頭禪與贅詞要清掉,但保留說話的節奏感。
+- **LINE 社群公告 -> Threads:** 公告體的「各位夥伴請注意」要改成對一個人說話。把活動資訊濃縮成一個重點,報名連結放在回覆。
+- **PTT 或 Dcard 風格長文 -> Threads:** 保留敘事,去掉「先說明,本篇有雷」「原 po」「如題」之類的版規式語句,把故事縮成一個轉折。長故事做成 T8 故事串文。
+- **輪播、清單 -> 串文:** 一項一則,每則有自己的微鉤子,不是一整面牆。
+- **X 串文 -> Threads:** 軟化嗆聲的語氣,把尖銳的觀點變成邀請對話。留下重點,丟掉在這裡讀起來太冷的稜角。
 
-## Hard rules
+## 硬性規則
 
-Global voice rules: see root `SKILL.md` Voice rules. Additional skill-specific
-rules:
+全域語氣規則:見根目錄 `SKILL.md` 的語氣規則。另外補充本 skill 專屬規則:
 
-- Keep the source's **claim and facts** intact. Repurposing changes the delivery,
-  never the meaning or the numbers.
-- The new first line must stop the scroll on its own, past the soft fold. If it
-  needs line two to make sense, rewrite it.
-- Never paste the source verbatim and trim. Rebuild the hook and rhythm from the
-  spine.
-- Warm the tone every time. A cold, combative import is the most common failure.
-- One specific number where the source offers one. Keep it.
-- One hashtag maximum. A second is rejected by Threads, not just bad style.
-- Do not hard-sell the user's product. One natural mention max.
+- **主張與事實要完整保留。** 改寫只改表達方式,不改意思,也不改數字。
+- 新的第一行要靠自己擋下滑動,而且要過得了「顯示更多」的截斷。若需要第二行才看得懂,重寫。
+- 不得把來源整段貼上再刪減。要從骨幹重建鉤子與節奏。
+- 每次都要調暖語氣。冷硬、好戰的移植是最常見的失敗。
+- 來源若有具體數字,保留一個。
+- 主題標籤最多 1 個。第二個會被 Threads 拒絕,不只是風格問題。
+- 不要硬銷使用者的產品。最多一次自然的提及。
+- 一律繁體中文、台灣用語。來源若混有簡體字或大陸用語,一併改正。
 
-## Anti-patterns (skill will refuse)
+## 反模式(本 skill 會拒絕)
 
-- Copy-pasting the source with light edits (that is not repurposing).
-- Keeping the source platform's artifacts ("link in bio", "smash subscribe",
-  hashtag walls, off-platform @-handles).
-- Importing a cold, combative X voice instead of warming it.
-- ALL CAPS first line for intensity. Carry it with word choice.
-- Em dashes above the cap (more than one in a post), or an em dash swapped for a period.
-- "The result?" / "Here's what" reveal bridges and staccato stacks added during the rewrite.
-- Rule-of-three lists without specifics.
-- "leverage", "fundamentally", "game-changer", "deep dive".
-- An external link in post 1 (offer a reply).
-- A second hashtag.
-- Meta throat-clearing ("I originally posted this on...").
+- 把來源稍微修改就貼上(那不是改寫)。
+- 保留他站殘留(「連結在留言」「按讚分享訂閱」、主題標籤牆、他站專屬 @帳號)。
+- 公文腔、行銷腔,或把 X 的冷硬嗆聲整個搬過來。
+- 用全部大寫或連環驚嘆號製造強度。強度靠用字。
+- 破折號超過上限(一則多於一個),或把破折號換成句號。
+- 改寫過程中新增「結果呢?」「答案是這樣」之類的揭曉橋段與短句堆疊。
+- 沒有具體內容的三段式清單。
+- 「賦能」「打造」「深入探討」「總而言之」等 AI 腔詞彙。
+- 在第一則放外部連結(改放回覆)。
+- 第二個主題標籤。
+- 鋪墊式自白(「這篇我之前發在 Facebook 上」)。
 
-## Resources
+## 資源
 
-- `../../references/hook-formulas.md` - the 13 Threads formula skeletons to re-hook with (T1-T6 and T11-T13 single, T7-T10 thread)
-- `../../references/algorithm-heuristics.md` - 2026 Threads ranking rules (signals, timing, limits)
+- `../../references/hook-formulas.md` - 用來重建鉤子的 13 個 Threads 公式骨架(T1-T6 與 T11-T13 為單則,T7-T10 為串文)
+- `../../references/algorithm-heuristics.md` - Threads 排序規則(訊號、時間、限制)
 
-## Related skills
+## 相關 skill
 
-- `threads-post-writer` - write a fresh post or thread from scratch (repurposer hands long builds to its shapes)
-- `threads-humanizer` - scrub AI tells, plus `--mode audit` to review the result
-- `threads-hook-extractor` - reverse-engineer a hook from a post you admire
+- `threads-post-writer` - 從零寫新貼文或串文(長篇建構交給它的形狀)
+- `threads-humanizer` - 去 AI 味,加 `--mode audit` 審查結果
+- `threads-hook-extractor` - 從你欣賞的貼文拆解鉤子

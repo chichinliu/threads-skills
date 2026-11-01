@@ -1,9 +1,9 @@
 """Thin Pixfaro client for the Threads Skills project.
 
 Image layer (illustration generation). Sits alongside the read layer
-(`apify_client`) and the write layer (`publora_client`) as the third
-integration: generate an illustration, get back a hosted URL, and hand that
-URL straight to Publora's `media_urls` when publishing.
+(`apify_client`) and the publish layer: generate an illustration, get back a
+hosted URL, and pass it as `media_urls` to `lib.publish` (a custom poster
+receives it in its JSON payload).
 
 Auth: PIXFARO_TOKEN env var (or constructor arg). Key format `pf_live_...`.
 Without a token the skills fall back to "manual" mode: they draft the image

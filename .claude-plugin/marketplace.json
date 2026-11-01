@@ -1,23 +1,23 @@
 {
   "name": "threads-skills",
   "owner": {
-    "name": "Serge Bulaev",
-    "url": "https://github.com/sergebulaev"
+    "name": "chichinliu",
+    "url": "https://chichinliu.com"
   },
   "metadata": {
-    "description": "Claude Code and Codex skills for Threads (Meta) growth: single-post and multi-post thread writing, AI-tell humanizer with bundled pre-publish audit, viral hook extraction, reply and quote drafting, and weekly content planning. Posts and threads publish through the Publora API."
+    "description": "Claude Code 與 Codex 的 Threads(Meta)成長 skills,繁體中文台灣版:貼文與串文撰寫、去 AI 味與發佈前審稿、爆文鉤子拆解、回覆與引用草擬、每週內容規劃。發佈不綁定任何服務,預設手動貼上。"
   },
   "plugins": [
     {
       "name": "threads-skills",
       "source": "./",
-      "description": "Bundle of 8 Threads (Meta) marketing skills for Claude Code and Codex with Threads-native hook formulas, single-post and multi-post thread writing, a unified humanizer (rewrite plus `--mode audit` pre-publish check), viral hook extraction, reply and quote drafting, and a weekly content planner. Posts and threads ship via Publora, which auto-splits long content into a connected multi-post thread.",
-      "version": "1.0.34",
+      "description": "8 個 Threads(Meta)行銷 skill 的組合包,繁體中文台灣版,含 Threads 原生鉤子公式、貼文與串文撰寫、統一的 humanizer(改寫加發佈前審稿)、鉤子拆解、回覆草擬、內容改寫、個人檔案優化、受眾洞察與一週規劃。發佈不綁定任何服務,可手動或自建 poster。",
+      "version": "1.0.39",
       "author": {
-        "name": "Serge Bulaev",
-        "url": "https://github.com/sergebulaev"
+        "name": "chichinliu",
+        "url": "https://chichinliu.com"
       },
-      "homepage": "https://github.com/sergebulaev/threads-skills",
+      "homepage": "https://github.com/chichinliu/threads-skills",
       "license": "MIT",
       "keywords": [
         "threads",

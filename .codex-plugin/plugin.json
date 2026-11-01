@@ -1,14 +1,14 @@
 {
   "name": "threads-skills",
-  "description": "8 Claude Code and Codex skills for Threads (Meta) marketing: single-post and multi-post thread writing, AI-tell humanizer with pre-publish audit, viral hook extraction, reply and quote drafting, profile optimization, content repurposing, audience insights, and weekly content planning. Publora is the default publish layer for Threads posts and threads.",
-  "version": "1.0.34",
+  "description": "8 個 Claude Code 與 Codex 的 Threads(Meta)行銷 skill,繁體中文台灣版:單則貼文與串文撰寫、去 AI 味與發佈前審稿、爆文鉤子拆解、回覆與引用草擬、個人檔案優化、內容改寫、受眾洞察、一週內容規劃。發佈不綁定任何服務:預設手動貼上,可接自建 poster。",
+  "version": "1.0.39",
   "author": {
-    "name": "Serge Bulaev",
-    "url": "https://github.com/sergebulaev"
+    "name": "chichinliu",
+    "url": "https://chichinliu.com"
   },
   "license": "MIT",
-  "homepage": "https://github.com/sergebulaev/threads-skills",
-  "repository": "https://github.com/sergebulaev/threads-skills",
+  "homepage": "https://github.com/chichinliu/threads-skills",
+  "repository": "https://github.com/chichinliu/threads-skills",
   "keywords": [
     "threads",
     "meta-threads",
@@ -24,20 +24,20 @@
   "skills": "./skills/",
   "interface": {
     "displayName": "Threads (Meta) Skills",
-    "shortDescription": "Threads (Meta) marketing skills for Claude Code and Codex.",
-    "longDescription": "A bundle of 8 Threads (Meta) marketing skills for Claude Code and Codex: single-post and multi-post thread writing, humanizing, hook extraction, reply and quote drafting, and content planning.",
-    "developerName": "Serge Bulaev",
+    "shortDescription": "Threads(Meta)行銷 skills,繁體中文台灣版,適用 Claude Code 與 Codex。",
+    "longDescription": "8 個 Threads(Meta)行銷 skill:單則與串文撰寫、去 AI 味、鉤子拆解、回覆與引用草擬、內容規劃,以及不綁定服務的發佈層。繁體中文、台灣市場版。",
+    "developerName": "chichinliu",
     "category": "Productivity",
     "capabilities": [
       "Interactive",
       "Read",
       "Write"
     ],
-    "websiteURL": "https://github.com/sergebulaev/threads-skills",
+    "websiteURL": "https://chichinliu.com",
     "defaultPrompt": [
-      "Draft a Threads post from my notes.",
-      "Turn this into a multi-post Threads thread.",
-      "Plan a week of Threads content."
+      "用我的筆記起草一則 Threads 貼文。",
+      "把這個改成多則 Threads 串文。",
+      "幫我規劃一週的 Threads 內容。"
     ],
     "brandColor": "#000000",
     "composerIcon": "./assets/icon.svg"

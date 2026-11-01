@@ -1,72 +1,67 @@
-# Classification Rules
+# 分類規則
 
-How to map a Threads post or thread to one of the 13 formulas (T1-T13). Extract
-features first, then score.
+如何把一則 Threads 貼文或串文對應到 13 種公式(T1 到 T13)之一。先擷取特徵,再評分。
 
-## Step 1: container
+## 步驟 1:容器
 
-| Signal | Container |
+| 訊號 | 容器 |
 |---|---|
-| One self-contained post, no thread tail | single post -> T1-T6, T11-T13 |
-| Multiple connected posts, or a "see more" thread tail | thread -> T7-T10 |
-| A post with another post embedded above the text | quote post -> likely T4 |
+| 一則獨立完整的貼文,沒有串文尾巴 | 單則貼文 -> T1 到 T6、T11 到 T13 |
+| 多則連在一起,或有「顯示更多」的串文尾巴 | 串文 -> T7 到 T10 |
+| 貼文文字上方嵌入另一則貼文 | 引用貼文 -> 多半是 T4 |
 
-## Step 2: single-post features (T1-T6)
+## 步驟 2:單則貼文的特徵(T1 到 T6、T11 到 T13)
 
-| Feature in the text | Formula |
+| 內文中的特徵 | 公式 |
 |---|---|
-| A flat, against-the-common-belief opinion, framed warmly | T1 Warm Contrarian |
-| Built around one odd-precision number (1.3s, $873.47, 2.4x) | T2 Data-Point Hook |
-| A real personal metric or admission ("we did X", "i lost Y") | T3 Build-in-Public Confession |
-| Quotes another post and adds a reframe or counter | T4 Quote-Post Add-Value |
-| A short numbered or bulleted list, one line per item, fits one post | T5 Mini-List Post |
-| A relatable shared moment with no setup, names a feeling | T6 Relatable Cold-Open |
-| A flat first-person status/milestone, then a counterintuitive pivot ("I'm a millionaire. Don't start a business.") | T11 First-Person Status Flex |
-| "Most {group} DON'T NEED {thing}, they need {permission}", often caps-forward | T12 Permission Reframe |
-| One before/after copy swap ("Instead of X, say Y") | T13 Copy-Swap Micro-Lesson |
+| 一個平鋪直敘、違反常見信念,但包得很溫暖的觀點 | T1 溫暖反差 |
+| 圍繞一個精確到有點奇怪的數字(1.3 秒、NT$873、2.4 倍) | T2 數據鉤子 |
+| 一個真實的個人數字或坦白(「我們做了 X」「我賠了 Y」) | T3 公開建造自白 |
+| 引用另一則貼文,並加上重新定義或反駁 | T4 引用加值 |
+| 簡短的編號或項目清單,一行一項,一則就放得下 | T5 迷你清單 |
+| 不鋪陳的共鳴時刻,點出一種感受 | T6 共鳴開場 |
+| 平鋪直敘的第一人稱現況或里程碑,再接反直覺的轉折(「我已經財富自由。別創業。」) | T11 第一人稱現況亮相 |
+| 「多數{族群}不需要{東西},他們需要的是{許可}」,常常把重點放在強調字詞 | T12 許可重構 |
+| 一組前後對照的改寫(「不要說 X,改說 Y」) | T13 改寫對照微課 |
 
-## Step 3: thread features (T7-T10)
+## 步驟 3:串文的特徵(T7 到 T10)
 
-| Feature in post 1 + body | Formula |
+| 第 1 則與主體中的特徵 | 公式 |
 |---|---|
-| "N things that Y" promise, then one teaching post per item | T7 Listicle-Thread Promise |
-| Opens mid-scene at the tension, narrative beats, a turn near the end | T8 Story Thread |
-| A surprising result stated, the mechanism withheld ("here is why") | T9 Curiosity-Gap Opener |
-| "how i {result} in {timeframe}", then one actionable step per post | T10 How-I Teardown |
+| 「N 個讓 Y 的 X」的承諾,之後一項一則地教 | T7 清單串文承諾 |
+| 從張力的場景中間切入,有敘事的節拍,接近尾端有轉折 | T8 故事串文 |
+| 先講出令人意外的結果,機制留待之後(「原因是這樣」) | T9 好奇缺口開場 |
+| 「我怎麼在{時間}內{結果}」,之後一則一個可執行的步驟 | T10 「我是怎麼做到」拆解 |
 
-## Step 4: confidence scoring
+## 步驟 4:信心評分
 
-- Count matched features per formula. The formula with the most distinctive
-  matches wins.
-- If two are within one feature of each other, return both with fit percentages.
-- A quote post that also delivers a list is T4 by container but borrows T5's
-  structure; note both.
+- 數每種公式吻合的特徵。最具辨識度的特徵吻合最多者勝出。
+- 如果兩種公式只差一個特徵,兩個都回傳,附吻合百分比。
+- 引用貼文同時帶了一份清單:就容器而言是 T4,但借用了 T5 的結構,兩者都要註記。
 
-## Step 5: primary goal
+## 步驟 5:主要目標
 
-Infer what the original optimized for from its shape and its visible metrics:
+從形狀與可見的數據,推斷原作最佳化的方向:
 
-| Shape | Likely goal |
+| 形狀 | 可能的目標 |
 |---|---|
-| Sharp opinion, high reposts | reposts (T1, T2) |
-| List / framework / how-to, high reposts | reposts (T5, T7, T10) |
-| Personal metric / question, high replies | replies (T3, T9) |
-| Story / relatable, high likes | likes (T6, T8) |
-| Quote post adding a take, high quotes | quotes (T4, T8) |
+| 銳利的觀點,轉發高 | 轉發(T1、T2) |
+| 清單、框架、教學,轉發高 | 轉發(T5、T7、T10) |
+| 個人數字或提問,回覆高 | 回覆(T3、T9) |
+| 故事或共鳴,按讚高 | 按讚(T6、T8) |
+| 補上觀點的引用貼文,引用高 | 引用(T4、T8) |
 
-## Step 6: source audit
+## 步驟 6:審核來源
 
-Flag, do not copy:
-- more than one em dash in a post; en dashes between clauses; double dashes
-- an AI vocab cluster (3+ markers in one post: leverage, fundamentally, significant, etc.)
-- 2+ hashtags (Threads rejects the second) or mid-sentence hashtags
-- an external link in post 1
-- a first line that does not stand alone
-- a cold, combative X tone that reads as out of place on Threads
+標出來,不要照抄:
+- 一則超過一個破折號;子句之間用的破折號;雙連字號
+- 成堆的 AI 腔詞彙(同一則 3 個以上標記:賦能、助力、打造、深耕、解鎖、底層邏輯、值得注意的是、歸根結底等)
+- 2 個以上主題標籤(Threads 會拒絕第二個),或句子中間夾著主題標籤
+- 第一則放外部連結
+- 第一行無法單獨成立
+- 冷硬、好鬥的 X 腔,在 Threads 上顯得格格不入
+- 混入簡體字或大陸社媒句型(「家人們」「寶子們」「乾貨滿滿」「建議收藏」)
 
-## Output: the blank template
+## 輸出:空白範本
 
-Reproduce the winning formula's skeleton from
-`../../../references/hook-formulas.md`, swapping the original's specifics for
-`{slot}` markers matched to the user's topic. Keep the open-loop mechanic intact
-for threads and the warm invite for single posts.
+從 `../../../references/hook-formulas.md` 重現勝出公式的骨架,把原作的具體內容換成對應使用者主題的 `{欄位}` 標記。串文要保留懸念的機制,單則貼文要保留溫暖的邀請。

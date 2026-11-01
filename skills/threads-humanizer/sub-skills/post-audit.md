@@ -1,100 +1,77 @@
-# Threads Post Audit
+# Threads 貼文發佈前審查
 
-Run any Threads post or thread draft through the 2026 Threads ranking checklist.
-Catches AI tells, format violations (500-char fit, one-hashtag cap), reach
-suppressors (link placement), tone mismatches (transplanted X dunk), and
-structural weaknesses before publishing. This is the `threads-humanizer --mode
-audit` workflow: detection only, no rewrite.
+把任何 Threads 貼文或串文草稿,拿去對照 Threads 排序檢查表。在發佈前抓出 AI 腔、格式違規(500 字元上限、單一主題標籤)、壓低觸及的因素(連結位置)、語氣錯位(移植來的 X 嗆聲腔),以及台灣中文特有的問題(簡繁混用、大陸用語、標點與中英間距)。這就是 `threads-humanizer --mode audit` 的流程:只偵測,不改寫。
 
-## When to use
+## 何時使用
 
-- Before publishing a hand-written or AI-drafted post or thread
-- When `threads-post-writer` finishes a draft (auto-invoked)
-- When a recent post underperformed and the user wants a post-mortem
+- 發佈手寫或 AI 起草的貼文、串文之前
+- `threads-post-writer` 完成草稿時(自動呼叫)
+- 近期某則貼文表現不佳,使用者想做事後檢討
 
-## Input
+## 輸入
 
-- A post, or a thread (with or without `---` breaks)
-- Optional: target audience, scheduled time
+- 一則貼文,或一串文(有無 `---` 分隔都可)
+- 選填:目標受眾、預排時間
 
-## Output
+## 輸出
 
-- **Pass / Fail** header
-- **Blockers** (must fix before publishing): em dashes over the cap, posts at
-  3+ AI markers, reveal bridges, sincerity openers, dead closers ("Thoughts?",
-  "Let that sink in."), links in post 1, over-length posts, a second hashtag
-- **Warnings** (ship-risky): staccato stacks, missing referenced numbers,
-  cold X tone
-- **Suggested fixes** for each issue
-- **Per-post tell density** (markers, em dashes, fragments, triads). No
-  detector score: on post-length text those are noise and the skill does not
-  promise to beat them
-- **Timing recommendation** given the audience
+- **通過 / 不通過** 標頭
+- **阻擋項**(發佈前必須修):破折號超過上限、單則出現 3 個以上 AI 腔標記、揭曉橋段、表演式真誠開場、死結尾(「你覺得呢?」「值得深思」)、第 1 則含連結、超過字元上限、第二個主題標籤、簡體字或大陸用語
+- **警告**(發佈有風險):斷句堆疊、缺少該有的數字、冷硬的 X 腔、標點或中英間距問題
+- 每個問題的**建議修法**
+- **每則的 AI 腔密度**(標記數、破折號、碎片句、三段式)。不給偵測器分數:在貼文長度的文字上那些分數只是雜訊,本 skill 也不承諾能騙過偵測器
+- 依受眾給出的**發佈時段建議**
 
-## Checks
+## 檢查項目
 
-### Blockers (auto-fail)
+### 阻擋項(自動不通過)
 
-1. More than one em dash in a post; en dash between clauses; double dash. A
-   single em dash in a post that needs it is not a blocker.
-2. A single post over 500 chars (and no text attachment in play).
-3. Two or more hashtags (Threads rejects the second at the platform level).
-4. External link in post 1 of a thread, or in a single post meant to reach.
-5. Opens with "In today's fast-paced world" or similar, a reveal bridge
-   ("Here's what", "Stop X, start Y"), or a sincerity announcement ("let me be
-   honest", "not gonna lie", "unpopular opinion:" on a popular take).
-6. Ends with "What do you think?", "Thoughts?", or "Let that sink in." (a
-   specific warm question is fine).
-7. Any post with 3+ vocabulary / grammar markers, or any negative-parallelism
-   / "The result?" reveal bridge (see `../references/scrub-rules.md`).
-8. First line does not stand alone as a hook (it needs line 2 to make sense).
-9. Engagement bait ("repost if you agree", "reply YES").
+1. 一則內破折號「——」超過 1 個;子句之間用「--」或「—」連用。需要它的貼文裡出現單獨 1 個,不算阻擋。
+2. 單則超過 500 字元(且沒有使用長文附件)。字元數以 Threads App 內計數為準;中文、英文、標點、emoji 的計法有出入時,取較大值並請使用者在 App 內核對。
+3. 兩個以上主題標籤(第二個會在平台端被拒絕)。
+4. 串文第 1 則,或想要擴散的單則貼文,含外部連結。
+5. 開頭是「在這個快速變遷的時代」「隨著 AI 的發展」之類套話,或揭曉橋段(「答案是⋯⋯」「這不只是 X,而是 Y」),或表演式真誠(「老實說」「坦白講」「我必須承認」,後面沒有任何有日期的事實)。
+6. 以「你覺得呢?」「大家怎麼看?」「值得深思」收尾(具體、溫暖的提問可以)。
+7. 任一則出現 3 個以上詞彙 / 文法標記,或出現否定式對仗、「結果呢?」這類揭曉橋段(見 `../references/scrub-rules.md`)。
+8. 第一行無法獨立成為鉤子(要看到第二行才懂)。
+9. 互動誘餌(「同意請轉發」「留言 1」「按讚收藏」)。
+10. **簡體字混入。** 任何簡體字形(如「这」「们」「视频」)。
+11. **大陸慣用語。** 「視頻、信息、質量(指品質)、軟件、用戶、網絡、數據(指資料)、默認」等,或「家人們」「寶子們」「乾貨滿滿」「建議收藏」這類大陸社媒句型。對照 `../../../references/voice-rules.md` 的台灣用語表。
 
-### Warnings (flag with a suggested fix)
+### 警告(標記並附修法)
 
-10. More than 2 emoji, or any emoji on a serious/contrarian take.
-11. Staccato stacks ("Short. Punchy. Done.", "No X. No Y. Just Z."), one-word
-    lines for drama, more than 2 standalone fragments in a thread, an inserted
-    3-word "punch post" with no content, or a long/short/long/short seesaw.
-    Do not flag uniform post length: on Threads uniform rhythm wins at every
-    length in our corpus, and never suggest adding variance.
-12. No odd-precision number with a named referent anywhere the claim would
-    allow one (a bare number does not clear this).
-13. No named entity (person, company, tool).
-14. Stacked or perfectly parallel rule-of-three, a hollow triad without
-    concrete items, or a second triad in the same post (one natural triad
-    passes).
-14a. Hedging stack ("perhaps", "it seems", "just my two cents") or a framed
-    confession ("ngl this hurt: ..."). A flat dated fact is fine.
-14b. Over-scrubbed (only when auditing a humanizer rewrite with the original in hand to compare against; a fresh draft that never had an em dash or a triad is not over-scrubbed): uniformly flat tone, warmth or lowercase register gone, no
-    reaction or opinion anywhere.
-15. Thread post 1 closes its own loop (no reason to tap in).
-16. The best item or beat is buried at the end of a teaching thread.
-17. No clear primary goal: the draft chases replies, reposts, likes, and quotes
-    all at once. Pick one (see `../../../references/hook-formulas.md`
-    "Engagement-goal split").
-18. A single post trying to carry two ideas (should be two posts or a thread).
-19. A cold, combative, newsy X tone that reads as out of place on Threads.
+12. 超過 2 個 emoji,或嚴肅、反向觀點的貼文用了 emoji。
+13. 斷句堆疊(「簡單。直接。完成。」「沒有 X。沒有 Y。只有 Z。」)、為了戲劇效果的單字一行、串文裡超過 2 個獨立碎片句、插入沒內容的 3 字「重擊貼文」,或長短長短的蹺蹺板節奏。**不要把各則長度一致當成問題**:在 Threads 上,節奏一致在各種長度都勝出,也絕不建議為了變化而硬加差異。
+14. 該有的地方沒有帶「具名對象」的精準數字(光有數字不算過關)。
+15. 沒有任何具名實體(人、公司、工具)。
+16. 堆疊或完全對仗的三段式、沒有具體內容的空洞三項,或同一則出現第二個三段式(一個自然的三段式可以過關)。
+17. 堆疊式模糊語(「也許」「好像」「我只是隨口說說」),或包裝過的告白(「說出來不怕丟臉:⋯⋯」)。平鋪直敘、有日期的事實沒問題。
+18. 過度清洗(僅在拿原文對照、審查 humanizer 改寫稿時才適用;本來就沒有破折號或三段式的新草稿不算過度清洗):整體語氣扁平、溫度與口語感消失、全篇沒有任何反應或立場。
+19. **標點問題:** 中文句子中混用半形逗號或句號(「,」「.」)、連續多個驚嘆號或問號、引號不用「」而用 "" 。
+20. **中英間距問題:** 中文與英文、數字之間缺少半形空格(「用Claude寫了3篇」),或品牌名被寫成全小寫、錯誤大小寫。
+21. **語氣詞過量:** 單則超過 2 個句尾語氣詞(啦、喔、欸、吧),或出現注音文、火星文,而語氣檔案並未把它列為個人風格。
+22. 串文第 1 則自己把懸念收掉了(沒有點進去的理由)。
+23. 教學型串文把最好的一條或最強的節拍埋在最後。
+24. 沒有明確的主要目標:草稿同時追回覆、轉發、按讚、引用。擇一(見 `../../../references/hook-formulas.md` 的「互動目標拆分」)。
+25. 單則想塞兩個想法(該拆成兩則或做成串文)。
+26. 冷硬、嗆聲、新聞腔的 X 語氣,在 Threads 顯得格格不入。
 
-### Info (neutral notes)
+### 資訊(中性備註)
 
-20. Suggested posting window given the audience.
-21. Single post vs thread recommendation given the material.
-22. Repost-bait opportunity: if the draft is a list/framework/how-to, note that
-    it should be structured to maximize reposts (Threads' save analog).
+27. 依受眾建議的發佈時段(以台灣時間 UTC+8 表示,並註明這是假設,應以該帳號的洞察數據校正)。
+28. 依素材判斷,建議用單則還是串文。
+29. 轉發誘因:若草稿是清單、框架或教學,提醒要以利於被轉發、被收藏的方式組織。
 
-## Steps
+## 步驟
 
-1. Detect the container: single post, or thread (split on `---` or estimate
-   Publora's auto-split).
-2. For each post, count chars and run the blocker checks.
-3. If any blockers, return **FAIL** with specific fixes; optionally offer to hand
-   off to `threads-humanizer` for an auto-rewrite.
-4. If no blockers, run the warnings.
-5. Report per-post tell density. Do not estimate a detector score.
-6. Return the structured report with a timing note.
+1. 判斷容器:單則或串文(以 `---` 分段,或估算發佈層的自動拆分位置)。
+2. 對每一則計算字元數,並跑阻擋項檢查。
+3. 有阻擋項就回傳**不通過**與具體修法;可選擇性轉交 `threads-humanizer` 自動改寫。
+4. 沒有阻擋項,再跑警告。
+5. 回報每則的 AI 腔密度。不估算偵測器分數。
+6. 回傳結構化報告,並附發佈時段備註。
 
-## Related
+## 相關
 
-- `threads-humanizer` - proportional rewrite if the audit fails
-- `threads-post-writer` - regenerate using a proven formula
+- `threads-humanizer`:審查不通過時的按比例改寫
+- `threads-post-writer`:改用已驗證的公式重新生成

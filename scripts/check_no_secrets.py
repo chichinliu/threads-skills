@@ -4,7 +4,7 @@
 `.gitignore` is not the safety net people assume. It only stops *untracked*
 files from being added, so renaming the tracked `.env.example` to `.env`, which
 the GitHub web UI offers as a one-click rename, commits a real `.env` straight
-past it. That happened in linkedin-skills#28 and put a live Publora key and an
+past it. That happened in linkedin-skills#28 and put a live API key and an
 Apify token into a public branch.
 
 Removing the file in a later commit does not help: the blob stays reachable at
@@ -31,7 +31,6 @@ TEMPLATE_NAMES = re.compile(r"(^|/)\.env\.(example|sample|template)$")
 # Real key shapes, with enough trailing entropy to exclude the placeholders that
 # appear all over the docs (`sk_your_api_key`, `apify_api_xxx`).
 SECRET_PATTERNS = [
-    ("Publora API key", re.compile(r"\bsk_[a-z0-9]{6,}[._][A-Za-z0-9]{32,}")),
     ("Apify token", re.compile(r"\bapify_api_[A-Za-z0-9]{30,}")),
     ("Pixfaro token", re.compile(r"\bpf_live_[A-Za-z0-9]{24,}")),
     ("GitHub token", re.compile(r"\bgh[pousr]_[A-Za-z0-9]{30,}")),

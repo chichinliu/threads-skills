@@ -1,471 +1,373 @@
-# 13 Threads (Meta) Hook Formulas - 2026 Edition
+# 13 個 Threads 鉤子公式(2026・台灣市場版)
 
-Threads rewards a warmer shape than X. The text-first mechanics are the same:
-the first line has to land, because the feed truncates long posts with a "more"
-cut. But the register is conversational, and the heaviest signal is a real
-reply, so the best Threads hooks invite a conversation instead of closing the
-argument.
+Threads 的語境比 X 溫暖。文字為主的機制相同:第一行必須站得住,因為動態消息會在「顯示更多」處截斷長貼文。但這裡的語氣是口語,最重的訊號是真實的回覆,所以最好的 Threads 鉤子是邀請對話,而不是把爭論收尾。
 
-Each formula below has a skeleton, why it works, and a primary engagement goal.
-The four goals map to Threads' ranked signals:
+下面每個公式都有骨架、為什麼有效、主要互動目標。四個目標對應 Threads 的排序訊號:
 
-| Goal | What it earns | Why it matters on Threads |
+| 目標 | 換來什麼 | 為什麼在 Threads 重要 |
 |---|---|---|
-| **replies** | back-and-forth in the conversation | replies are the single heaviest positive signal on Threads, a conversation-first platform |
-| **reposts** | reach beyond your followers + the "save" signal | a repost re-injects the post into a new network AND is the closest Threads analog to a bookmark/save, so reference-worthy content lives here |
-| **likes** | cheap affirmation, light reach | lowest-weight signal, but social proof for the next reader |
-| **quotes** | a quote post adds reach plus the quoter's own take | quotes travel because they let the quoter stake a position while showing your post for context |
+| **回覆** | 對話裡的來回 | 回覆是 Threads 這個對話優先平台上最重的單一正向訊號 |
+| **轉發** | 觸及追蹤者以外的人,加上「收藏」訊號 | 轉發會把貼文重新送進新的人脈圈,也是 Threads 上最接近書籤的動作,所以值得留存的內容集中在這裡 |
+| **按讚** | 低成本的肯定,輕微觸及 | 權重最低,但對下一位讀者是社會認同 |
+| **引用** | 引用貼文帶來觸及,加上引用者自己的觀點 | 引用之所以會傳開,是因為引用者能表態,同時把你的貼文當背景附上 |
 
-Formulas T1-T6 are **single-post** shapes (the whole idea fits in one post, or a
-2-3 post micro-thread). T7-T10 are **thread** shapes (multi-post). Publora
-auto-splits any long `content` into a connected multi-post thread at paragraph
-then sentence boundaries. Unlike X, Threads does NOT add `(1/N)` markers by
-default, so you can write a thread as flowing prose or break it yourself with
-`---` separators.
+T1 到 T6、T11 到 T13 是**單則**形式(整個想法放得進一則,或 2 到 3 則的微串文)。T7 到 T10 是**串文**形式(多則)。發佈層若支援自動切分,會依段落、再依句子斷點把長內容切成連串的多則貼文;不支援時,用 `---` 自己切,並手動貼成串文。Threads 不會像 X 那樣預設加 `(1/N)` 編號,所以你可以寫成一氣呵成的文字,也可以自己用 `---` 分隔。
 
-## Contents
+> 本檔的範例句是**示意**,用來示範骨架與台灣口吻,不是語料庫裡的真實貼文。範例中的數字一律是佔位,請換成你自己的真實數字,不要原樣照抄。
 
-- T1 - Warm Contrarian
-- T2 - Data-Point Hook
-- T3 - Build-in-Public Confession
-- T4 - Quote-Post Add-Value
-- T5 - Mini-List Post
-- T6 - Relatable Cold-Open
-- T7 - Listicle-Thread Promise
-- T8 - Story Thread
-- T9 - Curiosity-Gap Opener
-- T10 - How-I Teardown Thread
-- T11 - First-Person Status Flex
-- T12 - Permission Reframe (caps-forward)
-- T13 - Copy-Swap Micro-Lesson
-- Engagement-goal split
-- Single post vs thread: pick the container first
-- Hook micro-rules (Threads-specific)
-- Never do
+## 目錄
+
+- T1 - Warm Contrarian(溫暖逆向)
+- T2 - Data-Point Hook(單一數據鉤子)
+- T3 - Build-in-Public Confession(公開打造的坦白)
+- T4 - Quote-Post Add-Value(引用貼文加值)
+- T5 - Mini-List Post(迷你清單)
+- T6 - Relatable Cold-Open(共鳴開場)
+- T7 - Listicle-Thread Promise(清單串文承諾)
+- T8 - Story Thread(故事串文)
+- T9 - Curiosity-Gap Opener(好奇缺口開場)
+- T10 - How-I Teardown Thread(我是怎麼做到的拆解串文)
+- T11 - First-Person Status Flex(第一人稱身分亮相)
+- T12 - Permission Reframe(允許式重新定義,強調語氣)
+- T13 - Copy-Swap Micro-Lesson(改寫對照微教學)
+- 依互動目標選公式
+- 單則還是串文:先選容器
+- 鉤子微規則(Threads 專屬)
+- 不要做
 
 ---
 
-## T1 - Warm Contrarian
+## T1 - Warm Contrarian(溫暖逆向)
 
-**Goal: reposts.** Single post. A sharp, defensible, against-the-grain claim,
-framed as an invitation rather than a dunk.
-
-```
-Most {group} think {common belief}.
-
-The ones who {win} do the opposite: {contrarian move}. {soft open question or stop}
-```
-
-Or the tighter one-line form:
+**目標:轉發。** 單則。一個犀利、站得住腳、逆著主流的主張,用邀請的口吻說,不是嗆聲。
 
 ```
-{Unpopular truth stated plainly, no hedge, with a warm tail that leaves room to talk.}
+多數 {族群} 以為 {常見信念}。
+
+做得好的人反而是 {逆向做法}。{軟性的提問,或直接收住}
 ```
 
-**Why:** A complete, screenshot-ready opinion travels because reposting it is a
-cheap way for the reader to signal their own taste. Threads adds a twist: a take
-that invites a reply (not just agreement) compounds because replies are the
-heaviest signal. The claim still has to be true enough to defend.
+或更緊的一行版本:
 
-**Warning:** A contrarian take you cannot back up gets picked apart in the
-replies. Only ship the ones you would defend in person. Keep the heat warm, not
-combative.
+```
+{把不受歡迎的真話直接說完,不鋪陳,尾巴留一點溫度,讓人想接話。}
+```
+
+示意:
+
+```
+很多人以為做社群要天天發文。
+
+我後來發現，把一則貼文磨到會有人回，比發七則沒人回有用。你們怎麼抓節奏的？
+```
+
+**為什麼有效:** 一個完整、能截圖的意見會被轉發，因為轉發是讀者表達自己品味的低成本方式。Threads 多了一層:邀請回覆（不只是同意）的觀點會複利，因為回覆是最重的訊號。主張本身還是要夠真，經得起辯。
+
+**警告:** 站不住腳的逆向觀點，會在回覆區被一條條拆掉。只發你願意當面捍衛的。火氣要溫，不要變成嗆人。
 
 ---
 
-## T2 - Data-Point Hook
+## T2 - Data-Point Hook(單一數據鉤子)
 
-**Goal: reposts.** Single post built around one concrete, odd-precision number
-that reframes how the reader sees a thing. Reference-worthy, so it earns the
-save-style repost.
+**目標:轉發。** 單則，圍繞一個具體、帶零頭的數字，改變讀者看某件事的方式。值得留存，所以會換來「收藏式」的轉發。
 
 ```
-{Specific number, not rounded} {what it measures}.
+{具體、不湊整的數字} {它在衡量什麼}。
 
-{One line of context that makes the number land.}
+{一行背景，讓這個數字有重量。}
 ```
 
-Worked shape:
+示意（數字為佔位，請換成你的真實數據）:
 
 ```
-a landing page that loads in 1.3s converts 2.4x better than one at 3.2s.
+首頁載入 1.3 秒的頁面，轉換率是 3.2 秒那頁的 2.4 倍。
 
-speed is not a UX nicety. it is a revenue line item.
+速度不是使用者體驗的加分項，是營收的一個欄位。
 ```
 
-**Why:** A single hard number is the most repost-worthy unit on Threads. People
-repost it to keep it and to cite it later. Odd, non-rounded figures (1.3s,
-$873.47, 2.4x) read as real measurement, not a vibe. The second line tells the
-reader why to care.
+**為什麼有效:** 一個硬數字是 Threads 上最值得轉發的單位。人們轉發是為了留著、日後引用。不湊整的數字（1.3 秒、NT$873、2.4 倍）讀起來像真的量測，不是感覺。第二行告訴讀者為什麼該在意。
 
-**Warning:** Never invent the number. A figure that gets fact-checked in the
-replies costs you more reach than the post earned.
+**警告:** 絕對不要編數字。被留言區查證的數字，損失的觸及比這則貼文賺到的還多。
 
 ---
 
-## T3 - Build-in-Public Confession
+## T3 - Build-in-Public Confession(公開打造的坦白)
 
-**Goal: replies.** Single post or 2-3 post micro-thread. You share a real number
-from your own work, including the ugly ones. Threads loves this genre.
+**目標:回覆。** 單則或 2 到 3 則的微串文。分享你自己工作裡的真實數字，包含難看的那種。Threads 很吃這一味。
 
 ```
-{Time marker}: {your project} did {real metric, good or bad}.
+{時間點}:{你的專案} {真實的指標，好壞皆可}。
 
-here is the part nobody posts: {the honest cost, mistake, or surprise}.
+沒人會發的部分是:{誠實的代價、失誤或意外}。
 ```
 
-**Why:** Founders and builders over-index on Threads, and raw transparency
-out-pulls polish. A real failure or an unflattering metric earns replies because
-it gives other builders permission to compare notes. The confession is the
-conversation starter, and conversation is the platform's heaviest signal.
+示意:
 
-**Warning:** It has to be a true number from your real work. Manufactured
-vulnerability is obvious and gets punished.
+```
+上線第 30 天：付費轉換 0.8%，比我預估的 3% 差很多。
+
+沒人會發的部分是，我把前兩週都花在調 logo。
+```
+
+**為什麼有效:** 創業者和做產品的人在 Threads 上占比偏高，而赤裸的透明勝過包裝。真實的失敗或不好看的指標能換來回覆，因為它讓其他人敢來對照心得。坦白就是開場白，而對話是平台上最重的訊號。
+
+**警告:** 必須是你實際工作裡的真數字。刻意製造的脆弱一眼就看得出來，會被懲罰。
 
 ---
 
-## T4 - Quote-Post Add-Value
+## T4 - Quote-Post Add-Value(引用貼文加值)
 
-**Goal: quotes.** You quote-post someone else's take and add a layer, NOT a
-cheap dunk. The quote post shows the original above your comment.
+**目標:引用。** 你引用別人的觀點並加上一層，不是廉價的酸。引用貼文會把原文顯示在你的留言上方。
 
 ```
-{One line that reframes or warmly builds on the quoted take.}
+{一行把被引用的觀點重新框架，或溫暖地往上疊。}
 
-{The added value: the missing nuance, the counter-example, the "and here is why".}
+{你補上的價值:缺的細節、反例、「還有為什麼」。}
 ```
 
-**Why:** Quote posts borrow the reach and context of the original while letting
-you stake your own position. On Threads the ones that travel add genuine value or
-a warmer frame, not contempt. A value-add quote post often out-reaches a
-standalone post because it rides an existing conversation.
+**為什麼有效:** 引用貼文借用原文的觸及與脈絡，同時讓你表態。在 Threads 上傳得開的，是補上真價值或換成更溫暖框架的，不是輕蔑。加值型的引用常常比獨立貼文觸及更高，因為它搭上一場已在進行的對話。
 
-**Warning:** Punching down or quote-dunking on a small account reads as bullying
-and backfires hard on a community-first platform. Add value or skip it. Assume
-the original author will see it.
+**警告:** 對小帳號居高臨下或引用酸人，讀起來像霸凌，在重視社群的平台上反噬很重。要嘛加值，要嘛不發。假設原作者一定會看到。
 
 ---
 
-## T5 - Mini-List Post
+## T5 - Mini-List Post(迷你清單)
 
-**Goal: reposts.** A single post that packs a tight, scannable list. The whole
-list fits in 500 chars.
+**目標:轉發。** 單則，把一份緊湊、好掃讀的清單塞進去。整份清單要放得進 500 字元。
 
 ```
-{N} {things} that {payoff}:
+{N} 個 {事物}，讓你 {好處}：
 
-1. {item}
-2. {item}
-3. {item}
-4. {item}
-5. {item}
+1. {項目}
+2. {項目}
+3. {項目}
+4. {項目}
+5. {項目}
 ```
 
-**Why:** A self-contained list is pure repost-bait. The reader reposts it as a
-reference, and the repost is the platform's save-style signal. Keep each item to
-a few words so the whole thing reads in one glance. If the list needs more than a
-line per item, it is a thread (use T7), not a single post.
+**為什麼有效:** 自成一體的清單是純粹的轉發誘因。讀者轉發當作參考，而轉發就是平台上的收藏訊號。每個項目控制在幾個字，一眼看完。如果每項需要超過一行，那就是串文（用 T7），不是單則。
 
-**Warning:** Padding the list with filler items to hit a round number dilutes it.
-Five real items beat ten weak ones.
+**警告:** 為了湊整數而灌水的項目會稀釋整份清單。5 個真貨勝過 10 個軟的。
 
 ---
 
-## T6 - Relatable Cold-Open
+## T6 - Relatable Cold-Open(共鳴開場)
 
-**Goal: likes.** A single post that names a feeling or a small universal moment
-with no setup. The reader sees themselves in it. This is Threads' home turf.
-
-```
-{One short line that drops the reader straight into a shared, specific moment.}
-```
-
-Worked shape:
+**目標:按讚。** 單則，不鋪陳，直接點出一種感受或一個小小的共同時刻。讀者在裡面看到自己。這是 Threads 的主場。
 
 ```
-that 4pm feeling when the code finally compiles and you are scared to touch anything.
+{一句短話，把讀者直接丟進一個共享、具體的瞬間。}
 ```
 
-**Why:** Relatable observations are the cheapest likes on Threads and the most
-shareable to a reader's own network. They work because recognition is instant.
-Specific beats generic: a named moment ("4pm", "the code compiles") lands harder
-than a vague mood. Threads' warm register makes this genre travel further here
-than on X.
+示意:
 
-**Warning:** This is the most copied genre on Threads, so a generic version
-disappears. The specificity is the whole job. Do not reach for ALL CAPS to add
-intensity *to a relatable moment*, it reads as trying too hard. (Caps used as a
-deliberate permission-declaration frame are a different, working shape, see T12,
-so this warning is about manufactured intensity, not a blanket no-caps rule.)
+```
+下午四點，程式終於跑過了，但我完全不敢碰任何東西。
+```
+
+**為什麼有效:** 共鳴型觀察是 Threads 上最便宜的讚，也最容易被讀者轉到自己的圈子。有效是因為辨認是瞬間的。具體勝過空泛：「下午四點」「程式終於跑過」比一個模糊的心情有力。Threads 的溫暖語境讓這類內容在這裡比在 X 傳得更遠。
+
+**警告:** 這是 Threads 上被抄最多的類型，空泛的版本會直接消失。具體度就是全部的功夫。不要為了替共鳴時刻加強度而用全部大寫或連環驚嘆號，讀起來太用力。（T12 把強調語氣當作刻意的「允許宣告」框架，是另一種有效的形式，所以這條警告針對的是硬擠出來的強度，不是一律禁止強調語氣。）
 
 ---
 
-## T7 - Listicle-Thread Promise
+## T7 - Listicle-Thread Promise(清單串文承諾)
 
-**Goal: reposts.** Thread. Post 1 promises a numbered payoff; each following post
-delivers one item with room to breathe.
-
-```
-{N} {things} that {big specific payoff}.
-
-most people get {number} of them wrong.
-```
-
-Then one post per item:
+**目標:轉發。** 串文。第一則承諾一個編號的收穫，後面每一則交付一個項目，留足呼吸空間。
 
 ```
-1. {Item name}
+{N} 個 {事物}，讓你 {具體的大收穫}。
 
-{2-3 lines that actually teach the item, with a concrete example.}
+大多數人會踩錯其中 {數字} 個。
 ```
 
-**Why:** The promise plus the "most people get X wrong" line opens a loop the
-reader has to resolve, so they tap into the thread. A teaching thread with real
-examples is the most-reposted format on Threads, because the reader reposts the
-whole chain to keep it. Put the strongest item at position 1 or 2; tap-through
-drops with depth.
+然後每個項目一則:
 
-**Warning:** If post 1 over-promises and the body under-delivers, you train
-followers to skip your threads. The promise is a contract.
+```
+1. {項目名稱}
+
+{2 到 3 行真正教會這一項，附一個具體例子。}
+```
+
+**為什麼有效:** 承諾加上「大多數人會踩錯」這句，開出一個讀者非解開不可的迴圈，所以他們會點進串文。附真實例子的教學串文，是 Threads 上被轉發最多的形式，因為讀者會整串轉發留著。最強的項目放在第 1 或第 2 位，點進深度越深，點擊越掉。
+
+**警告:** 第一則說太滿、內容兌現不了，會訓練追蹤者跳過你的串文。承諾就是合約。
 
 ---
 
-## T8 - Story Thread
+## T8 - Story Thread(故事串文)
 
-**Goal: likes and quotes.** Thread. Post 1 starts in the middle of a real story
-at the moment of tension. No warm-up.
+**目標:按讚與引用。** 串文。第一則從真實故事的中段、張力最高處切入，不暖身。
 
 ```
-{One line dropped into the peak of a real story: the moment it nearly broke, or the impossible odds.}
+{一句話丟進真實故事的高點:差點出事的那一刻，或看似不可能的處境。}
 
-{One line that raises the stakes and promises the turn is coming.}
+{一句話把賭注拉高，並預告轉折就要來了。}
 ```
 
-Then the thread carries the scene forward, one beat per post, ending on the turn
-and a single line of meaning.
+接著串文一則一個節拍把場景往前推，結尾落在轉折加上一句意義。
 
-**Why:** Starting in the action (in medias res) skips the setup the scroll
-punishes. Story threads earn likes from emotional payoff and quotes when the
-ending is repeatable. The open loop in post 1 ("here is the moment it nearly
-broke") is what makes the reader tap to see how it resolves. Threads' warmer
-audience rewards earnest stories that would read as oversharing on X.
+**為什麼有效:** 從事件中間開始（in medias res）能跳過會被滑掉的鋪陳。故事串文因為情緒收穫換來按讚，當結局值得被複述時換來引用。第一則的開放迴圈（「就是在這一刻，差點全部垮掉」）讓讀者點進去看怎麼收尾。Threads 較溫暖的受眾，會獎勵在 X 上會被看成過度分享的真誠故事。
 
-**Warning:** Only use a true story. Readers punish manufactured stakes, and a
-fabricated arc that gets caught destroys trust fast.
+**警告:** 只用真實的故事。讀者會懲罰人造的賭注，一旦被抓到編造的情節，信任崩得很快。
 
 ---
 
-## T9 - Curiosity-Gap Opener
+## T9 - Curiosity-Gap Opener(好奇缺口開場)
 
-**Goal: replies.** Thread. Post 1 names a surprising result and withholds the
-mechanism, then invites a guess.
+**目標:回覆。** 串文。第一則點出一個令人意外的結果，不說原因，並邀請讀者猜。
 
 ```
-{Surprising outcome stated as fact, with a number if you have one.}
+{把意外的結果當事實講，有數字就帶數字。}
 
-i did not expect why. {soft invite to guess before the reveal below.}
+我完全沒料到原因。{軟性邀請，在下面揭曉前先猜猜看。}
 ```
 
-**Why:** Line 1 is a complete, intriguing claim; line 2 deepens the gap and
-invites the reader to reply with a guess before the body delivers the answer.
-The reader taps into the thread to close the loop, and the guess-invite turns a
-read into a reply, which is the platform's heaviest signal. Pair the reveal with
-a real, specific cause, not a platitude.
+**為什麼有效:** 第一行是完整、有趣的主張；第二行加深缺口，邀請讀者先留言猜，再由內文給答案。讀者點進串文去補上迴圈，而猜測邀請把閱讀變成回覆，也就是平台最重的訊號。揭曉時要搭配真實、具體的原因，不是空話。
 
-**Warning:** Pure clickbait with a thin payoff gets a fast tap-away, which the
-ranker reads as a quality penalty. The reveal has to be worth the tap.
+**警告:** 純標題黨、收穫單薄，會換來快速離開，排序系統會把這讀成品質扣分。揭曉要值得那一次點擊。
 
 ---
 
-## T10 - How-I Teardown Thread
+## T10 - How-I Teardown Thread(我是怎麼做到的拆解串文)
 
-**Goal: reposts.** Thread. Post 1 frames a specific result you got; the body is
-the exact, repeatable steps.
-
-```
-how i {specific result with a number} in {timeframe}.
-
-the exact steps, nothing held back.
-```
-
-Then one post per step, each actionable:
+**目標:轉發。** 串文。第一則框出你得到的具體成果；內文是可重複的確切步驟。
 
 ```
-step {n}: {step name}
+我是怎麼在 {時間範圍} 內 {帶數字的具體成果}。
 
-{What to do, the specific tool or ratio, and the one mistake to avoid.}
+確切步驟，一個字都不藏。
 ```
 
-**Why:** "How I" beats "How to" on Threads by a wide margin, because first-person
-results carry proof. A no-paywall teardown of a real result is heavy repost-bait:
-people repost it to run later. The number in post 1 ("in 14 days", "to 10k") is
-the credibility anchor.
+接著一個步驟一則，每則都能直接動手:
 
-**Warning:** Vague steps ("be consistent", "add value") kill the save. Every step
-needs a concrete instruction someone could execute tomorrow.
+```
+步驟 {n}：{步驟名稱}
+
+{要做什麼、用哪個工具或比例，以及要避開的一個錯誤。}
+```
+
+**為什麼有效:** 在 Threads 上，「我是怎麼」遠勝「如何」，因為第一人稱的成果自帶證據。不設付費牆、拆解真實成果的內容，是強力的轉發誘因：人們轉發是為了之後照著跑。第一則裡的數字（「14 天內」「做到 1 萬」）是可信度的錨。
+
+**警告:** 含糊的步驟（「要持續」「多給價值」）會殺死收藏。每個步驟都要有明天就能執行的具體指令。
 
 ---
 
-## T11 - First-Person Status Flex
+## T11 - First-Person Status Flex(第一人稱身分亮相)
 
-**Goal: replies and reposts.** Single post. You state an identity or a milestone
-flatly, then pivot straight into a counterintuitive instruction. This was the
-single highest-performing shape in a 318-post Threads pull (July 2026), and it
-landed from unverified small accounts too, not only big names.
+**目標:回覆與轉發。** 單則。平鋪直敘地說出一個身分或里程碑，然後直接轉進一個反直覺的指示。在一次 318 則的 Threads 抽樣（2026 年 7 月，英文市場）中，這是表現最好的單一形式，而且連未驗證的小帳號也做得到，不只大帳號。
 
 ```
-{Flat first-person status or milestone, stated plainly.}
+{平鋪直敘的第一人稱身分或里程碑。}
 
-{The counterintuitive pivot or instruction it earns.}
+{它換來的反直覺轉折或指示。}
 ```
 
-Worked shapes (real corpus hooks):
+示意（結構示範，內容請換成你真實的狀態）:
 
 ```
-I'm a millionaire. If you want to get rich, don't start a business. Do this instead:
-
-I'm now a $19,963.01 business owner at 19. Here is what actually moved the needle:
+我做自由接案第五年，月收入穩定超過 {你的真實數字}。想走這條路，先別急著辭職，先做這件事：
 ```
 
-**Why:** The flat status line buys instant credibility, and the pivot converts
-it into something the reader can act on. It is distinct from T2 (this is
-identity, not a reframing measurement) and from T3 (it is a clean flex, no ugly
-cost). On Threads' aspirational-warm feed this register tops the feed.
+**為什麼有效:** 平鋪的身分句帶來即時可信度，轉折再把它變成讀者能行動的東西。它不同於 T2（這是身分，不是重新框架的量測數字），也不同於 T3（這是乾淨的亮相，沒有難看的代價）。在 Threads 偏向「向上、溫暖」的動態消息裡，這個語氣排在前面。
 
-**Warning:** The status has to be real. A fabricated milestone that gets
-questioned in the replies costs more than it earned. And earn the pivot: a flex
-with no useful turn is just bragging and gets muted.
+**警告:** 狀態必須是真的。被回覆區質疑的捏造里程碑，損失比賺到的多。而且要把轉折賺到手：只有炫耀、沒有有用轉折的亮相，只是自誇，會被靜音。台灣讀者對炫富式的吹噓尤其敏感，語氣放平、把重點放在轉折。
 
 ---
 
-## T12 - Permission Reframe (caps-forward)
+## T12 - Permission Reframe(允許式重新定義,強調語氣)
 
-**Goal: reposts and quotes.** Single post. You tell a specific identity group
-they do not need the conventional thing, then hand them permission to do the
-reframed thing instead. A caps-forward opener is legitimate here (it reads as
-conviction, not try-hard), which is the one place the T6 no-caps warning does
-not apply.
+**目標:轉發與引用。** 單則。你告訴某個特定身分族群：他們不需要傳統做法，然後給他們許可去做被重新定義的那件事。這裡用強調語氣開場是正當的（讀起來是信念，不是用力過度），是 T6 警告唯一不適用的地方。
 
 ```
-Most {identity group} DON'T NEED {conventional thing}.
+多數 {身分族群} 不需要 {傳統做法}。
 
-They need {the reframed permission}.
+他們需要的是 {重新定義後的許可}。
 ```
 
-Worked shape (real corpus hook, from an unverified account, top-3 in the pull):
+示意:
 
 ```
-Most ADHD people DON'T NEED A STABLE CAREER. They need permission to turn their curiosity into money.
+很多內向的人不需要「多參加社交場合」。他們需要的是，允許自己用文字把影響力做出來。
 ```
 
-**Why:** Naming a specific in-group plus giving them permission is high
-repost-and-quote fuel: the reader reposts it as a flag for their own identity.
-The caps carry conviction on a declaration (unlike on a relatable moment, where
-they read as shouting).
+**為什麼有效:** 點名一個具體的同溫層，再給他們許可，是高轉發、高引用的燃料：讀者轉發它，當作自己身分的旗幟。強調語氣在宣告句上傳達的是信念（不像在共鳴時刻上會讀成大吼）。中文沒有大小寫，強調改用「不需要」「只需要」的對仗結構與換行節奏，必要時才用粗體或「」，不要用整串驚嘆號。
 
-**Warning:** Keep it to a genuine in-group and a real reframe. Caps on a weak or
-generic claim just reads as yelling. One caps declaration per post, not a wall.
+**警告:** 要有真實的同溫層和真實的重新定義。強調語氣加在薄弱或空泛的主張上，只會像在吼。一則一個強調宣告，不要整面牆。
 
 ---
 
-## T13 - Copy-Swap Micro-Lesson
+## T13 - Copy-Swap Micro-Lesson(改寫對照微教學)
 
-**Goal: reposts.** Single post. You teach one concrete before/after swap: the
-weak version, then the strong version. This was the most *repeatable* format in
-the pull, clearing solid engagement over and over from small teaching accounts.
+**目標:轉發。** 單則。教一個具體的改寫對照：弱版本，然後強版本。在這次抽樣中這是最「可重複」的形式，小型教學帳號一再拿到穩定的互動。
 
 ```
-{Tip label}: {the one principle in a line}.
+{小撇步標籤}:{一句話的原則}。
 
-Instead of: "{weak version}"
+原本這樣寫：「{弱版本}」
 
-Say: "{strong version}"
+改成：「{強版本}」
 ```
 
-Worked shape (real corpus hook):
+示意:
 
 ```
-Copywriting tip: write "you" sentences, not "we" sentences.
+文案小撇步：多寫「你」，少寫「我們」。
 
-Instead of: "We have a new collection."
+原本這樣寫：「我們推出了新系列。」
 
-Say: "You'll love our new collection."
+改成：「你會喜歡我們的新系列。」
 ```
 
-**Why:** A single, copyable before/after is pure reference-repost bait: the
-reader saves it because they can apply it in the next thing they write. It fits
-neither T5 (a list) nor T10 (a thread), and it is the lowest-follower-friendly
-format in the set because the value is self-evident, not reputation-dependent.
+**為什麼有效:** 一個可直接照抄的前後對照，是純粹的參考型轉發誘因：讀者收藏它，因為下次寫東西就能套用。它不屬於 T5（清單）也不屬於 T10（串文），而且是整組裡對低追蹤數最友善的形式，因為價值一目了然，不靠名氣。
 
-**Warning:** The swap has to teach a real, transferable rule. A contrived
-before/after where the "after" is barely different reads as filler.
+**警告:** 對照必須教到一條真實、可遷移的規則。刻意造出、「後」和「前」幾乎沒差的對照，讀起來像湊數。
 
 ---
 
-## Engagement-goal split
+## 依互動目標選公式
 
-Pick the formula by what you want the post to earn, then narrow by topic.
+先決定這則貼文要換來什麼，再依主題縮小範圍。
 
-| Goal | Earned by | Formulas |
+| 目標 | 靠什麼換來 | 公式 |
 |---|---|---|
-| **replies** | confessions, curiosity gaps, questions, status pivots, takes worth talking about | T3 Build-in-Public, T9 Curiosity-Gap, T1 Warm Contrarian, T11 Status Flex |
-| **reposts** | quotable opinions, lists, frameworks, hard numbers, repeatable how-tos, copy swaps | T2 Data-Point, T5 Mini-List, T7 Listicle-Thread, T10 How-I Teardown, T1 Warm Contrarian, T13 Copy-Swap |
-| **likes** | relatable moments, emotional stories | T6 Relatable Cold-Open, T8 Story Thread |
-| **quotes** | value-add quote posts, story payoffs, permission reframes worth a take | T4 Quote-Post, T8 Story Thread, T12 Permission Reframe |
+| **回覆** | 坦白、好奇缺口、提問、身分轉折、值得聊的觀點 | T3 Build-in-Public、T9 Curiosity-Gap、T1 Warm Contrarian、T11 Status Flex |
+| **轉發** | 可引用的意見、清單、框架、硬數字、可重複的做法、改寫對照 | T2 Data-Point、T5 Mini-List、T7 Listicle-Thread、T10 How-I Teardown、T1 Warm Contrarian、T13 Copy-Swap |
+| **按讚** | 共鳴時刻、情緒故事 | T6 Relatable Cold-Open、T8 Story Thread |
+| **引用** | 加值型引用貼文、故事的收尾、值得表態的允許式重新定義 | T4 Quote-Post、T8 Story Thread、T12 Permission Reframe |
 
-**Corpus note (318-post Threads pull, July 2026, business/creator niches).** This
-feed skews markedly more *aspirational-warm* than X: money-milestone flexes,
-personal-brand advocacy, and mutual-support encouragement dominate, while
-X-style relatable shitposts (T6) and combative dunks barely register. The
-top-of-feed shapes were the status flex (T11), the era-death contrarian (a T1
-sub-variant: "The influencer era is dying. The personal brand era is taking
-over."), and the permission reframe (T12). Two caveats on the evidence: this pull
-was ranked by raw engagement (the search actor exposes no follower counts, so big
-accounts are over-represented) and n is small, so T11/T12/T13 are strong,
-unverified-account-anchored hypotheses to test, not settled law. Also note the
-number that travels on Threads is usually a *status/income* number ($238k, $19,963),
-not the measurement-reframe number (1.3s, 2.4x) that T2 leads with.
+**語料庫備註(318 則 Threads 抽樣,2026 年 7 月,英文市場的商業與創作者領域)。** 這個動態消息比 X 明顯更偏「向上、溫暖」：賺錢里程碑的亮相、個人品牌倡議、互相打氣的鼓勵占多數，而 X 風格的共鳴廢文（T6）和嗆聲幾乎沒有存在感。排在最前面的形式是身分亮相（T11）、「某個時代終結」的逆向觀點（T1 的子變體，例如「網紅時代正在結束，個人品牌時代正在接手」），以及允許式重新定義（T12）。證據的兩個限制：這次抽樣按原始互動數排序（搜尋工具不提供追蹤者數，所以大帳號被過度代表），而且樣本量小，因此 T11、T12、T13 是以未驗證小帳號為基礎的有力假設，要拿去測，不是定律。另外請注意，在 Threads 上傳得開的數字通常是「身分或收入」數字，而不是 T2 主打的「量測重新框架」數字（1.3 秒、2.4 倍）。
 
-## Single post vs thread: pick the container first
+**這份語料來自英文市場，不是台灣資料。** 上面的排序在台灣繁體中文圈是否成立，是**假設，待以自己帳號洞察驗證**。建議用你自己的帳號對 T1、T3、T6、T11 各做幾次 A/B，看回覆與轉發數再決定主力公式。
 
-| If the idea is... | Use | Why |
+## 單則還是串文:先選容器
+
+| 如果這個想法是… | 用 | 原因 |
 |---|---|---|
-| One claim, one number, one moment | single post (T1, T2, T6) | a thread on a one-line idea reads as padding |
-| A scannable list, each item one line | single post (T5) | fits in 500, instantly repostable |
-| A list where each item needs teaching | thread (T7) | give each item room |
-| A narrative with a build and a turn | thread (T8) | one beat per post controls pacing |
-| A surprising result with a mechanism | thread (T9) | gap in post 1, payoff in the body |
-| A repeatable process you ran yourself | thread (T10) | one step per post, save-worthy |
+| 一個主張、一個數字、一個瞬間 | 單則(T1、T2、T6) | 把一句話的想法拉成串文,讀起來像灌水 |
+| 好掃讀的清單,每項一行 | 單則(T5) | 放得進 500 字元,馬上能轉發 |
+| 每個項目都需要教學的清單 | 串文(T7) | 給每項留空間 |
+| 有鋪陳與轉折的敘事 | 串文(T8) | 一則一個節拍,控制節奏 |
+| 令人意外的結果,背後有機制 | 串文(T9) | 缺口在第一則,收穫在內文 |
+| 你自己跑過、可重複的流程 | 串文(T10) | 一則一步,值得收藏 |
 
-## Hook micro-rules (Threads-specific)
+## 鉤子微規則(Threads 專屬)
 
-- **First line carries everything.** The feed truncates long posts with a "more"
-  cut. If the first line does not stop the scroll on its own, nothing downstream
-  matters.
-- **Invite the reply.** Threads rewards conversation harder than X. A warm
-  question or a guess-invite turns a passive read into a reply.
-- **"How I" beats "How to".** First-person results carry proof. Swap generic
-  instruction for lived experience wherever you can.
-- **One specific number in post 1** raises tap-through and repost rate. 1.3s
-  beats "fast". $873.47 beats "cheap".
-- **Open the loop in the thread opener, never close it.** Post 1 promises; the
-  body delivers. If post 1 answers its own question, no one taps in.
-- **Lead a story with the tension, not the context.** In medias res beats the
-  warm-up the scroll punishes.
+- **第一行承擔全部。** 動態消息會在「顯示更多」處截斷長貼文。如果第一行自己撐不住讓人停下來，後面的都沒意義。中文版的前 1 到 2 行大約幾個字會被看到，是**假設（約 30 到 50 字），待以自己帳號在 App 內實測**。
+- **邀請回覆。** Threads 獎勵對話比 X 更重。一個溫暖的提問或猜測邀請，會把被動閱讀變成回覆。
+- **「我是怎麼」勝過「如何」。** 第一人稱的成果自帶證據。能把泛泛的教學換成親身經驗的地方就換。
+- **第一則放一個具體數字**，會提高點擊與轉發率。1.3 秒勝過「很快」。NT$873 勝過「很便宜」。
+- **串文的開場只開迴圈，不要收掉它。** 第一則承諾，內文兌現。如果第一則自己把問題答完，沒人會點進去。
+- **故事從張力開始，不從背景開始。** 直接切入事件中段，勝過會被滑掉的暖身。
+- **中文口語的節拍靠換行，不靠標點堆疊。** 短句一行一個節拍；不要連用驚嘆號，語氣詞（啦、喔、欸）一則最多 1 到 2 個。
 
-## Never do
+## 不要做
 
-- Pad a one-line idea into a thread (the ranker reads it as filler and tap-away
-  spikes).
-- Open a thread with "A thread:" and nothing else. The promise has to be in the
-  words, not the label.
-- Stack hashtags. Threads allows ONE per post; a second is rejected by the
-  platform.
-- Mistake a "let's connect" reply-farm lure for a hook. Posts like "If you're a
-  founder on Threads, let's connect!" rack up replies through a reply-to-be-seen
-  mechanic, not hook craft. The reply count is an artifact, not a signal, and
-  the format teaches nothing. Do not copy it or read its numbers as proof.
-- Put an external link in post 1 of something you want to reach (a link in the
-  opener costs reach; drop it in a reply to your own post instead).
-- Quote-dunk on a small account. Add value or skip it.
-- Import a cold, combative X voice. Threads is warmer; match it.
+- 把一句話的想法拉成串文(排序系統會讀成灌水,離開率飆升)。
+- 用「來串文了:」當開場,後面什麼都沒有。承諾要在文字裡,不是在標籤上。
+- 疊主題標籤。Threads 每則只允許 1 個,第二個會被平台拒絕。
+- 把「來互相認識吧」的拉留言誘餌誤認為鉤子。像「在 Threads 上的創業者，留言互相認識吧！」這種貼文，靠的是「留言才被看見」的機制衝高回覆數，不是鉤子功力。回覆數只是副產物，不是訊號，形式本身也教不到任何東西。不要抄，也不要把它的數字當證據。
+- 在想觸及的貼文第一則放外部連結(開場放連結會損失觸及,改放在自己貼文的回覆裡)。
+- 引用酸小帳號。要嘛加值,要嘛不發。
+- 移植 X 的冷硬嗆聲腔。Threads 比較溫暖,配合它。
+- 混入簡體字或大陸社媒句型(「家人們」「寶子們」「乾貨」)。

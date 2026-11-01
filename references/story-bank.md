@@ -1,26 +1,14 @@
-# Story Bank
+# 素材庫(Story Bank)
 
-The raw material your Threads posts are made of: what you have actually done, in
-numbers, with names and dates. The Voice Profile holds *how you sound*. This holds
-*what you have to say*.
+你的 Threads 貼文的原料:你實際做過的事,包含數字、人名與日期。語氣檔案放的是「你怎麼說話」,這裡放的是「你有什麼可說」。
 
-Every writing skill in this bundle reads it before drafting, so it stops asking you
-for "a specific number or moment" on every single request and starts drawing from
-what you already told it once.
+本 bundle 的每個寫作 skill 起草前都會讀它,所以它不會再每次請求都跟你要「一個具體的數字或時刻」,而是直接取用你曾經告訴過它的東西。
 
-On Threads the sections that earn the most are Turning points and Recurring
-stories: the platform runs on conversation, and a story invites a reply where
-a claim invites a scroll. Positions still matter, but stated as yours rather
-than as a correction to the reader.
+在 Threads 上,最有價值的是「轉折點」與「反覆講的故事」兩節:這個平台靠對話運轉,故事會邀請回覆,主張只會讓人滑過去。立場仍然重要,但要用「這是我的看法」的方式說,而不是糾正讀者。
 
-> **Keep this out of git.** It holds career detail, figures, failures and named
-> people. It is a file in this repository, so a push carries it wherever you push,
-> a public fork included. Add `references/story-bank.md` to your `.gitignore`
-> before you fill it, or keep the filled copy outside the repo. Nothing here is
-> sent to us or to any service; git is the only way it travels.
+> **不要讓它進 git。** 裡面有職涯細節、數字、失敗經驗與具名的人。它是這個 repo 裡的一個檔案,所以一次 push 就會把它帶到你 push 的任何地方,包括公開的 fork。填寫之前,請先把 `references/story-bank.md` 加進你的 `.gitignore`,或把填好的版本放在 repo 之外。這裡的內容不會被傳給我們或任何服務;git 是它唯一會外流的途徑。
 
-Fill it by running `threads-humanizer --mode interview`, which interviews you and writes
-this file. You can also edit it by hand at any time; the skill reads whatever is here.
+填寫方式:執行 `threads-humanizer --mode interview`,它會訪談你並寫入這個檔案。你也可以隨時手動編輯;skill 會讀取這裡現有的任何內容。
 
 ## Status
 
@@ -30,86 +18,71 @@ this file. You can also edit it by hand at any time; the skill reads whatever is
 
 ---
 
-## 1. What you are working on
+## 1. 你正在做的事
 
-The current thing, described the way you would say it out loud. Threads rewards
-the half-finished and the honest, so this section does not need a polished
-answer to be usable.
+目前手上的事,用你口頭會講的方式描述。Threads 獎勵做到一半的、誠實的內容,所以這一節不必寫得完美就能用。
 
 - (...)
 
-## 2. Receipts
+## 2. 有憑有據的數字
 
-The numbers you can state without checking. This is the section drafts reach for
-most, because one odd-precision figure with a named referent is the single
-strongest signal that a human wrote the post.
+你不用查證就能說出口的數字。這是草稿最常翻找的一節,因為一個帶具名對象的精準數字,是「這是真人寫的」最強的訊號。
 
-Good: "cut deploy time from 22 minutes to 9, team of four, Q2 2025".
-Useless: "improved efficiency significantly".
+好的例子:「部署時間從 22 分鐘降到 9 分鐘,4 人團隊,2025 年第二季」。
+沒用的例子:「大幅提升效率」。
 
-- (number, what it measures, when, who or what it belongs to)
+- (數字、它衡量什麼、何時、屬於誰或什麼)
 
-## 3. Shipped
+## 3. 做出來的東西
 
-Things that exist because you worked on them. Products, migrations, hires, papers,
-events, rescues.
+因你投入而存在的事物。產品、系統遷移、招募、論文、活動、救火。
 
-- (what it was, your part in it, what it cost or returned)
+- (那是什麼、你的角色、花了什麼或換來什麼)
 
-## 4. Turning points
+## 4. 轉折點
 
-The moments where you changed your mind or the plan changed under you. These carry
-posts better than successes do, and they are the hardest to invent.
+你改變想法、或計畫在你腳下改變的時刻。這類內容比成功經驗更能撐起貼文,也最難編造。
 
-- (what happened, what you believed before, what you believe now)
+- (發生了什麼、你之前相信什麼、現在相信什麼)
 
-## 5. Scars
+## 5. 傷疤
 
-What went wrong and what it taught you. Kept separate from turning points because
-the shape differs: a scar is a cost you paid, not a view you revised.
+哪裡出了錯、教會你什麼。與轉折點分開,因為形狀不同:傷疤是你付出的代價,不是你修正的看法。
 
-- (what broke, the real cost, what you do differently)
+- (什麼壞了、真實的代價、你現在換了什麼做法)
 
-## 6. Positions
+## 6. 立場
 
-Opinions you would defend in a room that disagreed. A position with no cost to
-holding it is not a position; note what holding it costs you.
+你會在一屋子不同意的人面前捍衛的觀點。堅持它沒有任何代價,就不算立場;記下堅持它讓你付出什麼。
 
-- (the claim, who disagrees, why you hold it anyway)
+- (主張、誰不同意、你為何仍堅持)
 
-## 7. Recurring stories
+## 7. 反覆講的故事
 
-The three or four you already tell out loud, at dinner or in interviews. They are
-proven: you know they land. Write them here before a draft dulls them.
+你已經在飯局或面試中口頭講過的三、四個故事。它們已被驗證過:你知道它們有效。在草稿把它們磨平之前,先寫在這裡。
 
-- (the story in two lines, and the point it makes)
+- (用兩行講完故事,以及它要說明的重點)
 
-## 8. Names you can use
+## 8. 可以點名的對象
 
-People, companies, tools and places you are free to name in public, and the ones
-you are not. Drafts stay vague when they do not know which is which.
+你可以在公開場合點名的人、公司、工具與地點,以及不能點名的。草稿不知道哪個是哪個時,就會一直含糊其詞。
 
-- Free to name: (...)
-- Never name: (...)
-- Ask first: (...)
+- 可以點名:(...)
+- 絕不點名:(...)
+- 先問我:(...)
 
-## 9. Off limits
+## 9. 不碰的範圍
 
-Subjects that stay out of posts regardless of how well they would perform: active
-deals, litigation, health, other people's business, anything under NDA.
+不論成效多好,都不放進貼文的主題:進行中的交易、訴訟、健康、他人的私事、任何受保密協議約束的事。
 
 - (...)
 
 
 ---
 
-## How drafts use this
+## 草稿如何使用它
 
-- A draft needs a concrete detail: it takes one from **Receipts** or **Shipped**
-  rather than asking you mid-session.
-- A hook needs a reversal or a confession: **Turning points** and **Scars** are
-  where those live.
-- A post needs an argument: **Positions** supplies the claim and the opposition.
-- Anything a draft cannot source from here, it asks about or leaves out. It does
-  not invent a number. If you see an unfamiliar figure in a draft, that is a bug
-  worth reporting.
+- 草稿需要具體細節時:從**有憑有據的數字**或**做出來的東西**取用,不會在 session 中途問你。
+- 鉤子需要反轉或自白時:**轉折點**與**傷疤**就是它們的所在。
+- 貼文需要論點時:**立場**提供主張與反對方。
+- 草稿無法從這裡取得的東西,就詢問或省略。它不會編造數字。如果你在草稿裡看到一個陌生的數字,那是值得回報的 bug。

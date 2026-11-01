@@ -1,81 +1,56 @@
-# Sub-skill: Generate an illustration for a Threads post
+# 子流程:為 Threads 貼文產生配圖
 
-Adds an optional image to a draft (feed image, square art, or quote-card) and
-attaches it on publish. Uses the Pixfaro image layer through `lib.illustrate`,
-which returns a hosted URL that flows straight into Publora media. Runs on any
-agent (Claude Code, Codex, OpenClaw).
+為草稿加上一張選用的圖片(動態消息配圖、方形美術圖或金句卡),並在發佈時附上。圖像層(Pixfaro)是**可選的**,透過 `lib.illustrate` 呼叫,會回傳一個託管網址,可直接交給發佈層的 `media_urls`。任何 agent(Claude Code、Codex、OpenClaw)都能跑。沒有圖像服務也完全不影響發文。
 
-## When this runs
+## 何時執行
 
-- User says "add an image", "make an illustration", "make a quote-card", or
-  "make a image" for a Threads post.
-- Offer it once after a draft is approved, when a visual would lift reach.
+- 使用者說「幫我加一張圖」「做一張配圖」「做金句卡」。
+- 草稿核准後提供一次,且只在圖片確實能提升觸及時提。
 
-## Backends (mirrors the publish layer)
+## 後端(與發佈層對稱)
 
-- **pixfaro** - `PIXFARO_TOKEN` (`pf_live_...`) set: image generated + attached
-  automatically.
-- **manual** - no token: the skill drafts the image prompt and asks the user to
-  generate it and paste the URL. Never blocks a draft.
+- **pixfaro**:設定了 `PIXFARO_TOKEN`(`pf_live_...`)時,自動產圖並附上。
+- **manual**:沒有 token 時,由 skill 草擬圖片提示詞,請使用者自行產生後貼上網址。絕不阻擋草稿。
 
-`lib.image_backend()` reports which is active.
+`lib.image_backend()` 會回報目前使用哪一個。
 
-## Steps
+## 步驟
 
-1. **Pick the kind.** Default for Threads is `square` (aspect 1:1). Override
-   with `aspect_ratio="w:h"` when needed. Other kinds: thumbnail 16:9, carousel/
-   quote/portrait 4:5, story/cover 9:16, wide/link 16:9, square 1:1.
-2. **Craft the prompt.** Describe subject, composition, style, palette. Default
-   to a clean professional look unless Voice & Brand Profile §6 sets a visual
-   style. Do NOT bake the post's words into the art (use overlay).
-3. **Apply brand overlay (if profile has it).** Read `../../../references/voice-profile.md`
-   §6. If a handle, brand color, or logo is set, pass an `overlay` so text/logo is
-   composited pixel-exact (crisp even on a cheap model):
+1. **選尺寸類型。** Threads 預設為 `square`(1:1)。需要時用 `aspect_ratio="w:h"` 覆寫。其他類型:thumbnail 16:9、carousel / quote / portrait 4:5、story / cover 9:16、wide / link 16:9、square 1:1。
+2. **撰寫提示詞。** 描述主體、構圖、風格、色調。除非語氣檔案 §6 指定了視覺風格,否則預設乾淨、專業。**不要把貼文的文字畫進圖裡**(用 overlay)。中文字尤其不要交給生圖模型,容易出現錯字。
+3. **套用品牌 overlay(若檔案有填)。** 讀 `../../../references/voice-profile.md` §6。若有設定帳號名稱、品牌色或 logo,就傳入 `overlay`,讓文字與 logo 以像素精準的方式疊上去(即使底圖模型很便宜,字也清楚):
    ```python
    from lib import illustrate
-   r = illustrate("<scene prompt>", kind="square",
+   r = illustrate("<場景提示詞>", kind="square",
                   overlay={"text": "@handle", "position": "bottom-right", "color": "#RRGGBB"})
    ```
-   For a **quote-card**, put the pulled hook line in overlay `text` (not the prompt),
-   `kind="quote"`.
-4. **Model choice.** Default `nano-banana-2`, which is what `illustrate` uses when no model is passed. The overlay handles text, so a cheap base
-   model is fine; only reach for gemini-pro-image on premium art. Never silently
-   upgrade the tier.
-5. **Show + confirm.** Present the returned `url` and `cost`. On approval, attach
-   via `media_urls=[r["url"]]` when publishing.
-6. **Manual mode.** If `r["backend"] == "manual"`, show `r["message"]` and ask for
-   a pasted URL.
+   做**金句卡**時,把挑出的鉤子句放進 overlay 的 `text`(不要放進提示詞),`kind="quote"`。overlay 的中文字體是否正確顯示,請在核准前確認預覽。
+4. **模型選擇。** 預設 `nano-banana-2`,沒傳 model 時 `illustrate` 就用它。文字由 overlay 處理,所以便宜的底圖模型就夠;只有需要高階美術時才用 gemini-pro-image。絕不默默升級等級。
+5. **展示並確認。** 呈現回傳的 `url` 與 `cost`。核准後,發佈時用 `media_urls=[r["url"]]` 附上。
+6. **手動模式。** 若 `r["backend"] == "manual"`,顯示 `r["message"]` 並請使用者貼上網址。
 
-## Refine instead of regenerating
+## 微調,不要重畫
 
-When the user wants a tweak ("make the sky darker", "swap the headline", "more
-whitespace"), do NOT regenerate from scratch. Keep the `id` from the previous
-result and edit it:
+使用者要小改(「天空再暗一點」「換掉標題」「多留白」)時,**不要**從頭重新產生。保留上一次結果的 `id` 去編輯:
 
 ```python
 from lib import illustrate, refine
-first = illustrate("<scene>", kind="wide")     # -> {"id": "img_...", "url": ...}
-fixed = refine(first["id"], "make the background darker and increase contrast")
+first = illustrate("<場景>", kind="wide")     # -> {"id": "img_...", "url": ...}
+fixed = refine(first["id"], "背景調暗並提高對比")
 ```
 
-`refine` edits by `img_...` id (not URL), inherits the source shape/tier when you
-omit `aspect_ratio`/`resolution`, and is cheaper + more consistent than a fresh
-generation. Chain it as many times as needed.
+`refine` 以 `img_...` 的 id 編輯(不是網址);省略 `aspect_ratio` / `resolution` 時會沿用原圖的形狀與計費等級,比重新產生便宜,也更一致。可以連續微調多次。
 
-## Cost-guard
+## 成本防護
 
-- Each result carries `cost` and `balance_after`; if `low_balance` is True, tell
-  the user the Pixfaro balance is low before generating more.
-- Default to `nano-banana-2` + 1K. The premium models (`gemini-pro-image`,
-  `gpt-5-image`) bill several times more - only use them when the user asks by
-  name; `illustrate`/`refine` never upgrade on their own.
-  A result's `premium`
-  flag is True when a premium-priced model was used - confirm that was intended.
-- `lib.available_models()` returns live pricing/latency when you need to show it.
+- 每個結果都帶有 `cost` 與 `balance_after`;若 `low_balance` 為 True,在繼續產圖前先告訴使用者 Pixfaro 餘額偏低。
+- 預設 `nano-banana-2` + 1K。高階模型(`gemini-pro-image`、`gpt-5-image`)的單價高出數倍,只有使用者點名時才用;`illustrate` / `refine` 不會自行升級。結果的 `premium` 旗標為 True 時,代表用了高價模型,請確認那是使用者要的。
+- 需要顯示即時價格與延遲時,用 `lib.available_models()`。
 
-## Hard rules
+## 硬性規則
 
-- One image per request (`n>1` unsupported); generate carousel slides one at a time.
-- Keep real words in the `overlay`, not baked into the prompt art.
-- Default to the cheap model + 1K resolution unless the user asks for premium.
-- Never attach an image the user has not seen and approved.
+- 每次請求一張圖(不支援 `n>1`);輪播圖一張一張產。
+- 真正要出現的字放進 `overlay`,不要畫進提示詞的美術裡。
+- 除非使用者要求高階,否則預設便宜模型 + 1K 解析度。
+- 絕不附上使用者沒看過、沒核准的圖片。
+- 圖像層是可選項。使用者不想用或沒有 token,就走手動模式,不要催促註冊。

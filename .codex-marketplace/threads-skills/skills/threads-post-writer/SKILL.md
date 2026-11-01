@@ -1,183 +1,145 @@
 ---
 name: threads-post-writer
-description: "Draft a single Threads post or a multi-post thread using a 2026 Threads hook formula (warm contrarian, data-point, build-in-public, quote-post, mini-list, relatable, listicle, story, curiosity-gap, how-I teardown), picked by goal (replies, reposts, likes, quotes). Respects the 500-char limit and one-hashtag cap, runs the humanizer pass, and publishes via Publora, which auto-splits long content into a thread. Not for auditing a draft (use threads-humanizer) or hook teardown (use threads-hook-extractor)."
+description: "撰寫 Threads 單則貼文或多則串文,依目標(回覆、轉發、按讚、引用)從 13 種鉤子公式中挑選,例如溫暖反差、數據鉤子、公開建造自白、清單串文、故事串文。遵守 500 字元上限與單一主題標籤規則,以台灣口吻寫作並跑過去 AI 味,核准後交給發佈層或給你可複製貼上的版本。觸發詞:寫貼文、寫串文、發 Threads。不適用於審稿(請用 threads-humanizer)或拆解爆文鉤子(請用 threads-hook-extractor)。"
 ---
 
-# Threads Post Writer
+# Threads 貼文寫手
 
-Ship a single Threads post, or a multi-post thread, using hook shapes that
-travel on Threads in 2026. Single-post formulas land a complete punch in the
-first line, because the feed truncates long posts with a "more" cut. Threads
-posts run warmer and more conversational than X.
+用在 Threads 真的會傳開的鉤子形狀,寫出單則貼文或多則串文。單則公式要在第一行就把完整的一擊打出去,因為動態消息會在「顯示更多」處截斷長貼文。Threads 的貼文比 X 更溫暖、更口語。
 
-## When to use
+## 何時使用
 
-- User says "write me a Threads post about X"
-- User has a topic or a rough one-liner and wants a sharper hook
-- User wants to turn notes into a multi-post thread
-- User wants a quick draft that auto-publishes on approval
+- 使用者說「幫我寫一則 Threads 貼文,主題是 X」
+- 使用者有主題或一句粗稿,想要更俐落的鉤子
+- 使用者想把筆記整理成多則串文
+- 使用者想要一份核准後就能發佈或貼上的快速草稿
 
-## Formulas this skill uses
+## 本 skill 使用的公式
 
-Single-post shapes (T1-T6):
+單則貼文形狀(T1 到 T6、T11 到 T13):
 
-| Code | Formula | Primary goal | Best for |
+| 代號 | 公式 | 主要目標 | 最適合 |
 |---|---|---|---|
-| T1 | Warm Contrarian | reposts | a sharp, defensible take framed as an invite |
-| T2 | Data-Point Hook | reposts | one odd-precision number that reframes a thing |
-| T3 | Build-in-Public Confession | replies | a real metric from your own work, ugly ones included |
-| T4 | Quote-Post Add-Value | quotes | adding a layer to someone else's take (quote post) |
-| T5 | Mini-List Post | reposts | a scannable list that fits in one post |
-| T6 | Relatable Cold-Open | likes | a specific shared moment, no setup |
-| T11 | First-Person Status Flex | replies | a flat status or milestone, then a counterintuitive pivot |
-| T12 | Permission Reframe | quotes | "Most {group} DON'T NEED {thing}, they need {permission}" |
-| T13 | Copy-Swap Micro-Lesson | reposts | one before/after swap: weak version, then strong version |
+| T1 | 溫暖反差 (Warm Contrarian) | 轉發 | 銳利但站得住腳、包成邀請對話的觀點 |
+| T2 | 數據鉤子 (Data-Point Hook) | 轉發 | 一個精確到有點奇怪的數字,重新定義一件事 |
+| T3 | 公開建造自白 (Build-in-Public Confession) | 回覆 | 你自己工作中的真實數字,難看的也算 |
+| T4 | 引用加值 (Quote-Post Add-Value) | 引用 | 在別人的觀點上加一層(引用貼文) |
+| T5 | 迷你清單 (Mini-List Post) | 轉發 | 一則就放得下、可快速掃讀的清單 |
+| T6 | 共鳴開場 (Relatable Cold-Open) | 按讚 | 具體的共同時刻,不鋪陳 |
+| T11 | 第一人稱現況亮相 (First-Person Status Flex) | 回覆 | 平鋪直敘講現況或里程碑,再接一個反直覺的轉折 |
+| T12 | 許可重構 (Permission Reframe) | 引用 | 「多數{族群}不需要{東西},他們需要的是{許可}」 |
+| T13 | 改寫對照微課 (Copy-Swap Micro-Lesson) | 轉發 | 一組前後對照:弱版本,然後強版本 |
 
-Thread shapes (T7-T10):
+串文形狀(T7 到 T10):
 
-| Code | Formula | Primary goal | Best for |
+| 代號 | 公式 | 主要目標 | 最適合 |
 |---|---|---|---|
-| T7 | Listicle-Thread Promise | reposts | numbered teaching thread, one item per post |
-| T8 | Story Thread | likes, quotes | a real narrative with a build and a turn |
-| T9 | Curiosity-Gap Opener | replies | a surprising result, mechanism withheld |
-| T10 | How-I Teardown | reposts | a repeatable process you ran yourself |
+| T7 | 清單串文承諾 (Listicle-Thread Promise) | 轉發 | 編號教學串文,一則一項 |
+| T8 | 故事串文 (Story Thread) | 按讚、引用 | 有鋪陳、有轉折的真實敘事 |
+| T9 | 好奇缺口開場 (Curiosity-Gap Opener) | 回覆 | 講出令人意外的結果,先不揭曉機制 |
+| T10 | 「我是怎麼做到」拆解 (How-I Teardown) | 轉發 | 你自己跑過、可重複的流程 |
 
-Full skeletons in `../../references/hook-formulas.md`. T11-T13 were added from a
-318-post corpus pull (July 2026): the status flex, permission reframe, and copy
-swap topped the aspirational-warm Threads feed. They are strong hypotheses to
-test, anchored on small-account examples, not yet follower-normalized.
+完整骨架見 `../../references/hook-formulas.md`。T11 到 T13 來自 2026 年 7 月對 318 則貼文的語料整理:現況亮相、許可重構、改寫對照在偏向勵志暖調的英文 Threads 動態上表現最好。這些是值得測試的強假設,範例來自小帳號,尚未用追蹤者數校正。**台灣市場的表現尚未驗證,請用你自己的貼文數據校正。**
 
-### Pick by goal first
+### 先依目標挑
 
-| Goal | Reach for |
+| 目標 | 優先考慮 |
 |---|---|
-| Replies | T3, T9, T1, T11 |
-| Reposts | T2, T5, T7, T10, T13 |
-| Likes | T6, T8 |
-| Quotes | T4, T8, T12 |
+| 回覆 | T3、T9、T1、T11 |
+| 轉發 | T2、T5、T7、T10、T13 |
+| 按讚 | T6、T8 |
+| 引用 | T4、T8、T12 |
 
-## Pick the container first
+## 先選容器
 
-| If the idea is... | Container | Formulas |
+| 如果想法是…… | 容器 | 公式 |
 |---|---|---|
-| One claim, one number, one moment | single post | T1, T2, T3, T6, T11, T12 |
-| A scannable list, one line per item | single post | T5 |
-| One before/after copy swap | single post | T13 |
-| A list where each item needs teaching | thread | T7 |
-| A narrative with a build and a turn | thread | T8 |
-| A surprising result with a mechanism | thread | T9 |
-| A repeatable process you ran yourself | thread | T10 |
+| 一個主張、一個數字、一個時刻 | 單則貼文 | T1、T2、T3、T6、T11、T12 |
+| 一份可快速掃讀、一行一項的清單 | 單則貼文 | T5 |
+| 一組前後對照的改寫 | 單則貼文 | T13 |
+| 每一項都需要說明的清單 | 串文 | T7 |
+| 有鋪陳和轉折的敘事 | 串文 | T8 |
+| 有機制可講的意外結果 | 串文 | T9 |
+| 你自己跑過、可重複的流程 | 串文 | T10 |
 
-A thread on a one-line idea reads as padding. A single post trying to teach five
-things should be a thread.
+把一句話的想法撐成串文,讀起來像灌水。想在單則裡教五件事,就該做成串文。
 
-## How Publora splits a thread
+## 串文如何拆分與發佈
 
-Pass the full thread as one `content` string. Publora auto-splits it:
+**預設做法:手動分段。** 用單獨一行的 `---` 把每一則隔開,讓使用者在核准前,就看到串文實際會怎麼斷。核准後,由使用者貼到 Threads 發文框,每個區塊就是一則。
 
-- at paragraph breaks (`\n\n`) first,
-- then at sentence endings,
-- then at word boundaries as a fallback.
+**自動發佈是選項,不是預設。** 如果你設定了自建 poster,`lib.publish(kind, draft_text, target_url, ...)` 會把整段串文交給它,如何拆成連續貼文由你的 poster 決定。預設則照你的 `---` 分段,由你逐則貼上。
 
-Unlike X, Threads does NOT add `(1/N)` markers by default. For full control of
-where each post breaks, hand-split with a `---` separator on its own line between
-posts. The skill defaults to hand-splitting with `---` so the user sees exactly
-how the thread will land before approving.
+不論哪種方式,都不要假設平台會幫你加上 `(1/N)` 編號。想要編號就自己寫進文字裡。
 
-> If multi-post nesting is temporarily paused (Meta app reconnection), fall back
-> to posting the opener as a single post and adding the rest as replies by hand.
-> See `../../references/algorithm-heuristics.md`.
+> 如果多則串連暫時無法使用(例如 Meta 的 App 重新授權期間),退而求其次:先發第一則單獨貼文,其餘的用回覆手動補上。參考 `../../references/algorithm-heuristics.md`。
 
-## Steps
+## 步驟
 
-**Voice profile first (all drafts).** If `../../references/voice-profile.md` has `filled: yes`, load it and match the user's voice fingerprint, hard rules, and CTA/link style throughout. If it is not filled, mention once that `threads-humanizer --mode profile` can learn their voice from a few posts, then proceed with the generic voice rules.
+**先看語氣檔案(所有草稿)。** 如果 `../../references/voice-profile.md` 的 `filled: yes`,就載入它,全程對齊使用者的語氣指紋、硬性規則與行動呼籲、連結習慣。如果還沒填,提醒一次:`threads-humanizer --mode profile` 可以從幾則貼文學會他的語氣,然後先用通用語氣規則繼續。
 
-**Story bank next.** If `../../references/story-bank.md` has `filled: yes`, load it and take every concrete detail (numbers, dates, named projects, positions) from there instead of asking mid-draft. **Never invent a figure, a date or a client name that is not in the bank or supplied by the user in this conversation.** If the bank has nothing that fits, ask the user, or say once that `threads-humanizer --mode interview` fills it in 20 to 40 minutes. A draft with a plausible invented number is worse than a draft with none: one is vague, the other is a retraction.
+**再看素材庫。** 如果 `../../references/story-bank.md` 的 `filled: yes`,就載入它,所有具體細節(數字、日期、專案名稱、職位)都從裡面取,不要寫到一半才回頭問。**絕不捏造素材庫沒有、使用者也沒在本次對話中提供的數字、日期或客戶名稱。** 如果素材庫沒有合適的內容,就問使用者,或提醒一次 `threads-humanizer --mode interview` 約 20 到 40 分鐘可以填好。一份帶著看似合理的捏造數字的草稿,比完全沒有數字的草稿更糟:前者是收回貼文的風險,後者只是不夠具體。
 
-1. **Gather inputs.** Topic, angle, any rough draft, target audience (builders /
-   founders / a niche), and the goal (replies / reposts / likes / quotes).
-2. **Pick the container.** Use the container table. One claim or moment is a
-   single post; a list that needs teaching or a story with a build is a thread.
-3. **Pick the formula.** Use the goal table to shortlist, then suggest 2-3 that
-   also fit the topic and let the user choose.
-4. **Draft.** Fill the skeleton in the user's voice. Respect the 2026 Threads
-   rules:
-   - First line carries the whole load (the feed truncates with "more").
-   - Under 500 chars per post (10,000 only if a text attachment is in play).
-   - One idea per post. Line breaks as beats.
-   - 0-1 hashtag at the end (Threads allows only one), 0-2 emoji, none on a
-     serious take.
-   - No external link in post 1 (offer to put it in a reply).
-   - Warm and conversational, not a transplanted X dunk.
-5. **For a thread:** write post 1 first (the promise + open loop), front-load the
-   strongest beat at position 1-2, target 4-7 posts for teaching/list threads,
-   make each post stand alone, and close on the most quotable line plus one ask.
-6. **Humanizer pass.** Scrub 2026 AI vocab by density, cap em dashes (at
-   most one per post, never swap one for a period), break stacked triads,
-   generic openers and reveal bridges. Leave the rhythm alone: uniform rhythm
-   wins on Threads at every length, so never insert a punch post or chop a
-   sentence for variance. Add an odd-precision number with a named referent
-   or a named entity where the claim allows it. Canonical rules:
-   `threads-humanizer` V3.
-7. **Optional audit.** Invoke `threads-humanizer --mode audit` for a pass-fail
-   check.
-8. **Approval card.** Show: formula used, full draft (thread shown post-by-post
-   with per-post char counts and total post count), suggested posting window,
-   primary goal. Confirm any `---` breaks.
-9. **On approval.** Call `lib.publish(kind="post"` (single) or `kind="thread"`,
-   `draft_text=<approved>, target_url="https://www.threads.com/",
-   platforms=[<THREADS_PLATFORM_ID>], scheduled_time=<iso_or_None>,
-   platform_settings=<{"threads": {"replyControl": "everyone"}} or None>)`. The
-   wrapper handles Publora / manual / diy routing. If the content runs long,
-   Publora auto-splits it into a connected thread.
+1. **蒐集輸入。** 主題、角度、任何粗稿、目標受眾(建造者、創辦人、某個利基領域),以及目標(回覆、轉發、按讚、引用)。
+2. **選容器。** 用容器表。一個主張或一個時刻是單則貼文;需要說明的清單或有鋪陳的故事是串文。
+3. **選公式。** 用目標表列出候選,再挑 2 到 3 個也符合主題的建議,讓使用者選。
+4. **起草。** 用使用者的語氣填入骨架,遵守 Threads 規則與 `../../references/voice-rules.md`:
+   - 第一行承擔全部重量(動態消息會在「顯示更多」截斷)。
+   - 每則在 500 字元內(只有使用長文附件時才到 10,000)。**以 App 內顯示的計數為準。** 有效長度的假設是 80 到 250 字,這是待驗證的假設,不是平台規則。
+   - 一則一個想法。換行當節拍。
+   - 0 到 1 個主題標籤放最後(Threads 只允許 1 個),0 到 2 個 emoji,嚴肅議題不用。
+   - 第一則不放外部連結(提議把連結放在回覆)。
+   - 溫暖、口語,不是移植 X 的嗆聲腔。
+   - 台灣用語、全形標點、中英之間加半形空格。
+5. **串文:** 先寫第一則(承諾加懸念),把最強的一拍放在第 1 到 2 則,教學或清單型串文以 4 到 7 則為目標,每一則都要能獨立成立,最後用最值得引用的一句加上一個請求收尾。
+6. **去 AI 味。** 依密度清掉 AI 腔詞彙、控制破折號(每則最多一個,絕不拿句號去頂替)、拆掉堆疊的三段式、老套開場與揭曉橋段。節奏不要動:Threads 上不論長短,整齊的節奏都比較有利,所以不要為了「有變化」硬插一則單句貼文,也不要把句子剁碎。有具體可寫時,補上一個帶有明確對象的精確數字或具名實體。標準規則:`threads-humanizer` 的 V3。
+7. **選用的審核。** 呼叫 `threads-humanizer --mode audit` 做通過與否的檢查。
+8. **核准卡。** 顯示:使用的公式、完整草稿(串文逐則列出,附每則字元數與總則數)、建議發佈時段、主要目標。確認所有 `---` 斷點。
+9. **核准後。** 呼叫 `lib.publish(kind, draft_text, target_url, ...)`:單則用 `kind="post"`,串文用 `kind="thread"`,`target_url` 填 `https://www.threads.com/`。介面對所有發佈層一致:
+   - 沒有設定發佈層時,回傳可複製貼上的版本(預設)。
+   - 設定了自建 poster 時,草稿以 JSON 交給你的指令。
+   - 額外參數(例如 `scheduled_time`、`media_urls`)只會傳給自建 poster,是否支援由你的 poster 決定。
 
-## Hard rules
+## 硬性規則
 
-Global voice rules: see root `SKILL.md` Voice rules. Additional skill-specific
-rules:
+全域語氣規則:見根目錄 SKILL.md 的語氣規則。本 skill 另外補充:
 
-- The first line must stop the scroll on its own. Rewrite any opener that needs
-  line 2 to make sense.
-- Keep each post inside 500 chars. If it does not fit, tighten it or escalate to
-  a thread, never ship a truncated thought.
-- One hashtag maximum. A second is rejected by Threads, not just bad style.
-- One specific number where the claim allows it. 2.4x beats "way better".
-- Do not hard-sell the user's product. One natural mention max.
-- For a thread, post 1 must contain a real promise and an open loop. A bare
-  "a thread:" label is not a hook.
+- 第一行必須單獨就能讓人停下來。開頭需要看到第二行才讀得懂的,重寫。
+- 每則控制在 500 字元內。放不下就精簡,或升級成串文,絕不發出被截斷的想法。
+- 最多一個主題標籤。第二個會被 Threads 拒絕,不只是風格問題。
+- 主張允許時,放一個具體數字。「回覆率從 3% 到 11%」勝過「大幅提升」。
+- 不要硬銷使用者的產品。最多自然帶過一次。
+- 串文的第一則必須有真正的承諾與懸念。只有「串文如下」這種標籤,不叫鉤子。
 
-## Anti-patterns (skill will refuse)
+## 反模式(本 skill 會拒絕)
 
-- ALL CAPS first line for intensity. Carry intensity with word choice.
-- Em dashes above the cap (more than one in a post), or an em dash swapped for a period.
-- "Here's what / here's how" or "Stop X, start Y" as the opener; "The result?" as a reveal.
-- Announced candor ("Let me be honest", "not gonna lie") with no dated fact behind it.
-- "Unpopular opinion:" on a take that is actually popular.
-- Padding a one-line idea into a thread.
-- Rule-of-three lists without specifics.
-- "leverage", "fundamentally", "game-changer", "deep dive".
-- External link in post 1.
-- A second hashtag.
-- Engagement bait ("repost if you agree", "reply YES").
-- A thread of identical-length posts (machine rhythm).
-- Importing a cold, combative X voice.
+- 用全部大寫或連環驚嘆號製造強度的第一行。強度靠用字。
+- 破折號超過上限(一則超過一個),或把破折號換成句號。
+- 以「接下來告訴你」「重點來了」「別再 X,開始 Y」開頭,或用「結果呢?」當揭曉橋段。
+- 沒有帶日期事實撐腰的表態式真誠(「老實說」「坦白講」「說真的」)。
+- 用「這個觀點可能不討喜」包裝一個其實多數人同意的觀點。
+- 把一句話的想法撐成串文。
+- 沒有具體內容的三段式清單。
+- 「賦能」「助力」「打造」「深入探討」「乾貨滿滿」這類 AI 腔或大陸社媒腔詞彙。
+- 第一則放外部連結。
+- 第二個主題標籤。
+- 互動誘餌(「按讚收藏」「求轉發」「同意的留言 1」)。
+- 一整串長度完全一樣的貼文(機器節奏)。
+- 移植冷硬、好鬥的 X 腔,或混入簡體字與大陸社媒句型。
 
-## Resources
+## 資源
 
-- `../../references/hook-formulas.md` - all 13 Threads formula skeletons (T1-T6 and T11-T13 single, T7-T10 thread)
-- `../../references/algorithm-heuristics.md` - 2026 Threads ranking rules (signals, timing, limits)
-- `references/single-post-checklist.md` - the per-post scrub and fit list
-- `references/thread-structure.md` - per-position pacing and the closer playbook
+- `../../references/hook-formulas.md` - 13 種 Threads 公式骨架(T1 到 T6 與 T11 到 T13 為單則,T7 到 T10 為串文)
+- `../../references/algorithm-heuristics.md` - Threads 排序規則(訊號、時段、限制)
+- `references/single-post-checklist.md` - 單則貼文的清稿與檢查清單
+- `references/thread-structure.md` - 串文各位置的節奏與收尾手法
 
-## Optional illustration
+## 選用的插圖
 
-Offer a generated image when a visual would lift reach. Draft a prompt and call
-`lib.illustrate(prompt, kind="square")`, pulling brand handle/color from Voice &
-Brand Profile section 6 for a pixel-exact overlay. Show the returned `url` + `cost`,
-then attach on publish via `media_urls=[url]`. Full workflow (incl. quote-cards):
-`../threads-humanizer/sub-skills/illustration.md`. No Pixfaro key -> it drafts the prompt for you to generate manually.
-## Related skills
+視覺能提升觸及時,可以主動提議產生圖片。先擬圖片提示詞,再呼叫 `lib.illustrate(prompt, kind="square")`,品牌帳號與色彩取自語氣與品牌檔案第 6 節,以做到精確的疊字。顯示回傳的 `url` 與 `cost`,發佈時用 `media_urls=[url]` 附上。完整流程(含引言卡片):`../threads-humanizer/sub-skills/illustration.md`。沒有設定圖片服務的金鑰時,它會幫你擬好提示詞,由你自己產圖。
 
-- `threads-humanizer` - aggressive AI-tell scrubber, plus `--mode audit` for review
-- `threads-hook-extractor` - reverse-engineer a hook from a post you admire
-- `threads-content-planner` - schedule posts and threads into a weekly cadence
+## 相關 skill
+
+- `threads-humanizer` - 積極清除 AI 味,另有 `--mode audit` 做審稿
+- `threads-hook-extractor` - 從你欣賞的貼文反向拆解鉤子
+- `threads-content-planner` - 把貼文與串文排進每週節奏

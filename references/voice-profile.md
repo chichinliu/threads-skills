@@ -1,11 +1,6 @@
-# Voice & Brand Profile
+# 語氣與品牌檔案(Voice & Brand Profile)
 
-Your voice, niche, and rules in one place. Fill this once (or let `threads-humanizer` build
-it from a few of your real posts), and every writing skill in this Threads bundle
-reads it before drafting, so you stop re-explaining who you are on every request.
-This file is yours: edit it freely. Nothing here is sent anywhere; it just steers
-the drafts. Skills only load it when `filled: yes` below; an empty template is
-ignored.
+把你的語氣、利基領域與規則集中在一處。填一次就好(或讓 `threads-humanizer` 從你幾則真實貼文建立),之後這個 Threads bundle 的每個寫作 skill 起草前都會讀它,你就不必每次請求都重新交代自己是誰。這個檔案是你的:可以自由編輯。裡面的內容不會被傳到任何地方,只用來引導草稿。只有下方 `filled: yes` 時 skill 才會載入;空白範本會被忽略。
 
 ## Status
 
@@ -13,49 +8,48 @@ ignored.
 - source: template
 - updated: --
 
-## 1. Voice fingerprint
+## 1. 語氣指紋
 
-- Sentence rhythm:
-- Signature openers:
-- Punctuation habits:
-- Words and phrases you use a lot:
-- Words and phrases you NEVER use:
+- 句子節奏:
+- 招牌開場:
+- 標點習慣(全形 / 半形、「⋯⋯」、破折號、中英間距):
+- 常用的字詞與片語:
+- 你**絕不**使用的字詞與片語:
+- 句尾語氣詞(啦、喔、欸、吧)的用法:
 - Emoji:
-- Formatting (Threads): 500 chars per post; warm and conversational; one hashtag max
+- 格式(Threads):每則 500 字元;溫暖、口語;主題標籤最多 1 個
 
-## 2. Who you are and who you write for
+## 2. 你是誰、為誰而寫
 
-- You are:
-- Your audience (ICP):
-- Your content pillars:
+- 你是:
+- 你的受眾(目標客群):
+- 你的內容支柱:
 
-## 3. Hard rules (always / never)
+## 3. 硬性規則(一律 / 絕不)
 
-- Always:
-- Never:
+- 一律:
+- 絕不:
 
-## 4. Links and CTA
+## 4. 連結與行動呼籲
 
-- Primary link you point people to:
-- Where it goes:
-- Your CTA style:
+- 你主要引導大家去的連結:
+- 它通往哪裡:
+- 你的行動呼籲風格:
 
-## 5. Signature examples
+## 5. 代表性範例
 
-Paste 2-4 of your own real Threads lines or posts that sound most like you. The
-writing skills mirror the rhythm and word choice of these, not a generic voice.
+貼上 2 到 4 句你自己真正發過、最像你的 Threads 句子或貼文。寫作 skill 會模仿這些的節奏與用字,而不是通用的聲音。
 
 -
 -
 -
 
-## 6. Brand assets (for illustrations)
+## 6. 品牌素材(用於配圖)
 
-Used by the illustration step (`lib.illustrate`) to keep every generated image
-on-brand via a pixel-exact overlay. All optional; leave blank to skip the overlay.
+配圖步驟(`lib.illustrate`)會用它,透過像素精準的 overlay 讓每張產出的圖維持品牌一致。全部選填;留白即略過 overlay。
 
-- Handle to stamp on images: (e.g. @yourname)
-- Brand color (hex): (e.g. #0A66C2)
-- Logo: (path or Pixfaro `logo_id`, if you have one)
-- Overlay position: (e.g. bottom-right)
-- Visual style default: (e.g. minimal flat vector; bold editorial; muted photo)
+- 要蓋在圖上的帳號名稱:(例如 @yourname)
+- 品牌色(hex):(例如 #0A66C2)
+- Logo:(路徑,或 Pixfaro 的 `logo_id`,如果有的話)
+- Overlay 位置:(例如 bottom-right)
+- 預設視覺風格:(例如 極簡扁平向量;大膽編輯風;低飽和照片)

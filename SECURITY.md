@@ -18,8 +18,8 @@ mishandles credentials, or an unsafe command pattern), please report it
 privately:
 
 - **Preferred:** open a private report via
-  [GitHub Security Advisories](https://github.com/sergebulaev/threads-skills/security/advisories/new)
-- **Alternative:** email `s@bulaev.org` with subject `[SECURITY] threads-skills`
+  [GitHub Security Advisories](https://github.com/chichinliu/threads-skills/security/advisories/new)
+- **Alternative:** contact the maintainer via https://chichinliu.com with subject `[SECURITY] threads-skills`
 
 Please include:
 
@@ -33,14 +33,14 @@ disclosure decision within 14 days.
 ## Scope notes
 
 - This bundle never ships hardcoded credentials. API tokens (Apify,
-  Publora) are read from environment variables or `.env` files that are
+  Pixfaro) are read from environment variables or `.env` files that are
   gitignored; see `.env.example`.
 - Scripts in `lib/` and `scripts/` perform HTTP calls only to the Apify
-  and Publora APIs and never execute shell commands built from remote
+  and Pixfaro APIs and never execute shell commands built from remote
   content.
 - The image layer sends your prompt, and any brand overlay text you set, to
   the Pixfaro API (`api.pixfaro.com`). It runs only when `PIXFARO_TOKEN` is
   set; without it the skills draft a prompt for you to run yourself and make
   no request.
 - Please do not test vulnerabilities against third-party services
-  (Threads, Apify, Publora) outside their own disclosure programs.
+  (Threads, Apify, Pixfaro) outside their own disclosure programs.

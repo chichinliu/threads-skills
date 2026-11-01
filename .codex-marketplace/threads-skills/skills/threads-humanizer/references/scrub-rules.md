@@ -1,423 +1,407 @@
-# Scrub Rules (V3, 2026-09)
+# 清除規則(V3,2026-09,繁體中文・台灣版)
 
-Tiered catalogs the humanizer applies. Load this file when actually executing a
-scrub. Two tiers: forensic (always on) and strict (default on), plus the
-Threads-format scrubs and tone warming. V3: vocabulary is scored by **density
-per post**, not deleted per word. Em dashes are **capped** (one per post), not
-banned. Forced rhythm is a tell, not a fix; on Threads uniform rhythm wins at
-every length. See SKILL.md "What changed in V3" for the evidence.
+人性化處理使用的分層目錄。實際執行清除時才載入本檔。分兩層:forensic(永遠開啟)與 strict(預設開啟),外加 Threads 格式處理與語氣調暖。V3:詞彙依**每則密度**計分,不是逐字刪除。破折號**設上限**(每則 1 個),不是全面禁用。硬塞節奏是破綻不是解法;依原版英文語料,Threads 上均勻節奏在各種長度都贏。證據見 SKILL.md「V3 改了什麼」。
 
-## Contents
+> **關於中文版:** 下列比對模式與詞表是依 `../../../references/voice-rules.md` 的中文 AI 腔詞表重新設計,不是英文表的翻譯。詞表是起點,不是完整名單;每個條目的命中率都該用你自己的貼文驗證。程式碼是說明用的偽碼,重點在判斷邏輯。
 
-- Density scoring (how every vocabulary rule is applied)
-- FORENSIC tier (always on)
-- STRICT tier (default on)
-- Threads-format scrubs (always apply)
-- Tone warming (Threads-specific)
-- Pass 2 - Rhythm (never force)
-- Pass 3 - Forbidden insertions (sincerity markers, hedges)
-- Preserve these (user voice, do not scrub)
+## 目錄
+
+- 密度計分(所有詞彙規則的套用方式)
+- FORENSIC 層(永遠開啟)
+- STRICT 層(預設開啟)
+- Threads 格式處理(永遠套用)
+- 語氣調暖(Threads 專屬)
+- Pass 2:節奏(不強加)
+- Pass 3:禁止插入項目(真誠宣告、猶豫語氣)
+- 保留這些(使用者的聲音,不要清除)
 
 ---
 
-## Density scoring (how every vocabulary rule is applied)
+## 密度計分(所有詞彙規則的套用方式)
 
-The cluster principle: readers spot AI text from clusters of markers, not from
-any single word. One "notably" in a post is English. "Notably",
-"comprehensive" and a nominalisation in the same 500 chars is a signature.
+聚集原則:讀者是從標記的**聚集**認出 AI 文字,不是從單一詞。一則裡有一個「事實上」是正常中文。「事實上」「賦能」「全方位」同時出現在 500 字元內,就是簽名。
 
 ```python
 def score_unit(text: str, markers: dict) -> dict:
-    """Count marker hits per unit (one post; one paragraph in a long text-attachment post).
-    Returns hits and the action to take."""
+    """計算每個單位的標記命中數(一則貼文;長文附件則以一段為單位)。
+    回傳命中清單與該採取的動作。"""
     hits = []
     for name, pattern in markers.items():
-        for m in re.finditer(pattern, text, flags=re.I):
+        for m in re.finditer(pattern, text):
             hits.append((name, m.group(0)))
     n = len(hits)
     forced = [h for h in hits if h[0] in ("reveal_bridge", "neg_parallel", "sincerity_marker")]
     if n >= 3:
-        action = "REWRITE_UNIT"        # 3+ markers = signal. Rewrite the post, not word-by-word.
+        action = "REWRITE_UNIT"        # 3 個以上 = 簽名。重寫整則,不要逐字替換。
     elif forced:
-        action = "REPLACE"             # a reveal bridge / negative parallelism / sincerity marker is scrubbed on a
-                                       # single hit at ANY density; any other marker beside it follows the count rule
+        action = "REPLACE"             # 揭曉橋段 / 否定式對仗 / 真誠宣告,單次命中就處理,不論密度;
+                                       # 旁邊的其他標記仍照計數規則
     elif n == 2:
-        action = "FLAG_ONLY"           # 2 = borderline. Report it, leave the words: the audit allows 0-2 per unit.
+        action = "FLAG_ONLY"           # 2 個 = 邊緣。在報告中標記,詞留著:audit 允許每單位 0 到 2 個。
     else:
-        action = "LEAVE"               # a single common word is not a verdict
+        action = "LEAVE"               # 單一常見詞不是判決
     return {"hits": hits, "count": n, "action": action}
 ```
 
-Rules of application:
-- Score forensic markers separately: one hit = delete, no density threshold.
-- Two patterns carry a count rule: triads (at most one natural triad per post;
-  keep the first, rewrite any later one in the same post; threads are not
-  pooled) and standalone fragments (more than 2 across a thread = merge back,
-  see Pass 2).
-- Never replace a word with a synonym from the same list. "Leverage" to
-  "harness" is not a fix.
-- When you rewrite a post, rewrite it in the author's register (warm
-  lowercase stays warm lowercase), not in "plain" register. Plainness at
-  uniform temperature is itself a fingerprint.
+套用規則:
+- forensic 標記單獨計:命中一次就刪,沒有密度門檻。
+- 兩種模式有計數規則:三項並列(每則最多一組自然三項;保留第一組,改寫同則裡之後的;串文不合併計算)與獨立片段(一串超過 2 個就併回,見 Pass 2)。
+- 不要用同一張表裡的近義詞替換。把「賦能」換成「助力」不是修正,兩個都在表上。
+- 重寫一則時,用作者的語氣重寫(口語就保持口語),不要改成「中性」語氣。在均勻溫度下的平淡本身就是一種指紋。
+- 中英數字之間的空格、全形標點這類排版修正是機械式的,**不計入標記數**,但永遠順手修。
 
 ---
 
-## FORENSIC tier (always on)
+## FORENSIC 層(永遠開啟)
 
-Real model leakage no human types. Delete or flag on sight.
+人類不會打出來的模型殘留。一看到就刪除或標記。
 
-| Pattern | Action |
+| 模式 | 動作 |
 |---|---|
-| `oaicite`, `contentReference`, `turn0search0`, `attached_file`, `grok_card` | delete the marker |
-| "As of my last update", "As of my knowledge cutoff", "I cannot browse" | delete the disclaimer line |
-| `[Your Name]`, `[Company]`, `[insert X here]`, `YYYY-MM-DD` template blanks | flag, ask the user to fill |
-| Em dashes above the cap (see below) | replace the excess with a comma, colon, `..`, or a rewrite; never a period |
+| `oaicite`、`contentReference`、`turn0search0`、`attached_file`、`grok_card` | 刪除標記 |
+| 「截至我最後更新」「截至我的知識截止日」「我無法瀏覽」「作為 AI 語言模型」「作為一個 AI」 | 刪除該行免責聲明 |
+| `【你的名字】`、`[公司名稱]`、`(此處填入……)`、`XXX`、`YYYY-MM-DD` 等範本空格 | 標記,請使用者填寫 |
+| Markdown 殘留:`**粗體**`、`# 標題`、`- ` 條列符號、`> ` 引用符號(Threads 不渲染) | 移除符號,保留文字;真的需要條列時改用換行加「1.」 |
+| 簡體字(偵測方式見下方) | 轉成繁體,不計密度 |
+| 大陸慣用詞(下方對照表) | 換成台灣用語,不計密度 |
+| 超過上限的破折號(見下節) | 多出的改成逗號、冒號、換行或重寫;**不要改成句號** |
 
-### Em dash cap (one per post)
+### 簡體字與大陸慣用詞
 
-The character is not a tell: GPT-5.4 emits 1.43 em dashes per 1,000 words,
-below the human 3.23. On Threads, though, em dashes are rare in top posts (7%
-of our corpus) and those posts earn 0.33x the median engagement (plausibly a
-formal-register confound), so the cap is tight here.
+台灣讀者對簡繁混用與大陸用語非常敏感,這比任何一個黑話詞都更快洩漏「這不是在地人寫的」。
+
+```python
+# 簡體專有字(只收繁體中不會出現的字形,避免誤傷)
+SIMPLIFIED_ONLY = re.compile(r"[这们个说为与发没会应对开时无么种还过实现点经后来业数据网络软件视频质量项目默认]")
+# 只抓明確的簡體字形。簡繁同形的字(如「支持」)不在此列,詞層級的大陸用語由下方對照表處理。
+
+MAINLAND_TO_TAIWAN = {
+    "視頻": "影片", "信息": "資訊", "質量": "品質", "軟件": "軟體", "硬件": "硬體",
+    "用戶": "使用者", "網絡": "網路", "項目": "專案", "默認": "預設", "程序": "程式",
+    "數據": "資料",      # 指 data 時;指「指標」時用「數據」在台灣也自然,依語境
+    "支持": "支援",      # 指 support 技術時
+    "激活": "啟用", "優化": "最佳化",  # 後者視語境:「優化流程」在台灣口語可留
+    "打call": "加油", "點贊": "按讚",
+}
+# 對照只作用於明確是大陸用語的情況。「數據」「優化」在台灣商業用語中也常見,不是每個都要換;
+# 拿不準就留,並在報告中標「用語待確認」。
+```
+
+### 破折號上限(每則 1 個)
+
+中文的破折號是「——」(兩個全形字元寬)。它本身不是破綻;密度才是。Threads 上它在高互動貼文裡罕見,所以上限壓得很緊。
 
 ```python
 def em_dash_excess(post: str) -> int:
-    """Em dashes above the cap. Threads cap: 1 per post, and 0 if the post reads fine without it.
-    Returns how many to replace. 0 = leave the one alone."""
-    return max(0, post.count("—") - 1)
+    """破折號超過上限的數量。Threads 上限:每則 1 個,沒有它也通順就是 0 個。
+    連續的 — 視為一個(「——」算一個,不算兩個)。回傳需要替換的個數;0 = 那一個不動。"""
+    runs = re.findall(r"—+", post)
+    return max(0, len(runs) - 1)
 
-# Replacement order for the EXCESS ones (keep the one doing the most work):
-#   1. comma   if the dash joins a clause to the main sentence
-#   2. colon   if the dash introduces a reveal, a list, or a consequence
-#   3. ".."    the Threads-native soft pause
-#   4. rewrite if none of the above reads naturally
-# NEVER a period. "X. Y." from a split dash creates fragment stacking, which is a worse tell than the dash.
+# 多餘的依序替換(保留最有作用的那一個):
+#   1. 逗號   若破折號是把子句接回主句
+#   2. 冒號   若破折號引出揭曉、清單或後果
+#   3. 換行   Threads 原生的停頓
+#   4. 重寫   以上都不自然時
+# 絕不用句號。破折號拆成「X。Y。」會變成斷句堆疊,那是比破折號更糟的破綻。
 ```
 
 ---
 
-## STRICT tier (default on)
+## STRICT 層(預設開啟)
 
-What expert human readers cite when they spot AI text (vocabulary 53%,
-sentence structure 36%). All vocabulary and grammar lists go through
-`score_unit()`; reveal bridges, negative parallelism and sincerity markers are
-scrubbed on a single hit.
+有經驗的讀者辨識 AI 文字時引用的東西(詞彙 53%、句子結構 36%,原版英文研究)。所有詞彙與文法清單走 `score_unit()`;揭曉橋段、否定式對仗、真誠宣告單次命中就處理。
 
-### Punctuation
+### 標點與排版
 
-- Curly quotes -> straight quotes.
-- `--` -> a comma or `..` (not a period: a period here stacks fragments).
-- En dash (`–`) between clauses -> a comma. Number ranges (7-9) stay.
-- Em dashes are handled by `em_dash_excess()` above, not stripped.
+- 半形標點 `, . ? ! : ;` 出現在中文句子裡 -> 全形 `,。?!:;`。
+- 直引號 `"..."` 包中文 -> 「……」;引號裡再引用用『……』。
+- 連環標點 `!!!`、`???`、`。。。` -> 縮成一個。
+- `--` -> 逗號或換行(不要句號:會堆出斷句)。
+- 英文刪節號 `...` 或 `......` -> 「⋯⋯」,每則最多一處;滿篇刪節號整體改寫。
+- 中文與英文、數字之間補半形空格:`用Claude寫了3篇` -> `用 Claude 寫了 3 篇`。百分比與貨幣符號同樣處理(`11%的` -> `11% 的`)。品牌與產品名維持官方寫法(Stripe、Claude、iPhone),不要改成全小寫,也不要硬翻譯。
+- 以上排版修正不計入標記數。
 
-### Vocabulary: durable 2026 markers (density-scored)
+### 詞彙:企業黑話與填充轉折(密度計分)
 
-The 2023-24 list (delve, tapestry, realm) is decaying because humans now avoid
-those words. The durable markers are common words LLMs over-select at 2-5x the
-human rate across 2026 frontier models. They are ordinary English, so one per
-post is fine. Three in a post is a signature. On Threads the whole set is
-nearly absent from top posts (1.3%), so a cluster reads as a brand account.
+這些詞在 2023 到 2025 年由繁中與簡中的 LLM 輸出大量帶入,本地讀者已經把它們聽成「官方帳號腔」。單獨出現不要緊;聚集才是簽名。
 
-| Marker | Preferred replacement when the post is over threshold |
-|---|---|
-| significant | a number ("31% growth", not "significant growth"; ask if none exists) |
-| crucial | delete, or "the" |
-| notably, particularly | delete |
-| comprehensive, holistic | full |
-| insight(s) | say what was learned |
-| robust | solid (keep if a term of art) |
-| leverage | use |
-| foster | build |
-| landscape | field |
-| nuanced | specific |
-| multifaceted | delete |
-| streamline | simplify |
-| elevate | improve |
-| empower | let |
-| utilize, harness | use |
-| facilitate | help |
-| unlock | find |
-| navigate (figurative) | handle |
-| seamless | smooth |
-| ecosystem | space |
+| 類別 | 標記 | 超過門檻時的處理 |
+|---|---|---|
+| 企業黑話 | 賦能、助力、打造、深耕、解鎖、全方位、一站式、閉環、抓手、顆粒度、底層邏輯、賽道、破圈、心智、引爆、生態、範式、版圖 | 換成具體動詞或刪除:「助力成長」說出成長了多少;「打造產品」改「做了 / 做出」;「解鎖」改「找到 / 學會」 |
+| 填充轉折 | 值得注意的是、不可否認、毋庸置疑、顯而易見、不難發現、事實上、本質上、歸根結底、換句話說 | 直接刪;後面那句話本來就該自己站得住 |
+| 收尾套話 | 總而言之、綜上所述、總的來說、讓我們一起、讓我們來 | 刪;貼文用落點收尾,不用總結 |
+| 大陸社媒腔 | 乾貨滿滿、幹貨、建議收藏、爆款、硬核、絕絕子、誰懂啊、家人們、寶子們 | 刪或改成台灣口吻(「這個整理很實用」),並檢查整則是否還有其他大陸腔 |
+| 空洞形容 | 重磅、驚豔、顛覆、賦予、極致、卓越、領先、前沿 | 換成一個數字或具體描述 |
+| 抽象名詞替身 | 洞察、價值、能量、格局、維度、視角、層面 | 說出學到了什麼,或刪 |
 
-Filler adverbs (each counts as one marker; delete when over threshold):
-fundamentally, essentially, ultimately, crucially, notably, particularly,
-arguably, certainly, definitely, undoubtedly.
+副詞與連接詞型填充(每個算一個標記,超過門檻時刪):其實、基本上、某種程度上、在一定程度上、毫無疑問、無疑、確實、當然(僅在句首作空轉用時計)。
 
-### Grammar markers (density-scored; the 2026 structural signature)
+### 文法標記(密度計分;2026 年的結構簽名)
+
+中文版的結構簽名不是「-ing 開頭」,而是翻譯腔與名詞化:
 
 ```python
 GRAMMAR_MARKERS = {
-    # Present-participial clause openers: 5.3x the human rate.
-    # "Leveraging our data, we..." / "Building on this, ..."
-    "ing_opener": r"(?m)^[\s>*\-]*[A-Z][a-z]+ing\b[^.]{0,60},",
-    # Nominalisations: verb-turned-noun that hides the actor. "the implementation of"
-    "nominalisation": r"\bthe (\w+(?:tion|sion|ment|ance|ence|ization|isation)) of\b",
-    # Stacked abstract nouns
-    "abstract_stack": r"\b(alignment|transformation|optimization|innovation|efficiency|scalability|synergy)\b.{0,40}\b(alignment|transformation|optimization|innovation|efficiency|scalability|synergy)\b",
+    # 「對……進行……」「予以……」「得以……」:把動詞藏進抽象動名詞,隱去行動者
+    "nominalisation": r"對.{1,14}進行.{1,6}|予以.{1,4}|得以.{1,4}|實現了.{1,6}",
+    # 翻譯腔框架:「在……方面」「作為一個……」「為了……的目的」「是……的一個過程」
+    "translationese": r"在.{1,10}方面|作為一個.{1,10}|為了.{1,12}的目的|是一個.{1,10}的過程|將會|被用來",
+    # 抽象名詞堆疊:兩個抽象名詞在 40 字內相疊
+    "abstract_stack": r"(優化|轉型|創新|效率|規模化|協同|整合|升級|變革|賦能).{0,40}(優化|轉型|創新|效率|規模化|協同|整合|升級|變革|賦能)",
+    # 「的」字鏈:一句裡超過 3 個「的」
+    "de_chain": r"(?:[^,。!?\n]*的){4,}[^,。!?\n]*",
 }
-# Fix for ing_opener: put the actor first. "Leveraging our data, we cut churn" -> "we cut churn with our data."
-# Fix for nominalisation: use the verb. "the implementation of the new flow" -> "when we shipped the new flow"
+# nominalisation 的修正:把動詞還回來。「對流程進行優化」 -> 「改了流程」;「對資料進行分析」 -> 「看了資料」。
+# translationese 的修正:行動者放前面、拿掉框架。「在效率方面有顯著提升」 -> 「快了 31%」。
+# de_chain 的修正:拆成兩句,或拿掉不承載意義的「的」。
 ```
 
-### 2026 model-idiom layer (density-scored)
+### 2026 模型慣用語層(密度計分;待驗證)
 
-Phrases that were human short-form idiom in 2024 and are model idiom in 2026.
-Each counts as one marker; "let that sink in" and "that's the real story" are
-scrubbed on a single hit as closers.
+這些在人類短貼文裡本來是口語,在 2026 年的模型輸出裡變成慣用語。每個算一個標記;「值得細品」「讓這句話沉澱一下」作為結尾時,單次命中就處理。這一層是**待驗證假設**,請對照你自己的 AI 草稿與真人貼文校正。
 
 ```python
 IDIOM_LAYER_2026 = [
-    r"\bquietly\b",                          # "quietly shipped"
-    r"(?m)^\w+ matters\.$",                  # "distribution matters." as a line
-    r"\bcompound(s|ing)?\b",
-    r"\ba signal\b|\bthe signal\b",
-    r"\bthe work\b",
-    r"\bbuilt different\b",
-    r"\bload-bearing\b",
-    r"\bdoing the heavy lifting\b",
-    r"\blet that sink in\b",
-    r"\bthat's the real story\b",
+    r"默默",                       # 「默默做了」
+    r"真正的(關鍵|重點|問題|答案)",  # 「真正的關鍵是」
+    r"答案(很|其實)?簡單",
+    r"(值得|需要)(細品|深思|玩味)|細品|品一品",
+    r"讓這句話沉澱",
+    r"這才是(真正的|最重要的)",
+    r"(一個|這是)(訊號|信號)",
+    r"複利(效應)?|長期主義",       # 當作口號用時計;指財務計算時不計
+    r"底層(邏輯|能力|思維)",
+    r"槓桿|放大器",                 # 比喻用法時計
+    r"你會發現",
 ]
 ```
 
-### Reveal bridges (single hit = replace)
+### 揭曉橋段(單次命中 = 替換)
 
 ```python
 REVEAL_BRIDGES = [
-    (r"(?im)^the (result|outcome|answer|lesson|catch|kicker|truth)\?\s*", ""),   # "The result?"
-    (r"(?i)\bit'?s not \w[^,.]{0,40}, it'?s \b", None),                          # "It's not X, it's Y" (rewrite as paired declaratives)
-    (r"(?i)^stop \w[^,.]{0,40}\. start \b|^stop \w[^,.]{0,40}, start \b", None),  # "Stop X, start Y"
-    (r"(?im)^here'?s (what|how|why|the thing)\b[^:.\n]{0,40}[:.]\s*", ""),      # "Here's what/how"
-    (r"(?im)^(plot twist|spoiler|the twist)[:?]\s*", ""),
+    (r"(?m)^(結果|答案|真相|重點|關鍵|教訓)(是什麼)?[呢?]\s*", ""),     # 「結果呢?」「答案是什麼?」
+    (r"(?m)^(重點來了|重頭戲來了|接下來才是重點|反轉來了|劇透|先說結論)[:!:]?\s*", ""),
+    (r"(?m)^(以下是|以下幾點|來看看|讓我來告訴你|讓我帶你看)[^:\n]{0,20}[:]\s*", ""),   # 「以下是……」開場
+    (r"(?m)^(別再|不要再|停止).{1,14}[,。,]\s*(開始|改成|要)", None),              # 「別再 X 了,開始 Y」要改寫
+    (r"(?m)^你(知道嗎|絕對想不到|一定想不到)[?!?]?\s*", ""),
 ]
-# Fix: delete the bridge and let the next sentence stand. It was the point anyway.
-# Named 2026 tells on every reader list; measured reach-negative on LinkedIn (vendor data).
+# 修正:刪掉橋段,讓下一句自己站住。它本來就是重點。
+# 這些在原版英文研究中是被點名的 2026 破綻;中文對應模式是依語感重設計,請以你的語料驗證。
 ```
 
-### Negative parallelism (single hit = rewrite)
+### 否定式對仗(單次命中 = 改寫)
 
-Strip the "not X, but Y" / "it isn't about X, it's about Y" constructions and
-every sibling form ("The question isn't X, it's Y", "This isn't X. This is
-Y."). Rewrite as paired declaratives, not by auto-substitution, and flag for
-the user since meaning preservation needs judgement. Zero top Threads posts in
-our corpus use one.
+刪掉「不是 X,而是 Y」「不只是 X,更是 Y」「不僅 X,更 Y」「這無關 X,而在於 Y」「關鍵不在 X,而在 Y」「X 不是問題,Y 才是」,以及所有近親形式。改寫成成對的直述句,不要自動替換,並告知使用者,因為保留語意需要判斷。原版英文語料中,沒有任何一則高互動 Threads 貼文使用它。
 
-### Rule of three (strict at density; one natural triad is allowed)
+```python
+NEG_PARALLEL = re.compile(
+    r"(這|它|那)?(不只是|不僅僅?是|不單是|並非|不是).{1,20}[,,]\s*(而是|更是|而在於|更|才是)"
+    r"|關鍵不在.{1,16}[,,]\s*而在|這無關.{1,16}[,,]\s*而是|.{1,12}不是問題[,,].{1,12}才是"
+)
+```
 
-Tricolon runs at 2x the expert-human rate across 2026 models. On Threads it is
-rare in top posts (8%) and engagement-negative (0.28x), so the bar is a second
-triad in a post, a stacked or perfectly parallel one, or a hollow one.
+注意:「不是 A 是 B」當作單純更正事實(「這間店不是在西門町,是在中山」)不是否定式對仗。只抓當作整則骨架的「不是 X 而是 Y」。
+
+### 三項並列(密度時嚴格處理;一組自然三項允許)
+
+三段式在 2026 年模型輸出中的出現率是有經驗人類作者的 2 倍(原版英文研究)。在 Threads 上,它在高互動貼文罕見且與互動負相關(原版英文語料)。所以門檻是:一則裡的第二組三項、堆疊或完美對仗的三項、空洞的三項。
 
 ```python
 def detect_triads(text: str) -> list:
     patterns = [
-        r"(\w+), (\w+),? and (\w+)",                       # word triplets
-        r"(\w+ \w+), (\w+ \w+),? and (\w+ \w+)",           # short-phrase triplets
-        r"(?m)^(\w+)\. (\w+)\. (\w+)\.$",                  # "Simple. Effective. Easy." (also a Pass 2 staccato hit)
-        r"\b(no \w+)[,.] (no \w+)[,.] (just|only) \w+",    # "No X. No Y. Just Z." (also a Pass 2 hit)
+        r"([^、,。\n]{1,8})、([^、,。\n]{1,8})、([^、,。\n]{1,8})",          # 頓號三連
+        r"([^、,。\n]{1,8})、([^、,。\n]{1,8})(?:和|與|及|跟)([^、,。\n]{1,8})",  # 「A、B 和 C」
+        r"(?m)^([^。\n]{1,5})。([^。\n]{1,5})。([^。\n]{1,5})。$",              # 「簡單。有效。輕鬆。」(也是 Pass 2 的斷句命中)
+        r"沒有[^。,\n]{1,8}[。,]\s*沒有[^。,\n]{1,8}[。,]\s*(只有|就只有)",      # 「沒有 X。沒有 Y。只有 Z。」(也是 Pass 2 命中)
+        r"(更[快省好強])[、,](更[快省好強])[、,](更[快省好強])",                # 「更快、更省、更好」
     ]
-    return [m for p in patterns for m in re.finditer(p, text, flags=re.I)]
+    return [m for p in patterns for m in re.finditer(p, text)]
 
-HOLLOW_ADJECTIVES = {"dynamic", "vibrant", "innovative", "faster", "cheaper", "better", "simple",
-                     "effective", "easy", "bold", "clear", "focused", "scalable", "powerful"}
-ABSTRACT_NOUNS = {"growth", "impact", "value", "alignment", "innovation", "efficiency", "results", "success",
-                  "clarity", "freedom", "scale", "momentum", "consistency", "mindset", "strategy", "vision"}
+HOLLOW_ADJECTIVES = {"高效", "便捷", "智慧", "智能", "創新", "靈活", "專業", "全面", "強大", "簡單", "有效",
+                     "輕鬆", "更快", "更省", "更好", "更強", "清晰", "聚焦", "可擴展", "大膽"}
+ABSTRACT_NOUNS = {"成長", "影響力", "價值", "協同", "創新", "效率", "成果", "成功", "清晰", "自由", "規模",
+                  "動能", "一致性", "心態", "策略", "願景", "格局", "能量"}
 
 def hollow(items) -> bool:
-    """A triad is hollow when its items are interchangeable: every item is an abstract adjective or an
-    abstract noun, and none carries a receipt (a proper name, a number, a $ or %). Equal word counts are
-    NOT a tell on their own: "Stripe invoices, Vercel logs, and GitHub alerts" is a natural concrete triad."""
+    """三項為「空洞」:每一項都是抽象形容詞或抽象名詞,而且沒有任何一項帶「收據」
+    (數字、$ 或 % 或 NT$、英文專有名詞、可查證的具名對象)。字數相同本身不是破綻:
+    「Stripe 帳單、Vercel 日誌、GitHub 警示」是自然的具體三項。
+    中文專有名詞沒有大寫可抓,函式只能抓數字與拉丁字母;中文具名實體(公司、人、地名)由判斷者人工確認。"""
     def has_receipt(items) -> bool:
-        for i, x in enumerate(items):
-            for j, w in enumerate(x.split()):
-                if re.search(r"[0-9$%]", w):
-                    return True
-                if w[:1].isupper() and not (i == 0 and j == 0):   # a sentence-initial capital is not a name
-                    return True
+        for x in items:
+            if re.search(r"[0-9%$]|NT\$|[A-Za-z]{2,}", x):
+                return True
         return False
-    all_abstract = all(x.lower().strip() in HOLLOW_ADJECTIVES or x.lower().strip() in ABSTRACT_NOUNS
-                       or x.lower().split()[-1] in ABSTRACT_NOUNS for x in items)
+    all_abstract = all(x.strip() in HOLLOW_ADJECTIVES or x.strip() in ABSTRACT_NOUNS for x in items)
     return (not has_receipt(items)) and all_abstract
 
 def triad_action(triads: list) -> list:
-    """Call once per post with that post's triads. Scrub any hollow triad on sight. Of the natural
-    (concrete, non-interchangeable) ones keep only the FIRST; every later triad in the same post is rewritten,
-    so each post ends with at most one natural triad. Threads are not pooled: the threshold is per post."""
+    """每則貼文呼叫一次,傳入該則的三項。空洞的一律處理。自然(具體、不可互換)的只保留第一組;
+    同則裡之後的三項全部改寫,讓每則最多一組自然三項。串文不合併計算:門檻是每則。"""
     actions = []
     kept_one = False
     for t in triads:
         items = t.groups()
         if hollow(items) or kept_one:
-            actions.append((t, "REWRITE_AS_TWO_OR_FOUR"))   # 2 items, or 4 with one that breaks the pattern
+            actions.append((t, "REWRITE_AS_TWO_OR_FOUR"))   # 改成 2 項,或 4 項且其中一項打破排比
         else:
             actions.append((t, "LEAVE"))
             kept_one = True
     return actions
 ```
 
-### Dead phrases (delete or rewrite)
+### 死套話(刪除或改寫)
 
-- "in today's fast-paced world", "in the age of AI"
-- "at the end of the day"
-- "game-changer", "deep dive", "move the needle", "needle-mover", "paradigm shift"
-- "the world of {thing}"
-- "the hard truth is" / "the uncomfortable reality is"
+- 「在這個快速變遷的時代」「在當今……的時代」「隨著 AI 的發展 / 普及 / 進步」「AI 時代」
+- 「深入探討」「深度解析」「一文讀懂」「帶你看懂」「全面解析」
+- 「說到底」「歸根結底」「毫無疑問」
+- 「遊戲規則改變者」「改變遊戲規則」「典範轉移」「範式轉移」
+- 「……的世界」(「創業的世界」「AI 的世界」)
+- 「殘酷的真相是」「不得不面對的現實」「很多人不知道的是」
 
-### Dead closers (rewrite to a landing or a specific invite)
+### 死結尾(改寫成落點或具體邀請)
 
-- "What do you think?"
-- "Thoughts?"
-- "Let me know in the replies."
-- "Tag someone who needs this."
-- "Let that sink in."
-- A one-word closing line ("Still.")
+- 「你怎麼看?」「大家怎麼看?」「想聽聽你的想法」
+- 「歡迎留言討論」「留言告訴我」「歡迎分享」
+- 「覺得有用就按個讚」「Tag 需要的朋友」「轉給需要的人」
+- 「值得細品」「讓這句話沉澱一下」
+- 「就這樣。」「完畢。」「沒了。」或任何單字結尾行
 
-A specific, warm question ("what changed it for you?") is not a dead closer;
-it is the reply invitation Threads ranks on.
+具體、溫暖的提問(「是什麼讓你改變的?」「你最後怎麼收場的?」)不是死結尾;那是 Threads 排序所依據的回覆邀請。
 
-## Threads-format scrubs (always apply)
+### 互動誘餌(單次命中 = 刪)
 
-- A single post over 500 chars (no attachment): flag and tighten, or escalate to
-  a thread.
-- 2+ hashtags: cut to 0 or 1 (Threads rejects the second), move to the end.
-- More than 2 emoji, or any emoji on a serious take: cut.
-- External link in post 1: move to a reply or post 2+.
-- First line that needs line 2 to make sense: rewrite so it stands alone.
-- A thread with an inserted 3-word "punch post" that carries no content: fold
-  it into its neighbour (see Pass 2).
+「按讚收藏」「求轉發」「同意的留言 1」「轉發給需要的人」「點個讚再走」「關注不迷路」。
 
-## Tone warming (Threads-specific)
+## Threads 格式處理(永遠套用)
 
-Threads is warmer than X. Soften an imported X voice:
+- 單則超過 500 字元(沒有長文附件):標示並修剪,或升級成串文。字元以 Threads App 內顯示的計數為準(中文、英文、標點、emoji 的計法請在 App 內實際確認一次)。
+- 2 個以上主題標籤:縮到 0 或 1 個(Threads 會拒絕第二個),並移到最後。
+- 超過 2 個 emoji,或嚴肅議題用了任何 emoji:刪。
+- 第一則放了外部連結:移到回覆或第二則以後。
+- 第一行需要第二行才看得懂:重寫成能獨立成立(假設:「顯示更多」截斷約落在前 30 到 50 字,請在 App 內實測)。
+- 串文裡為節奏插入、沒有內容的 3 到 5 字「重拳貼文」:併進鄰近的貼文(見 Pass 2)。
+- 句尾語氣詞(啦、喔、欸、吧、耶、嘛)一則超過 2 個:保留最自然的 1 到 2 個,其餘刪。作者的語氣檔案若明確以此為風格,尊重之。
+- 注音文、火星文、過度諧音梗:除非語氣檔案記錄那是作者一貫風格,否則改成一般寫法。
 
-- A bare dunk -> the same claim plus a warm invitation to talk.
-- A cold, newsy declaration -> a first-person, conversational framing.
-- Keep the edge of a contrarian take, lose the contempt.
-- Warming is not hedging. Add a question or an invitation, never "I might be
-  wrong but" or "just my two cents" (inserted hedges are a Pass 3 tell).
+## 語氣調暖(Threads 專屬)
+
+Threads 比 X 溫暖。把移植來的 X 語氣放軟:
+
+- 單純的嗆聲 -> 同一個主張加上溫暖的邀請對話。
+- 冷硬的新聞式宣告 -> 第一人稱、口語的框架。
+- 保留逆向觀點的鋒芒,拿掉輕蔑。
+- 調暖不等於猶豫。加一個提問或邀請,不要加「可能是我錯了,但」或「個人淺見」(插入的猶豫語氣是 Pass 3 的破綻)。
+- 台灣語境:稱呼他人用「你」不用「您」,除非對方是長輩或正式合作對象。避免「筆者」「本人」這類公文腔,第一人稱用「我」。
 
 ---
 
-## Pass 2 - Rhythm (never force)
+## Pass 2:節奏(不強加)
 
-Replaces V2's "BREAK (force burstiness)". Detectors do not score burstiness
-(GPTZero dropped it in 2023). On Threads our own corpus (n=311,
-length-controlled) says uniform rhythm wins at every length: Spearman -0.31
-between sentence-length variance and engagement, and the low-variance half
-ahead in the short, mid and long terciles. Mechanical long/short alternation
-is also a learnable humanizer fingerprint. So: never force variance on any
-post or thread, and remove manufactured variance everywhere.
+取代 V2 的「BREAK(強加起伏)」。偵測器不計分節奏起伏(GPTZero 在 2023 年就拿掉了)。依原版英文語料(n=311,長度控制),Threads 上均勻節奏在各種長度都贏:句長變異與互動的 Spearman 為 -0.31,低變異那一半在短、中、長三個分位都領先。機械式長短交錯也是可學習的去 AI 味工具指紋。所以:不要對任何貼文或串文強加變異,並在各處移除人為製造的變異。中文的長短門檻是假設,請用自己的數據校正。
 
 ```python
 STACCATO_TELLS = [
-    r"(?m)^\w+\.$",                                              # one-word line for drama: "Still." "Exactly."
-    r"(?m)^(\w+\. ){2,}\w+\.$",                                  # "Short. Punchy. Done." / "Simple. Effective. Easy."
-    r"(?i)\bno \w+\. no \w+\. (just|only) \w+",                  # "No X. No Y. Just Z."
-    r"(?i)\ball (of )?the \w+\. none of the \w+",                # "All the X. None of the Y."
-    r"(?im)^the (result|outcome|answer|lesson|catch|kicker|truth)\?",  # "The result?" reveal (also a strict reveal bridge)
-    r"(?i)\b(why|how|what happened)\? (because|simple|easy)\b",  # pseudo-Socratic Q&A
-    r"(?i)\b(that's it|that's all|that's the post|full stop|period)\.$",
+    r"(?m)^(對|沒錯|真的|確實|就是這樣|完全正確)[。!]?$",                       # 為戲劇效果單獨成行:「對。」「沒錯。」
+    r"(?m)^([^。\n]{1,5}。){2,}[^。\n]{1,5}。$",                                  # 「簡單。有效。就這樣。」
+    r"沒有[^。\n]{1,8}。\s*沒有[^。\n]{1,8}。\s*(只有|就只有)[^。\n]{1,8}",       # 「沒有 X。沒有 Y。只有 Z。」
+    r"全是[^。\n]{1,8}。\s*沒有[^。\n]{1,8}",                                     # 「全是 X。沒有 Y。」
+    r"(?m)^(結果|答案|真相|重點|關鍵|教訓)(是什麼)?[呢?]",                         # 「結果呢?」(也是 strict 揭曉橋段)
+    r"(為什麼|怎麼做|怎麼辦|然後呢)[??]\s*(因為|很簡單|其實很簡單|答案是)",         # 偽蘇格拉底問答
+    r"(就這樣|就這些|完畢|沒了|到此為止)[。.]?$",
 ]
 
 def restore_rhythm(units: list[str]) -> list[str]:
-    """V3, Threads. units = posts in order. Remove staged variance only. Never manufacture variance,
-    never un-flatten a uniform post (uniform rhythm wins on Threads at every length),
-    never reorder or duplicate a post."""
+    """V3,Threads。units = 依序的貼文。只移除人為製造的變化。
+    絕不製造變化,絕不把均勻的貼文打散(Threads 上均勻節奏在各種長度都贏),
+    絕不重排或複製貼文。"""
     fragments_in_thread = 0
     for i, p in enumerate(units):
-        # 1. Kill staged rhythm. Merge staccato runs into one full sentence with a real clause.
+        # 1. 殺掉演出來的節奏。把斷句連發併成一個有子句的完整句子。
         for pat in STACCATO_TELLS:
             if re.search(pat, p):
-                p = merge_into_sentence(p, pat)     # "No meetings. No decks. Just code." -> "we skipped the meetings and the decks and shipped code."
+                p = merge_into_sentence(p, pat)     # 「沒有會議。沒有簡報。只有程式碼。」 -> 「我們省掉會議和簡報,直接寫程式。」
 
-        # 2. Cap standalone fragments (<4 words): 1 per post AND 2 per thread. Both counters apply.
+        # 2. 限制獨立片段(少於 6 字):每則 1 個,每串 2 個。兩個計數器都適用。
         fragments_in_post = 0
         for s in split_sentences(p):
-            if len(s.split()) < 4:
+            if len(s) < 6:
                 fragments_in_post += 1
                 fragments_in_thread += 1
                 if fragments_in_post > 1 or fragments_in_thread > 2:
-                    p = attach_to_neighbor(p, s)    # fold into the previous sentence with a comma or colon
-
+                    p = attach_to_neighbor(p, s)    # 用逗號或冒號併進前一句
         units[i] = p
 
-    # 3. A 3-word "punch post" inserted for rhythm carries no content: fold it into the post BEFORE it,
-    #    or, when it is post 1, into the post AFTER it. Never wrap around; thread order is preserved.
-    #    Every fold here and in step 4 is gated by fits() (500-char cap), so no merge can produce an
-    #    over-length post; a punch post that fits nowhere is left in place and reported as a tell.
+    # 3. 為節奏插入的 3 到 5 字「重拳貼文」沒有內容:併進它「前一則」,
+    #    若它是第一則,則併進「後一則」。不繞回,串文順序保持。
+    #    這裡與第 4 步的每次合併都受 fits() 把關(500 字元上限),所以合併不會產生超長貼文;
+    #    併不進去的重拳貼文原地保留,並報告為破綻。
     if len(units) > 1:
         merged = []
         for i, p in enumerate(units):
-            if len(p.split()) < 4 and not carries_content(p):
-                if merged and fits(merged[-1] + " " + p):
-                    merged[-1] = merged[-1] + " " + p
-                elif i == 0 and fits(p + " " + units[1]):   # post 1 only folds forward; len(units) > 1 here
-                    units[i + 1] = p + " " + units[i + 1]
+            if len(p) < 6 and not carries_content(p):
+                if merged and fits(merged[-1] + "\n" + p):
+                    merged[-1] = merged[-1] + "\n" + p
+                elif i == 0 and fits(p + "\n" + units[1]):   # 第一則只能往後併;此處 len(units) > 1
+                    units[i + 1] = p + "\n" + units[i + 1]
                 else:
-                    merged.append(p)                        # nothing it can fold into under 500 chars: leave it
+                    merged.append(p)                        # 500 字元內沒處可併:留著
             else:
                 merged.append(p)
         units = merged
 
-    # 4. No un-flattening step on Threads: a post or thread of same-length sentences is how top Threads
-    #    posts read. The one remaining check is the seesaw: if post lengths now alternate (4+ posts flipping
-    #    between short <80 chars and long >=160), fold the SECOND short post into the post before it.
+    # 4. Threads 上沒有「打散均勻」這一步:一則或一串句長相近的貼文,是高互動貼文的常態。
+    #    剩下的唯一檢查是蹺蹺板:若貼文長度現在長短交錯(4 則以上來回在短 <25 字與長 >=60 字之間),
+    #    把「第二個短貼文」併進它前面那則。(門檻為中文假設,請用自己數據校正。)
     lengths = [len(u) for u in units]
-    if len(lengths) >= 4 and all((lengths[k] < 80) != (lengths[k + 1] < 80) for k in range(len(lengths) - 1)) \
-            and all(n < 80 or n >= 160 for n in lengths):
-        k = [j for j, n in enumerate(lengths) if n < 80][1]
-        if fits(units[k - 1] + " " + units[k]):
-            units[k - 1] = units[k - 1] + " " + units[k]
+    if len(lengths) >= 4 and all((lengths[k] < 25) != (lengths[k + 1] < 25) for k in range(len(lengths) - 1)) \
+            and all(n < 25 or n >= 60 for n in lengths):
+        k = [j for j, n in enumerate(lengths) if n < 25][1]
+        if fits(units[k - 1] + "\n" + units[k]):
+            units[k - 1] = units[k - 1] + "\n" + units[k]
             del units[k]
     return units
 
 def fits(post: str, limit: int = 500) -> bool:
-    """Platform limit check used by every merge above: 500 chars per post (10,000 only with a text
-    attachment). A merge that would not fit is skipped; the tell is left and reported instead."""
+    """上面每次合併都使用的平台上限檢查:每則 500 字元(只有長文附件才到 10,000)。
+    併不進去的合併就跳過;破綻留著並報告。"""
     return len(post) <= limit
 ```
 
-Layout vs rhythm: a hard return between two short lines inside a post is
-native Threads pacing and is **not** touched by this pass (more short lines
-correlate with higher engagement in our corpus). "we cut deploy time from 40
-min to 6 min." on its own line is layout. "Still." on its own line is
-fragment-for-drama. The pass edits sentences, never the line breaks.
+版面與節奏的差別:一則裡兩個短句之間的換行,是 Threads 原生步調,**這一道不碰**(原版語料中,較多短行與較高互動相關)。「我們把部署時間從 40 分鐘壓到 6 分鐘。」自己一行是版面。「對。」自己一行是為戲劇效果的片段。這一道改的是句子,不是換行。
 
-## Pass 3 - Forbidden insertions (sincerity markers, hedges)
+## Pass 3:禁止插入項目(真誠宣告、猶豫語氣)
 
-Pass 3 adds concreteness only (a referenced odd-precision number, a named
-entity, a flat dated fact, a warm question). It never adds these, and Pass 1
-strict removes them when the draft already has them as an opener or pivot:
+Pass 3 只加具體度(有指涉對象的精確數字、具名實體、平鋪直敘有日期的事實、溫暖的提問)。它絕不加下列項目,而 Pass 1 strict 在草稿已經把它們放在開場或轉折時移除它們:
 
 ```python
 SINCERITY_MARKERS = [
-    r"(?im)^(let me be (honest|real|direct|clear)|i'?ll be (honest|real|direct)|honestly\?|honest (caveat|version|answer)|the honest (version|answer|truth) is|to be (direct|honest|fair|transparent)|real talk|full transparency|can i be (honest|vulnerable)|i'?ll say the quiet part|not gonna lie|ngl|unpopular opinion)[:,.]?\s*",
-    r"(?i)\b(i (might|may|could) be wrong,? but|perhaps|it seems (to me )?that|in my humble opinion|i think it'?s fair to say|just my two cents)\b",  # inserted hedges: only scrub if NOT in the author's voice samples
+    r"(?m)^(老實說|坦白講|坦白說|說真的|說句實在話|講句公道話|我必須承認|我要承認|真心話|不裝了|攤牌了|不誇張|不瞞你說|跟你說句真心話|這個觀點可能不受歡迎|可能會被罵|暴論)[:,,。.]?\s*",
+    r"(可能是我錯了|或許是我錯了|我可能錯了|或許|似乎|好像是|個人淺見|僅供參考|以上純屬個人看法|拋磚引玉|不成熟的想法)",  # 插入的猶豫語氣:只有在「不是」作者聲音樣本裡時才清除
 ]
-# Fix: delete the marker and keep the sentence that follows. If the sentence that follows is not
-# a specific fact, the marker was doing the work of vulnerability. Ask the author for the fact.
-# Evidence: performed hesitancy 2x more common in LLM than expert human text; "false vulnerability"
-# is a named 2026 tell. The rule is: never manufacture one, and never wrap a fact in one.
-# Warmth is not a hedge: a closing question is an invitation, "I might be wrong but" is a tell.
+# 修正:刪掉標記,保留後面那一句。若後面那句不是一個具體事實,代表標記在代替脆弱感做事。
+# 向作者要那個事實。
+# 證據(原版英文研究):表演式遲疑在 LLM 文字中比人類專家文字多一倍;「假脆弱」是 2026 年被點名的破綻。
+# 規則是:絕不製造一個,也絕不把事實包進一個。
+# 溫暖不是猶豫:結尾的提問是邀請,「可能是我錯了,但」是破綻。
 ```
 
-## Preserve these (user voice, do not scrub)
+注意:「說真的」「老實說」在台灣口語裡本來很自然,**只在它當作開場或轉折的招牌,而後面沒有具體事實時**才處理。作者語氣檔案裡記錄了這是他的口頭禪,就保留一次。
 
-- The warm, lowercase-casual register if that is how the user types
-- `..` as a soft pause
-- One or two sentence fragments used intentionally across a thread ("every
-  time.") - the cap is 2 per thread, not 0
-- One em dash in a post that needs it. Do not push a long text-attachment post
-  to zero; zero across 300+ words is below the human baseline
-- One natural rule-of-three with concrete, non-interchangeable items
-- Uniform rhythm. That is how top Threads posts read, at every length
-- A closing question or invitation to talk (Threads ranks on replies)
-- Contractions (don't, it's, you're)
-- Specific numbers with referents and named entities (add MORE, never remove)
-- The author's reactions and opinions, including a blunt one. Flat tone across
-  a whole thread is a humanizer fingerprint
-- A single common-word marker in a post ("notably", "robust" as a term of
-  art). One is not a verdict
-- Their actual story. Never invent a detail to make a post land
+## 保留這些(使用者的聲音,不要清除)
+
+- 口語、溫暖的語氣,如果作者本來就這樣打字
+- 適量的句尾語氣詞(啦、喔、欸、吧),如果那是作者的聲音
+- 「⋯⋯」作為軟停頓
+- 整串中刻意使用的一兩個句子片段(「每次都是。」)。上限是每串 2 個,不是 0 個
+- 一則裡需要的一個破折號。不要把長文附件推到零個;300 字以上的文字零個,低於人類基線
+- 一組具體、不可互換項目的自然三段式
+- 均勻節奏。那是高互動 Threads 貼文的常態,在各種長度都是
+- 結尾的提問或邀請對話(Threads 以回覆排序)
+- 有指涉對象的具體數字與具名實體(只加不減)
+- 作者的反應與意見,包括直率的。整串語氣一致是去 AI 味工具的指紋
+- 一則裡單一的常見詞標記(例如一個「事實上」)。一個不是判決
+- 作者慣用的台語借詞或在地說法(只要那真的是他的說話方式)
+- 他們真實的故事。絕不為了讓貼文好看而編造細節

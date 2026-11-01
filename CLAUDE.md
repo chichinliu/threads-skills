@@ -32,10 +32,9 @@ otherwise.
 
 ## Commits
 
-- Primary author **must** be Sergey: every `git commit` needs
-  `--author="Sergey Bulaev <s@bulaev.org>"`. The harness defaults to the Claude
-  identity if you forget; verify with `git log -1 --format='%an <%ae>'` before
-  pushing.
+- This is the chichinliu fork (zh-TW edition) of the upstream threads-skills by
+  Sergey Bulaev. Commit under the maintainer's own identity; never impersonate
+  the upstream author. Keep the upstream copyright line in `LICENSE` (MIT).
 - Co-author trailer (`Co-Authored-By: Claude ...`) is fine and welcomed.
 - Verify locally before push: build never breaks, no broken refs in `SKILL.md`,
   library smoke import passes.
@@ -58,12 +57,22 @@ otherwise.
   `.claude-plugin/marketplace.json`, root `SKILL.md` bundle list, README skill
   table, and every `threads-<name>` cross-reference in sibling SKILL.md files.
 
+## Language (zh-TW edition)
+
+- All user-facing skill and reference text is Traditional Chinese with Taiwan
+  usage (see the glossary in `references/voice-rules.md`). Skill names, file
+  paths, code identifiers and `T1`-`T13` formula codes stay English: they are
+  public surface.
+- `description:` fields: Traditional Chinese, no em or en dashes, include Chinese
+  trigger phrases and a "不適用於 X(請用 Y)" disambiguation sentence.
+- The plugin manifest `description` must start with a digit followed by a space
+  ("8 個 ..."): `check_frontmatter.py` parses the skill count from it.
+
 ## Voice rules + reference layout
 
 - Canonical voice rules live at root `references/voice-rules.md`. Skill-local
   "Hard rules" sections must only contain skill-specific overrides (char ranges,
-  thread rules, format constraints) and start with: `Global voice rules: see root
-  SKILL.md Voice rules.`
+  thread rules, format constraints) and start with: `全域語氣規則:見根目錄 SKILL.md 的語氣規則。`
 - Other root-level references shared across skills:
   `references/hook-formulas.md` (10 Threads formulas) and
   `references/algorithm-heuristics.md`.
@@ -82,8 +91,8 @@ otherwise.
   (`_DOTENV_VARIABLES`); the custom-poster variable the DIY tier executes must come
   from the launch environment, never from a file that can arrive with a clone. No
   module may call `load_dotenv()` itself, and every authenticated request passes
-  `allow_redirects=False` because the Publora key rides a custom header and the
-  Apify token a query parameter, neither of which `requests` strips across hosts.
+  `allow_redirects=False` because the Apify token rides a query parameter, which
+  `requests` does not strip across hosts.
   `scripts/check_security_boundaries.py` enforces all three.
 - `references/mcp-read-layer.md` is the read path for anyone without a shell, which is
   everyone on claude.ai: the filtered `mcp.apify.com?actors=` connector URL, the tool
@@ -99,25 +108,24 @@ otherwise.
 
 ## Layer separation
 
-- **Write layer (Publora):** `lib/publora_client.py`. Two methods used by the
-  bundle: `create_post` (single post or thread; pass long content and Publora
-  auto-splits into a connected multi-post thread, no `(1/N)` markers) and
-  `list_connections` / `threads_connections` (GET /platform-connections). Skills
-  should call `lib.publish(kind, draft_text, target_url, ...)` rather than inline
-  the publora / manual / diy dispatch. Real endpoint: `POST /create-post` with
-  `platforms: ["threads-<id>"]` (an array of STRING ids), header `x-publora-key`.
-  Threads-specific `platformSettings.threads.replyControl` is passed through
-  `platform_settings`.
-- **Threads has no comment/reply/reaction endpoint on Publora** (those are
-  LinkedIn only), and `create-post` cannot target another user's post. So
-  `kind="reply"` always routes to a manual copy-paste block in
-  `lib/backend_selector.py`.
+- **Publish layer (no vendor):** `lib/backend_selector.py`. Two tiers only:
+  manual copy-paste (default) and a user-built custom poster
+  (`THREADS_SKILLS_CUSTOM_POSTER`, launch environment only). Skills call
+  `lib.publish(kind, draft_text, target_url, ...)` rather than inline the
+  dispatch. No third-party publishing service is bundled; do not add one as a
+  default or recommended path. The custom poster receives JSON on stdin and
+  `kind target_url` as argv, and owns thread splitting, retries and quotas.
+  `examples/threads_graph_poster.py` is a reference poster (stdlib + requests);
+  it is NOT verified against live Meta docs or a real account, keep that
+  disclaimer until someone does. Its token (`THREADS_ACCESS_TOKEN`) is in the
+  `.env` allowlist; the poster command itself never is.
+- **Replies and quotes** (`kind="reply"` / `"quote"`) always route to a manual
+  copy-paste block in `lib/backend_selector.py`: they must target another
+  user's post.
 - **No read layer ships by default.** There is no cheap, documented Threads
   post-read actor wired in. `threads-hook-extractor` and `threads-reply-drafter`
   ask the user to paste the post text. If a post-read actor is added later, gate
   it behind `APIFY_TOKEN` and keep the paste fallback.
-- Don't name competing third-party schedulers in committed files. The bundle is
-  positioned around the Publora write integration.
 
 - **Image layer (Pixfaro):** `lib/pixfaro_client.py`. Call `lib.illustrate(prompt, kind=...)` / `lib.refine(image_id, instruction)` (not the client directly); the returned hosted URL feeds `lib.publish(..., media_urls=[url])`. `refine` edits by `img_...` id (not URL); `aspect_ratio` is a ratio like `16:9` (not pixel dims). PIXFARO_TOKEN-or-manual fallback, keyed singleton + LRU cache; `overlay` brand fields come from `references/voice-profile.md` §6.
 
@@ -127,7 +135,7 @@ otherwise.
   root remains the Claude-facing source layout.
 - `.agents/plugins/marketplace.json` points to `.codex-marketplace/threads-skills`.
 - `scripts/sync_codex_marketplace.py` copies the root Codex manifest, `SKILL.md`,
-  `skills/`, `references/`, `lib/`, `scripts/`, `requirements.txt`, `.env.example`,
+  `skills/`, `references/`, `lib/`, `examples/`, `scripts/`, `requirements.txt`, `.env.example`,
   and `LICENSE` into the hidden package.
 - After editing any copied file, run the sync script before testing or committing.
 
@@ -143,7 +151,7 @@ otherwise.
 Run from repo root:
 
 ```bash
-python3 -c "from lib import publish, illustrate, refine, PixfaroClient, parse_threads_url, PubloraClient; print('OK')"
+python3 -c "from lib import publish, illustrate, refine, PixfaroClient, parse_threads_url; print('OK')"
 python3 scripts/sync_codex_marketplace.py
 ls skills/ | wc -l        # must equal 8
 python3 scripts/check_frontmatter.py   # parses; a dir count does not prove a skill loads

@@ -1,306 +1,169 @@
 ---
 name: threads-humanizer
-description: "Remove the AI tells readers react to in a Threads post: 2026 vocabulary by density, reveal bridges, staccato stacks, stacked triads, performed sincerity. Also --mode audit (500-char fit, hook, hashtag cap), --mode profile (learns how you write) and --mode interview (fills your Story Bank: the numbers, turning points and stories posts are made of). Not for writing from scratch (use threads-post-writer). Keywords: humanize, de-AI Threads post, interview me, audit before posting."
+description: "去除 Threads 貼文的 AI 腔:企業黑話、否定式對仗、揭曉橋段、斷句堆疊、表演式真誠、簡體字與大陸用語混入。另有 --mode audit(500 字元、鉤子、主題標籤上限的發佈前檢查)、--mode profile(學習你怎麼寫)、--mode interview(填寫素材庫:數字、轉折、故事)。不適用於從零寫稿(請用 threads-post-writer)。關鍵字:去 AI 味、潤稿、有人味、發文前檢查、訪談我。"
 ---
 
-# Threads Humanizer V3
+# Threads Humanizer V3(繁體中文・台灣版)
 
-Rewrites any Threads post or thread to remove the AI tells that human readers
-notice, and audits a finished draft against the 2026 Threads ranking
-checklist. Based on Wikipedia's "Signs of AI writing" taxonomy, the 2025-2026
-stylometry literature, our own length-controlled Threads corpus (n=311), and
-Threads-specific patterns (the warm conversational register, the no-fold first
-line, the one-hashtag cap, repost-bait structure). **V3 (2026-09):**
-recalibrated on 2026 evidence. Vocabulary is scored by density, em dashes are
-capped instead of banned, forced rhythm is now a tell instead of a fix, and
-there is an over-correction guard.
+改寫任何 Threads 貼文或串文,去掉讀者一眼就看出來的 AI 腔,並依 Threads 發佈前檢查表審核成稿。判準來自:維基百科「Signs of AI writing」分類、2025 至 2026 的風格計量研究、原版英文 Threads 語料(n=311)的觀察,以及 Threads 專屬的模式(口語溫暖的語境、第一行即鉤子、單一主題標籤上限、引發轉發的結構)。**V3(2026-09):** 依 2026 證據重新校準。詞彙改用密度計分,破折號改成設上限而非全面禁用,硬塞節奏變成一種破綻而不是解法,並新增過度修正防護。
 
-**What this skill does not do:** it does not make text "pass" GPTZero,
-Pangram, Turnitin or Originality. Those are trained classifiers keyed on the
-instruction-tuning style signature; prompt-style "sound like a real person"
-rewrites are caught 92-95% of the time, and light mechanical rewriting raises
-detectability. On post-length text (under 300 words) detector scores are
-noise. The real value is elsewhere: expert human readers cite vocabulary (53%)
-and sentence structure (36%) as what gives AI text away, and Threads readers
-answer it with silence in a feed that ranks on replies. This skill removes
-what those readers react to.
+**繁中台灣版說明:** 原版的英文詞彙表、破折號密度、小寫句首、專有名詞大寫規則,在中文沒有對應物。本版把檢查對象換成中文真正會出問題的點:企業黑話、否定式對仗、翻譯腔、簡繁與大陸用語混入、標點與中英間距、語氣詞過量。凡引用「原版英文語料」的數字,只代表英文貼文的觀察,**不能直接套用在中文**。本版所有中文閾值(例如單則 80 到 250 字、斷句長短門檻)都是待驗證的假設,請用你自己帳號的洞察數據校正。
 
-## What changed in V3
+**這個 skill 不做的事:** 它不保證讓文字「通過」GPTZero、Pangram、Turnitin、Originality 這類偵測器。那些是針對指令微調風格簽名訓練出來的分類器;依原版引用的研究,用提示詞要求「像真人一樣寫」的改寫,有 92% 至 95% 仍會被抓到,而輕度的機械式改寫反而讓可偵測性上升。對貼文長度的文字(約 300 字以內),偵測器分數接近雜訊。真正的價值在別處:有經驗的人類讀者指出,詞彙(53%)與句子結構(36%)是 AI 文字的破綻,而在以回覆為排序依據的動態消息裡,Threads 讀者的反應是沉默。這個 skill 去掉的,就是那些讀者會有反應的東西。
 
-Evidence tier in brackets: [strong] = replicated across 2+ independent
-2025-2026 studies or our own length-controlled corpus; [vendor] = single
-platform or vendor dataset; [weak] = one study or expert-panel report.
+## V3 改了什麼
 
-- **Vocabulary moved from a delete-list to density scoring.** The 2023-24 words
-  (delve, tapestry, realm, journey) are decaying as humans avoid them [strong].
-  The durable 2026 markers are common words (significant, crucial, notably,
-  comprehensive, insights, robust, leverage, foster, landscape, nuanced,
-  streamline, elevate) plus grammar: nominalisations and "-ing" clause openers
-  at 5.3x the human rate [strong]. In our Threads corpus AI vocabulary is
-  nearly absent from top posts (1.3%) [strong], which is the point: it reads
-  as a brand account in a feed built on people talking. One marker in a post
-  is not a verdict. Three is.
-- **Em dash is no longer a tell; the density is.** GPT-5.4 emits 1.43 per
-  1,000 words, below the 3.23 human baseline [strong]. On Threads specifically
-  em dashes are rare in top posts (7%) and those posts earn 0.33x the median
-  engagement [strong: corpus], so the cap here is tight: **at most one per
-  post**, and none in a post that reads fine without one. Replace the excess
-  with a comma, a colon, `..`, or a rewrite. Never a period (a split dash
-  stacks fragments).
-- **Forced burstiness is the #1 2026 tell, not the fix.** Mechanical
-  long/short alternation is a learnable humanizer fingerprint [weak], and on
-  Threads **uniform rhythm wins at every length**: sentence-length variance
-  correlates negatively with engagement across the whole corpus (Spearman
-  -0.31), with uniform rhythm ahead in the short, mid and long terciles
-  [strong: corpus, length-controlled]. So Pass 2 never forces variance, on a
-  single post or a thread. It only removes manufactured variance. "Short.
-  Punchy. Done.", "No X. No Y. Just Z.", one-word posts for drama and "The
-  result?" reveals are the current top tells.
-- **Rule of three is still a tell, at density.** Tricolon runs at 2x
-  expert-human rate across 2026 frontier models [strong], and on Threads it is
-  rare in top posts (8%) and engagement-negative (0.28x) [strong: corpus].
-  Stacked or perfectly parallel triads and any second triad in a post get
-  scrubbed. One natural triple with concrete items stays.
-- **Fingerprint injection was half wrong.** Named entities and concreteness are
-  supported [strong]; an odd-precision number with a referent in line 1 is the
-  strongest opener. Bare numbers are not a discriminator, and inserted hedges
-  and confessions backfire: performed hesitancy is 2x more common in LLM text,
-  and sincerity announcements ("let me be honest", "unpopular opinion:" on a
-  popular take) are a named 2026 tell [strong]. Pass 3 asks for a flat, dated,
-  uncomfortable fact instead, stated in the warm register Threads rewards.
-- **Over-correction guard.** Humanizer output has its own fingerprint [weak].
-  Pass 4 checks whether Passes 1-3 introduced the very patterns they were meant
-  to remove. Edits are proportional to real problems. When in doubt, leave it.
+證據層級標註:[強] = 兩份以上獨立研究重複驗證,或原版長度控制語料支持;[廠商] = 單一平台或廠商資料;[弱] = 單一研究或專家小組報告。以下證據皆為原版英文研究,中文適用性為假設。
 
-## When to use
+- **詞彙從刪除清單改為密度計分。** 一個黑話詞不是判決,三個才是。中文的對應物是:企業黑話(賦能、助力、打造、深耕、解鎖、賽道、閉環)、填充轉折(值得注意的是、不可否認、事實上)、收尾套話(總而言之、綜上所述)。一堆這類詞聚在一則裡,讀起來像官方帳號,而 Threads 的動態消息是建立在人在說話之上。
+- **破折號不再是破綻,密度才是。** 中文的對應是「——」。每則最多 1 個,沒有它也通順就不用。多出來的改成逗號、冒號、換行或重寫,**不要改成句號**(拆開的破折號會堆出斷句)。
+- **硬塞節奏是 2026 年的頭號破綻,不是解法。** 機械式長短交錯是可學習的「人性化工具」指紋 [弱]。原版英文語料顯示 Threads 上「均勻節奏」在各種長度都贏 [強:語料,長度控制]。所以 Pass 2 從不強加變化,只移除人為製造的變化。「簡單。有效。就這樣。」「沒有 X。沒有 Y。只有 Z。」為戲劇效果單獨成行的一個字,以及「結果呢?」式揭曉,是目前最明顯的破綻。
+- **三段式在高密度時仍是破綻。** 原版英文語料中,三段式在高互動貼文罕見且與互動負相關 [強:語料]。堆疊的、完美對仗的三項,以及一則裡的第二組三項,都要處理。一組自然、內容具體的三項可以留下。
+- **指紋注入有一半是錯的。** 具名實體與具體度有支持 [強];有指涉對象的精確數字放在第一行,是最強的開場。孤立的數字無法區分人與 AI;而加入猶豫語氣與告白會反效果:表演式的遲疑在 LLM 文字中比人類專家文字多一倍,而真誠宣告(「老實說」「坦白講」,或對一個其實很多人同意的觀點冠上「這個觀點可能不受歡迎」)是 2026 年被點名的破綻 [強]。Pass 3 改成要一個平鋪直敘、有日期、讓人不太舒服的事實,用 Threads 獎勵的溫暖口吻講出來。
+- **過度修正防護。** 去 AI 味工具的輸出有它自己的指紋 [弱]。Pass 4 檢查 Pass 1 到 3 有沒有引進它們本來要移除的模式。修改量要與真實問題成比例。拿不準的時候,不要動。
 
-- Before publishing any AI-drafted post or thread (rewrite mode)
-- Pre-publish review of a finished draft (audit mode, see `sub-skills/post-audit.md`)
-- When a draft feels off and you cannot pinpoint why
+## 何時使用
 
-## Input
+- 發佈任何 AI 起草的貼文或串文之前(改寫模式)
+- 對完成的稿件做發佈前審核(audit 模式,見 `sub-skills/post-audit.md`)
+- 稿子讀起來怪怪的,卻說不出哪裡怪
 
-Any text: a single post, a thread (with or without `---` breaks), a reply, or a
-quote-post draft. Optional: target voice samples (the user's past posts).
+## 輸入
 
-## Output
+任何文字:單則貼文、串文(有或沒有 `---` 分隔)、回覆,或引用貼文草稿。可選:目標語氣樣本(使用者過去的貼文)。
 
-- Rewritten text with AI tells removed
-- A diff showing what changed and why
-- Per-post char count (flagging anything over 500)
-- Per-post tell density (markers per post; 3+ triggered a rewrite)
-- Reader-read confidence: "reads human", "mixed", "reads AI" (a reader-tell
-  estimate, not a detector score)
+## 輸出
 
-## Modes
+- 去除 AI 腔後的改寫文字
+- 顯示改了什麼、為什麼的對照(diff)
+- 每則字元數(超過 500 要標示)
+- 每則的破綻密度(每則命中幾個標記;3 個以上觸發整則重寫)
+- 讀者感受信心:「像真人」「混合」「像 AI」(這是讀者感受的估計,不是偵測器分數)
+
+## 模式
 
 ```bash
-# Default: scrub AI tells (forensic + strict) and fix Threads-format issues
+# 預設:清除 AI 腔(forensic + strict),並修正 Threads 格式問題
 threads-humanizer <text>
 
-# Forensic only - minimum touch, just kill model leakage
+# 只做 forensic:最小幅度處理,只刪除模型殘留
 threads-humanizer --mode forensic <text>
 
-# Audit - detection-only pass-fail review, no rewrite
-# Runs the 2026 Threads checklist: 500-char fit, first-line hook, one-hashtag
-# cap, emoji limit, link placement, thread tap-through, warm tone, goal clarity.
-# Returns Blockers + Warnings + suggested fixes. See sub-skills/post-audit.md.
+# Audit:只偵測、判定通過與否,不改寫
+# 執行 2026 Threads 檢查表:500 字元、第一行鉤子、主題標籤上限、emoji 上限、
+# 連結位置、串文點開率、語氣溫度、目標明確度。
+# 回傳 Blockers + Warnings + 建議修正。見 sub-skills/post-audit.md。
 threads-humanizer --mode audit <text>
 
-# Profile - build/update the user's Voice & Brand Profile. See the section below.
+# Profile:建立或更新使用者的語氣與品牌檔案(Voice & Brand Profile)。見下方章節。
 threads-humanizer --mode profile
 
-# Interview - fill the Story Bank: what you have to say, not how you say it.
-# 20-40 minutes, resumable, or --mode interview post for one focused topic.
+# Interview:填寫素材庫(Story Bank),是「你有什麼要說」,不是「你怎麼說」。
+# 20 到 40 分鐘,可中斷續做;或用 --mode interview post 只談一個主題。
 threads-humanizer --mode interview
 ```
 
-## The four passes
+## 四道處理
 
-### Pass 1 - SCRUB (score, then delete or replace)
+### Pass 1:清除(先計分,再刪除或替換)
 
-Apply the tiered catalogs in `references/scrub-rules.md`. The unit of
-judgement is the **post, not the word**: count markers per post, rewrite the
-post at 3+, leave a single marker alone unless it is a reveal bridge, negative
-parallelism, a sincerity marker, or forensic leakage.
+套用 `references/scrub-rules.md` 的分層目錄。判斷單位是**一則貼文,不是一個詞**:每則計算標記數,3 個以上就重寫整則,單一標記除非是揭曉橋段、否定式對仗、真誠宣告或 forensic 殘留,否則不動。
 
-- **Forensic** (always on): real model leakage no human types. AI tool markers
-  (oaicite, contentReference, turn0search0), knowledge-cutoff disclaimers ("As
-  of my last update"), template blanks ([Your Name]), and em dashes above the
-  cap (more than one in a post).
-- **Strict** (default on): what readers react to. The durable 2026 vocabulary
-  set scored by density (significant, crucial, notably, particularly,
-  comprehensive, insights, robust, leverage, foster, landscape, nuanced,
-  streamline, elevate, empower), grammar markers (nominalisations,
-  sentence-opening "-ing" clauses), the 2026 model-idiom layer (quietly, "X
-  matters.", compound, "a signal", "the work", "built different", "let that
-  sink in"), reveal bridges on a single hit ("The result?", "Here's what",
-  "Stop X, start Y", "plot twist:"), all forms of negative parallelism,
-  stacked or perfectly parallel triads and any second triad in a post, phrase
-  cleanups ("in today's fast-paced world", "game-changer", "deep dive"), and
-  dead closers ("what do you think?").
-- **Threads-format scrubs** (always apply): 500-char fit, the one-hashtag cap,
-  emoji limits, link placement, first line that stands alone, and tone
-  warming (a transplanted X dunk becomes an invitation to talk).
+- **Forensic**(永遠開啟):人類不會打出來的模型殘留。AI 工具標記(oaicite、contentReference、turn0search0)、知識截止免責聲明(「截至我最後更新」「作為 AI 語言模型」)、範本空格(【你的名字】、[公司名稱])、Markdown 殘留(**粗體**、# 標題,Threads 不會渲染)、簡體字與大陸慣用詞(依台灣用語轉換),以及超過上限的破折號(一則超過 1 個)。
+- **Strict**(預設開啟):讀者會有反應的東西。企業黑話與填充轉折依密度計分;文法標記(「對……進行……」式名詞化、「在……方面」「作為一個……」式翻譯腔、抽象名詞堆疊);2026 模型慣用語層(「默默」「真正的關鍵」「值得細品」「答案很簡單」);揭曉橋段一次命中即處理(「結果呢?」「重點來了」「別再 X 了,開始 Y」「反轉來了」);所有形式的否定式對仗(「這不只是 X,而是 Y」);堆疊或完美對仗的三項,以及一則裡的第二組三項;死套話(「在這個快速變遷的時代」「深入探討」「一文讀懂」);死結尾(「你怎麼看?」「歡迎留言討論」);互動誘餌(「按讚收藏」「求轉發」)。
+- **Threads 格式處理**(永遠套用):500 字元限制、單一主題標籤上限、emoji 上限、連結位置、第一行能獨立成立、全形標點與中英間距,以及語氣調暖(移植來的 X 嗆聲腔變成邀請對話)。
 
-### Pass 2 - RHYTHM (never force it)
+### Pass 2:節奏(不強加)
 
-Detectors do not score burstiness. On Threads our corpus says uniform rhythm
-wins at every length (Spearman -0.31 between sentence-length variance and
-engagement; uniform ahead in every tercile). So Pass 2 has one job: remove
-manufactured variance. It never adds variance, on a single post or across a
-thread, and it never un-flattens a post for being uniform.
+偵測器不計分「節奏起伏」。依原版英文語料,Threads 上均勻節奏在各種長度都贏(句長變異與互動的 Spearman 為 -0.31)。所以 Pass 2 只有一個工作:移除人為製造的變化。它從不增加變化,不論單則或串文,也不會因為一則貼文太均勻就去打散它。
 
-- **Single post, reply, or quote post: do not touch the rhythm.** Three
-  same-length sentences is how top Threads posts read. Never insert a
-  fragment, never chop a sentence to "add punch".
-- **Threads:** a mix of post lengths that arises from the material is fine.
-  Never insert a 3-word "punch post" for rhythm, never pad a short post, never
-  alternate long/short; the inserted punch and the seesaw are the humanizer
-  fingerprint. A thread of similar-length posts is not a tell here.
-- Standalone fragments: at most 1 per post and 2 per thread. "every time."
-  once is a voice quirk; three in a thread is a pattern.
-- Banned outright (rewrite as full sentences): "The X? Y." reveals; "No X. No
-  Y. Just Z."; "All the X. None of the Y."; "Simple. Effective. Easy."
-  adjective stacks; one-word posts or lines for drama ("Still." "Exactly.");
-  pseudo-Socratic Q&A ("Why? Because..."); "Short. Punchy. Done." staccato
-  runs. Fragment runs are the tell.
-- Layout is not rhythm. A hard return between two short lines is native
-  Threads pacing and stays (more short lines correlate with higher engagement
-  in our corpus). Fragment-for-drama inside those lines is the tell.
+- **單則、回覆、引用貼文:不要動節奏。** 三句差不多長是高互動 Threads 貼文的常態。不要插入句子片段,不要為了「增加力道」把長句剁短。
+- **串文:** 因素材自然產生的長短不一沒問題。不要為節奏插入一則 3 到 5 字的「重拳貼文」,不要灌水撐長短貼文,不要長短交錯。插入的重拳與蹺蹺板式交錯,正是去 AI 味工具的指紋。一串長度相近的貼文在這裡不是破綻。
+- 獨立的句子片段(約少於 6 字):每則最多 1 個,每串最多 2 個。「每次都是。」出現一次是語氣習慣,一串裡出現三次就是模式。
+- 直接禁止(改寫成完整句子):「結果呢?」式揭曉;「沒有 X。沒有 Y。只有 Z。」;「全是 X。沒有 Y。」;「簡單。有效。輕鬆。」形容詞堆疊;為戲劇效果單獨成行的一個字(「對。」「真的。」「沒錯。」);偽蘇格拉底問答(「為什麼?因為……」);「就這樣。」「完畢。」式斷句連發。片段連發就是破綻。
+- 版面不等於節奏。兩個短句之間換行,是 Threads 原生的步調,保留(原版語料中,較多短行與較高互動相關)。為戲劇效果而獨立的片段才是破綻。
 
-The check is "did I add a staccato pattern", not a variance number.
+檢查標準是「我有沒有加進斷句模式」,不是一個變異數字。
 
-### Pass 3 - ADD (human fingerprints)
+### Pass 3:加入(人味指紋)
 
-Require where the content allows:
-- One odd-precision number WITH a named referent: who, what, when, or what it
-  cost ("$4,730 in Vercel overages, March invoice", not "$5k" and not
-  "massive costs"). A bare number is not a fingerprint; the referent carries
-  the signal.
-- One named entity (real person, company, date, tool)
-- One first-person concrete detail
-- One specific, dated, uncomfortable fact stated flat, with no framing sentence
-  before or after it. Not "not gonna lie, this one hurt: we lost the client."
-  Just "we lost Carta as a client on 14 Feb." The fact carries the
-  vulnerability. The frame turns it into performed sincerity, which readers now
-  read as the tell.
-- The warm, lowercase-casual register if the voice calls for it, and a soft
-  question or invitation where the post wants replies (Threads ranks on them)
+內容允許時,要求:
+- 一個有指涉對象的精確數字:誰、什麼、何時、花了多少(「Vercel 三月帳單超收 NT$14,730」,不是「約 1.5 萬」,更不是「很大一筆費用」)。孤立的數字不算指紋,指涉對象才承載訊號。
+- 一個具名實體(真實的人、公司、日期、工具)
+- 一個第一人稱的具體細節
+- 一個有日期、讓人不太舒服的具體事實,平鋪直敘,前後不加框架句。不是「老實說,這個真的很痛:我們丟了客戶。」而是「2 月 14 日,我們丟掉了最大的那個客戶。」事實本身承載脆弱,框架把它變成表演式真誠,而讀者現在把那當成破綻。
+- 若語氣檔案需要,保持口語、溫暖的語境;貼文想要回覆時,加一個柔性提問或邀請(Threads 以回覆排序)。
 
-Forbidden as openers or pivots (sincerity announcements, a named 2026 tell):
-"let me be honest", "I'll be real", "honestly?", "to be direct", "the honest
-version is", "real talk", "not gonna lie", "ngl", "can I be vulnerable for a
-second", "unpopular opinion:" as a preface to a popular one. Also forbidden as
-insertions: hedges the author did not write ("perhaps", "I might be wrong
-but", "it seems"). Performed hesitancy is 2x more common in LLM text than in
-expert human text; adding it makes the draft read more AI, not less. Warmth is
-not a hedge: "what changed it for you?" is an invitation, "I might be wrong
-but" is an inserted tell.
+禁止作為開場或轉折(真誠宣告,2026 年被點名的破綻):「老實說」「坦白講」「說真的」「我必須承認」「不誇張」「說句實在話」「不裝了」「攤牌了」,以及對其實很多人同意的觀點冠上「這個觀點可能不受歡迎」。禁止作為插入句:作者沒寫過的猶豫語氣(「或許」「似乎」「可能是我錯了,但」「個人淺見」)。表演式遲疑在 LLM 文字中比人類專家文字多一倍,加了只會更像 AI。溫暖不是猶豫:「是什麼讓你改變的?」是邀請,「可能是我錯了,但」是被插入的破綻。
 
-If the input lacks these, ask the user for a number, name, or moment. Do not
-fabricate.
+輸入缺這些東西時,向使用者要數字、名字或時刻。不要捏造。
 
-### Pass 4 - SELF-CHECK (over-correction guard)
+### Pass 4:自我檢查(過度修正防護)
 
-Humanizer output has its own fingerprint. Before returning, re-read the result
-once and answer three questions:
+去 AI 味工具的輸出有自己的指紋。回傳前重讀一遍,回答三個問題:
 
-(a) Did Pass 2 create staccato stacks, "The result?" reveal bridges, one-word
-    lines, a punch post, or a long/short/long/short seesaw? If yes, merge the
-    fragments back into full sentences.
-(b) Did Pass 3 add a framed confession, a sincerity announcement, or a hedge
-    the author never wrote? If yes, strip the frame and keep only the flat
-    fact, or remove the insertion.
-(c) Did scrubbing flatten the author's voice: uniform tone, no reaction, no
-    concrete detail left, the one natural triad gone, the warmth or lowercase
-    register gone? If yes, restore what the author had.
+(a) Pass 2 有沒有製造出斷句堆疊、「結果呢?」揭曉橋段、單字成行、重拳貼文,或長短長短的蹺蹺板?若有,把片段併回完整句子。
+(b) Pass 3 有沒有加進框架式告白、真誠宣告,或作者從沒寫過的猶豫語氣?若有,拿掉框架只留平鋪直敘的事實,或刪掉插入內容。
+(c) 清除有沒有壓平作者的聲音:語氣一致到沒有反應、具體細節全沒了、那組自然的三項被拆掉、溫度或口語感不見?若有,還原作者原有的東西。
 
-If any answer is yes, dial back rather than scrub harder. Edits must be
-proportional to real problems: a clean post gets one or two touches, not a
-quota. When in doubt whether a pattern is the author or the model, leave it.
+任何一題答「是」,就收斂,不要加強清除。修改量要與真實問題成比例:乾淨的貼文只需動一兩處,不是湊配額。拿不準某個模式是作者的還是模型的,就不要動。
 
-## Non-negotiable rules
+## 不可談判的規則
 
-Global voice rules: see root `SKILL.md` Voice rules. Additional skill-specific
-rules (V3):
+全域語氣規則:見根目錄 SKILL.md 的語氣規則。 另有本 skill 專屬規則(V3):
 
-- **Scrubbing is always in scope.** When asked to humanize, de-AI, finalize, or
-  publish a post or thread, run at least the forensic + strict passes before it ships.
-  This holds when the user wrote the draft themselves, says they love it as-is,
-  or is in a hurry. Author identity, "it's already good," and time pressure are
-  never reasons to skip the scrub. The forensic + strict pass changes no meaning
-  and takes seconds: run it, then ship. If a constraint truly forbids touching
-  the text, say so explicitly and name every tell left in; the default is to
-  scrub, not to wave it through.
-- **Scrub proportionally.** A pass that finds nothing changes nothing. Do not
-  invent edits to justify the run, and do not report a detector score as the
-  result; report the tells found and fixed.
-- Preserve the user's actual claim and meaning. "Preserve their voice" covers
-  voice quirks and what they are claiming, NOT reveal bridges, staccato stacks,
-  or a post with 3+ vocabulary markers. Stripping those is not changing their
-  voice; it is the job.
-- Never introduce facts that were not in the input. If a number is missing, ask.
-- Never introduce sincerity markers, hedges, or confessional frames. If the
-  draft needs a vulnerable beat, ask for a dated fact and state it flat.
-- Keep the user's voice quirks (lowercase starts, `..` soft pauses, one em dash
-  in a post that needs it, one natural triad).
-- Never promise detector results. If the user asks "will this pass GPTZero,"
-  answer honestly: nobody can promise that, and the score on a 500-char post
-  is noise.
-- Respect the container: do not silently merge a thread into one post or split a
-  single post into a thread without flagging it.
-- Warm up a transplanted X dunk into a Threads-native invitation to talk.
+- **清除永遠在範圍內。** 被要求去 AI 味、定稿或發佈貼文或串文時,出稿前至少跑 forensic + strict。即使稿子是使用者自己寫的、說「這樣就好」或趕時間,也一樣。作者身分、「已經很好了」與時間壓力,都不是跳過的理由。forensic + strict 不改變語意,只花幾秒:跑完再出稿。若有限制真的禁止動文字,要明說,並列出留下的每一個破綻;預設是清除,不是放行。
+- **成比例清除。** 找不到東西的一輪就什麼都不改。不要為了證明跑過而硬找修改,也不要回報偵測器分數;回報找到並修掉的破綻。
+- 保留使用者真正的主張與語意。「保留他們的聲音」指的是聲音習慣與他們的主張,**不包括**揭曉橋段、斷句堆疊,或有 3 個以上標記的貼文。去掉那些不是改變他們的聲音,是本職工作。
+- 不引進輸入裡沒有的事實。缺數字就問。
+- 不引進真誠宣告、猶豫語氣或告白框架。稿子需要一個脆弱的時刻,就向作者要一個有日期的事實,平鋪直敘寫出來。
+- 保留使用者的聲音習慣(語氣詞如「啦」「欸」、「⋯⋯」軟停頓、需要時的一個破折號、一組自然的三項)。
+- 不承諾偵測器結果。使用者問「這樣能過 GPTZero 嗎」,誠實回答:沒有人能保證,而且 500 字元的貼文分數就是雜訊。
+- 尊重容器:不要悄悄把串文併成一則,或把單則拆成串文,有動就要標明。
+- 把移植來的 X 嗆聲腔調暖成 Threads 原生的邀請對話。
 
-## Threads-specific tells this skill catches
+## 本 skill 會抓的 Threads 專屬破綻
 
-- A first line that needs the second line to make sense (the feed truncates with
-  "more").
-- A "post" that is 540 chars and needs a trim or a thread.
-- 2+ hashtags (Threads rejects the second), or hashtags mid-sentence.
-- An external link in post 1 of a thread meant to reach.
-- A thread with an inserted 3-word "punch post" for rhythm (the humanizer
-  fingerprint).
-- ALL CAPS openers reaching for intensity.
-- "A thread:" with no actual promise in the words.
-- A cold, combative, newsy X voice that reads as out of place on Threads.
-- "Unpopular opinion:" on a take that is actually popular.
+- 第一行需要第二行才看得懂(動態消息會在「顯示更多」處截斷)。
+- 一則「貼文」有 540 字元,需要修剪或改成串文。
+- 2 個以上主題標籤(Threads 會拒絕第二個),或主題標籤塞在句子中間。
+- 想要觸及的串文,第一則放了外部連結。
+- 串文裡為節奏插入的 3 到 5 字「重拳貼文」(去 AI 味工具的指紋)。
+- 用全部大寫或連環驚嘆號衝強度(中文常見:「!!!」)。
+- 「來個串文:」卻沒有實際的承諾。
+- 冷硬、嗆聲、新聞腔的 X 語氣,在 Threads 顯得格格不入。
+- 簡體字、「家人們」「寶子們」「乾貨滿滿」等大陸社媒腔,以及「視頻」「信息」「質量」等大陸慣用詞。
+- 半形標點混在中文裡,或中英數字之間沒有空格(例如「用Claude寫了3篇」)。
+- 句尾語氣詞(啦、喔、欸、吧、耶、嘛)一則塞超過 2 個。
+- 「這個觀點可能不受歡迎」用在其實很多人同意的觀點上。
 
-## Example
+## 範例
 
-See `references/examples.md` for worked before/after rewrites.
+見 `references/examples.md` 的前後對照改寫。
 
-## Files
+## 檔案
 
-- `SKILL.md` - this file (rewrite scrubber + audit-mode entry)
-- `references/scrub-rules.md` - V3 regex patterns by tier, density scoring, em dash cap, rhythm rules, forbidden insertions
-- `references/examples.md` - worked before/after rewrites for posts and threads
-- `references/audit-checklist.md` - the pre-publish checklist with thresholds
-- `sub-skills/post-audit.md` - pre-publish audit workflow (detection-only, no rewrite)
-- `sub-skills/voice-profile.md` - build/update the user's Voice & Brand Profile (`--mode profile`)
-- `sub-skills/story-bank-interview.md` - interview the user and fill the Story Bank (`--mode interview`)
-- `sub-skills/illustration.md` - optional Pixfaro image workflow
+- `SKILL.md`:本檔(改寫清除器與 audit 模式入口)
+- `references/scrub-rules.md`:V3 分層規則與中文比對模式、密度計分、破折號上限、節奏規則、禁止插入項目
+- `references/examples.md`:貼文與串文的前後對照改寫
+- `references/audit-checklist.md`:發佈前檢查表與閾值
+- `sub-skills/post-audit.md`:發佈前審核流程(只偵測,不改寫)
+- `sub-skills/voice-profile.md`:建立或更新使用者的語氣與品牌檔案(`--mode profile`)
+- `sub-skills/story-bank-interview.md`:訪談使用者並填寫素材庫(`--mode interview`)
+- `sub-skills/illustration.md`:可選的圖片產生流程
 
-## Voice profile mode (`--mode profile`)
+## 語氣檔案模式(`--mode profile`)
 
-`threads-humanizer --mode profile` builds or updates the user's Voice & Brand Profile at `../../references/voice-profile.md` from 3-6 of their real Threads posts pasted in (portable, no token) or, if a read token is set, from pulled activity. Once filled, every writing skill in this bundle drafts in the user's voice automatically. See `sub-skills/voice-profile.md`. Triggers: "build my voice profile", "learn my voice".
+`threads-humanizer --mode profile` 會用使用者貼進來的 3 到 6 則真實 Threads 貼文(可攜,不需 token),或在設定了讀取 token 時用抓取到的動態,建立或更新位於 `../../references/voice-profile.md` 的語氣與品牌檔案(Voice & Brand Profile)。填好之後,本 bundle 的每個寫作 skill 都會自動以使用者的聲音起草。見 `sub-skills/voice-profile.md`。觸發語:「建立我的語氣檔案」「學習我的語氣」。
 
-## Story Bank mode (`--mode interview`)
+## 素材庫模式(`--mode interview`)
 
-`threads-humanizer --mode interview` interviews the user and writes
-`../../references/story-bank.md`: the numbers, dated moments, turning points, scars
-and positions their posts are made of. The Voice Profile holds how they sound; the
-bank holds what they have to say, and an empty bank is the usual reason drafts come
-out generic. Budget 20 to 40 minutes, resumable across sessions.
+`threads-humanizer --mode interview` 會訪談使用者,並寫入 `../../references/story-bank.md`:貼文所由構成的數字、有日期的時刻、轉折、傷痕與立場。語氣檔案記錄他們怎麼說話;素材庫記錄他們有什麼要說,而素材庫是空的,通常就是草稿讀起來很空泛的原因。預算 20 到 40 分鐘,可跨 session 續做。
 
-`--mode interview post` runs the short version: 5 to 8 questions on one topic,
-ending in a five-line spine (Moment, Number, Correction, Opposition, Ask) handed to
-`threads-post-writer`.
+`--mode interview post` 跑精簡版:針對一個主題問 5 到 8 題,最後得到一條五行主幹(時刻 Moment、數字 Number、修正 Correction、對立面 Opposition、請求 Ask),交給 `threads-post-writer`。
 
-Never invents an answer: a line with nothing real in it stays empty and the section
-is marked thin. See `sub-skills/story-bank-interview.md`. Triggers: "interview me",
-"ask me questions", "help me work out what to post about".
+絕不替使用者編造答案:沒有真實內容的那一行就留空,該區塊標為資料偏薄。見 `sub-skills/story-bank-interview.md`。觸發語:「訪談我」「問我問題」「幫我想想要發什麼」。
 
-## Related skills
+## 相關 skill
 
-- `threads-post-writer` - generates posts and threads that already pass the humanizer
+- `threads-post-writer`:產出已經通過去 AI 味檢查的貼文與串文

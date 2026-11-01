@@ -1,48 +1,35 @@
-# Sub-skill: Build / update the Voice & Brand Profile
+# 子流程:建立 / 更新語氣與品牌檔案
 
-Builds or refreshes `../../../references/voice-profile.md` so every writing skill in
-this bundle drafts in the user's real voice instead of a generic "human" voice.
-Runs on any agent (Claude Code, Codex, OpenClaw): the core path needs only the
-user's own writing pasted in. A read token (Apify) is an optional accelerator,
-never required.
+建立或更新 `../../../references/voice-profile.md`,讓本 bundle 的每個寫作 skill 都以使用者真實的聲音起草,而不是一個通用的「像人」的聲音。任何 agent(Claude Code、Codex、OpenClaw)都能跑:核心路徑只需要使用者貼上自己寫過的內容。讀取 token(Apify)是可選的加速器,從來不是必需。
 
-## When this runs
+## 何時執行
 
-- User says "build my voice profile", "learn my voice", or invokes
-  `threads-humanizer --mode profile`.
-- Also offer it the first time a writing skill runs and finds `filled: no`.
+- 使用者說「建立我的語氣檔案」「學我的語氣」,或呼叫 `threads-humanizer --mode profile`。
+- 寫作 skill 第一次執行、發現 `filled: no` 時,也提供一次。
 
-## Inputs (any one is enough)
+## 輸入(任一種就夠)
 
-1. **Pasted samples (portable default).** Ask for 3-6 of the user's own real
-   Threads posts. This alone is enough; no token, no history needed.
-2. **Read-layer assisted (optional).** If a token is configured, pull the user's
-   recent activity via the bundle's read layer as extra samples, on top of pasted ones.
-3. **Manual.** The user can also just state their niche, rules, and links.
+1. **貼上樣本(可攜的預設做法)。** 請使用者提供 3 到 6 則自己真正發過的 Threads 貼文。光這樣就夠,不需要 token、不需要歷史存檔。
+2. **讀取層輔助(可選)。** 若已設定 token,就透過 bundle 的讀取層取得使用者近期的貼文作為額外樣本,疊加在貼上的樣本之上。
+3. **手動。** 使用者也可以直接口述自己的利基領域、規則與連結。
 
-## Steps
+## 步驟
 
-1. Gather 3+ real samples of the user's writing.
-2. Extract the voice fingerprint from the samples, not from assumptions: sentence
-   rhythm, recurring openers, punctuation habits, favored vocabulary, words they
-   avoid, emoji/hashtag behavior.
-3. Infer niche, ICP, and pillars from the sample topics; confirm rather than guess.
-4. Capture hard rules and CTA/link style the samples reveal or the user states.
-5. Write `../../../references/voice-profile.md`: fill sections 1-5, copy the 2-4
-   strongest lines verbatim into "Signature examples", and set the Status block to
-   `filled: yes`, `source: <pasted|read-layer|manual>`, `updated: <today>`.
-6. Show the filled profile for approval before saving; tell the user every writing
-   skill will now match it automatically.
+1. 蒐集 3 則以上使用者真實的寫作樣本。
+2. 從樣本萃取語氣指紋,不是從假設:句子節奏、反覆出現的開場、標點習慣、偏愛的詞彙、避開的詞、emoji 與主題標籤的行為。中文樣本另外留意:句尾語氣詞的用法、全形與半形標點習慣、中英間距習慣、慣用的口頭禪、是否夾雜台語或英文單字。
+3. 從樣本主題推斷利基領域、目標受眾與內容支柱;向使用者確認,不要猜。
+4. 記下樣本顯示或使用者陳述的硬性規則與 CTA / 連結風格。
+5. 寫入 `../../../references/voice-profile.md`:填寫第 1 到 5 節,把 2 到 4 句最有代表性的句子原文複製到「代表性範例」,並把狀態區塊設為 `filled: yes`、`source: <pasted|read-layer|manual>`、`updated: <今天日期>`。
+6. 儲存前先把填好的檔案給使用者核准;並告知使用者,之後每個寫作 skill 都會自動比對這份檔案。
 
-## Hard rules
+## 硬性規則
 
-- Build the fingerprint from the user's ACTUAL samples. Never invent a voice.
-- Preserve their quirks (a favorite phrase, an unusual rhythm). Those are the
-  point; only the generic AI-tell scrub applies to drafts later, not to the profile.
-- With only 3 samples, say it is a first pass; suggest re-running after 10+ posts.
-- Never put anything the user did not provide into the file.
+- 語氣指紋要用使用者**真正的**樣本建立。絕不編造聲音。
+- 保留他們的怪癖(愛用的片語、不尋常的節奏)。那正是重點;之後只有通用的 AI 腔清洗會套用在草稿上,不會套用在檔案本身。
+- 只有 3 則樣本時,說明這是第一版;建議累積 10 則以上後重跑。
+- 絕不把使用者沒提供的內容寫進檔案。
 
-## Related
+## 相關
 
-- The filled profile is read by this bundle's writing skills before they draft.
-- Re-run any time the user's voice or focus shifts.
+- 填好的檔案會在本 bundle 的寫作 skill 起草前被讀取。
+- 使用者的聲音或重心改變時,隨時可重跑。

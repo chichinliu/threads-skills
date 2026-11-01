@@ -1,53 +1,53 @@
-# Example: 7-Day Threads Plan
+# 範例:7 日 Threads 計畫(台灣創作者情境)
 
-**Theme:** shipping an AI agent in public
-**Audience:** indie builders, AI engineers, early founders
-**Pillar mix:** 40% Build-in-Public / 30% Insight / 20% Engagement / 10% Promotion
-**Cadence:** 2 posts/day weekdays, 1 on Saturday, reply block daily
+**主題:** 在 Threads 上公開做一個給台灣小店家用的 AI 客服小工具
+**受眾:** 台灣的獨立開發者、小型電商與實體店家老闆、剛創業的人
+**支柱比例:** 40% 公開建構 / 30% 觀點 / 20% 互動 / 10% 推廣
+**頻率:** 平日每天 2 則,週六 1 則,每天一個回覆時段
 
-## Calendar
+> 所有時間與節慶安排都是**假設,待以自己帳號的洞察驗證**。時間為台灣時間(UTC+8)。範例中的數字是示意,實際使用請換成你自己的真實數據,不要照抄。
 
-| Day | Slot | Type | Pillar | Formula | Angle | Goal | Time |
+## 行事曆
+
+| 星期 | 時段 | 類型 | 支柱 | 公式 | 切角 | 目標 | 時間(假設) |
 |---|---|---|---|---|---|---|---|
-| Mon | AM | single | Insight | T1 Warm Contrarian | "most agents fail on retries, not reasoning" | reposts | 9:00 AM |
-| Mon | PM | reply block | Engagement | R1/R2/R3 | 7 builder conversations on agents | replies | 12:30 PM |
-| Tue | AM | thread | Build-in-Public | T10 How-I Teardown | "how we got agent latency from 9s to 2.1s" | reposts | 8:30 AM |
-| Tue | PM | single | Insight | T2 Data-Point | "a tool call that retries costs 1.8x tokens" | reposts | 12:30 PM |
-| Wed | AM | thread | Insight | T7 Listicle-Thread | "8 ways agent demos lie to you" | reposts | 9:00 AM |
-| Wed | PM | reply block | Engagement | R5 quote | 3 value-add quote posts | quotes | 1:00 PM |
-| Thu | AM | single | Build-in-Public | T3 Confession | "the eval number we hid for 3 weeks" | replies | 8:30 AM |
-| Thu | PM | single | Promotion | T10-implied | "we opened the beta, here is what it does" | reposts | 12:30 PM |
-| Fri | AM | single | Engagement | T6 Relatable | "that moment the agent does the thing on its own" | likes | 9:00 AM |
-| Fri | PM | reply block | Engagement | R1/R3 | 5 founder conversations | replies | 1:00 PM |
-| Sat | AM | thread | Build-in-Public | T8 Story Thread | "the night the agent deleted the test DB" | likes | 10:00 AM |
+| 一 | 早 | 單則 | 觀點 | T1 溫暖反向 | 「AI 客服壞掉,多半不是模型不夠聰明,是店家的 FAQ 根本沒寫清楚」 | 轉發 | 9:00 |
+| 一 | 午 | 回覆時段 | 互動 | R1/R2/R3 | 7 場店家老闆與開發者的對話 | 回覆 | 12:30 |
+| 二 | 早 | 串文 | 公開建構 | T10 我是怎麼做的 | 「我怎麼把客服回覆時間從 9 分鐘降到 2 分鐘」 | 轉發 | 8:30 |
+| 二 | 午 | 單則 | 觀點 | T2 數據鉤子 | 「同一個問題被問第 3 次,店家就願意花錢自動化」 | 轉發 | 12:30 |
+| 三 | 早 | 串文 | 觀點 | T7 清單串文 | 「8 個 AI 客服 demo 不會告訴你的事」 | 轉發 | 9:00 |
+| 三 | 午 | 回覆時段 | 互動 | R5 引用 | 3 則加值引用貼文 | 引用 | 13:00 |
+| 四 | 早 | 單則 | 公開建構 | T3 坦白 | 「我把測試準確率藏了 3 週沒說,原因是⋯⋯」 | 回覆 | 8:30 |
+| 四 | 午 | 單則 | 推廣 | T10 暗示產品 | 「beta 開放了,它現在能做這幾件事」 | 轉發 | 12:30 |
+| 五 | 早 | 單則 | 互動 | T6 共鳴 | 「客人半夜 2 點傳訊息問『還有貨嗎』」 | 按讚 | 9:00 |
+| 五 | 午 | 回覆時段 | 互動 | R1/R3 | 5 場創業者對話 | 回覆 | 13:00 |
+| 六 | 早 | 串文 | 公開建構 | T8 故事串文 | 「那天晚上,機器人把客人的訂單全部回成缺貨」 | 按讚 | 10:00 |
 
-## Daily reply targets
+## 在地節點備案(假設,待驗證)
 
-- **Who:** peer builders at 2-20k followers, AI founders shipping in public, the
-  3-4 creators whose threads you keep reposting.
-- **Templates:** R1 Answer-Their-Question, R2 Concede-Then-Sharpen, R3
-  Extend-Their-Point, R5 Value-Add Quote.
-- **Target:** 5-10 substantive replies/day. No "great thread!" filler. Keep it warm.
+- 若本週遇到連假或颱風假:週六的故事串文可換成「颱風假那天,店家訊息量暴增」這類有真實經驗的切角。
+- 若本週貼近雙 11:週一的觀點單則可改成「檔期前一週,客服最先爆的不是人手,是重複問題」,前提是你真的有這個經驗。
+- 沒有真實關聯就不要蹭節點。
 
-## Balance check
+## 每日回覆目標
 
-- [x] Single-to-thread mix ~65/35 (7 singles, 3 threads + reply blocks)
-- [x] At least 1 build-in-public post (Tue, Thu, Sat)
-- [x] At least 1 repost-bait post (Tue x2, Wed, Thu)
-- [x] At least 1 engagement/reply-heavy day (every day has a reply block)
-- [x] No pillar over 60%
-- [x] No formula repeated more than twice
-- [x] Goal spread: replies (Mon PM, Thu AM, Fri PM), reposts (Mon AM, Tue, Wed,
-      Thu), likes (Fri AM, Sat), quotes (Wed PM)
+- **對象:** 追蹤者 2 千到 2 萬的同業、公開做產品的台灣創業者、你常轉發的 3 到 4 位創作者、小店家老闆。
+- **模板:** R1 回答他們的問題、R2 先讓步再磨利、R3 延伸他們的觀點、R5 加值引用。
+- **目標:** 每天 5 到 10 則有內容的回覆。不寫「好文」「推」這類空話。保持溫暖。
 
-## Notes
+## 平衡檢查
 
-- The Thu PM promotion post leans on T10's "results imply the product" shape so it
-  does not read as an ad.
-- Saturday's story thread (T8) is the one weekend slot, because story and
-  relatable content travels on Threads weekends when the build crowd is off the
-  clock.
-- Keep any product or launch link out of post 1. Drop it in a reply to your own
-  thread so reach is not suppressed.
-- Every angle is framed warmly, with room for a reply. Threads rewards the
-  conversation more than the dunk.
+- [x] 單則與串文比例約 65/35(7 則單則,3 則串文,另有回覆時段)
+- [x] 至少 1 則公開建構(週二、週四、週六)
+- [x] 至少 1 則轉發型(週二兩則、週三、週四)
+- [x] 至少 1 個以回覆為主的日子(每天都有回覆時段)
+- [x] 沒有支柱超過 60%
+- [x] 沒有公式重複超過兩次
+- [x] 目標分散:回覆(週一午、週四早、週五午)、轉發(週一早、週二、週三、週四午)、按讚(週五早、週六)、引用(週三午)
+
+## 備註
+
+- 週四午的推廣貼文用 T10「成果暗示產品」的形狀,不會讀起來像廣告。
+- 週六的故事串文(T8)是唯一的週末時段,因為故事與共鳴型內容在週末、上班族下班後傳得較好(假設)。
+- 產品或活動連結不要放在第一則,放在你自己串文的回覆裡,避免壓低觸及。
+- 每個切角都以溫暖方式呈現,留空間讓人回覆。Threads 獎勵對話,多於獎勵嗆聲。

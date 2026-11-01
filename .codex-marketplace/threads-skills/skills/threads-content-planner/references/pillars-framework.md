@@ -1,55 +1,48 @@
-# The Threads Pillar Discipline
+# Threads 內容支柱紀律
 
-Pillars keep a week coherent without making it monotone. On Threads the default
-mix leans into build-in-public and engagement, because the audience skews toward
-builders and the platform rewards warm conversation over hot takes.
+支柱讓一週保持連貫,又不致單調。在 Threads 上,預設比例偏向公開建構與互動,因為受眾傾向創作者與開發者,而且平台獎勵溫暖的對話,多於尖銳的觀點。
 
-## Default pillars
+> 本檔中關於「哪種內容表現較好」的說法,是來自原版研究與一般觀察的**假設**,請以你自己帳號的洞察驗證,尤其在台灣中文語境下。
 
-| Pillar | Share | What it is | Earns |
+## 預設支柱
+
+| 支柱 | 比例 | 內容 | 換來什麼 |
 |---|---|---|---|
-| Build-in-Public | 40% | real numbers, progress, mistakes from your own work | replies, reposts |
-| Insight | 30% | warm contrarian takes, data points, teaching threads | reposts |
-| Engagement | 20% | replies, quote posts, relatable singles | replies, likes |
-| Promotion | 10% | a launch, an offer, results that imply the product | varies |
+| 公開建構 | 40% | 來自你工作的真實數字、進度、失誤 | 回覆、轉發 |
+| 觀點 | 30% | 溫暖的反向觀點、數據、教學串文 | 轉發 |
+| 互動 | 20% | 回覆、引用貼文、共鳴型單則 | 回覆、按讚 |
+| 推廣 | 10% | 發表、優惠、讓成果自然帶出產品 | 視情況 |
 
-Adjust the mix to the user's goal: a builder in launch mode might run 30/30/20/20.
-Never let one pillar exceed 60% of the week.
+依使用者目標調整:正在發表期的創作者,可以跑 30/30/20/20。任何支柱都不要超過一週的 60%。
 
-## Why these pillars on Threads specifically
+## 為什麼這些支柱適合 Threads
 
-- **Build-in-Public** over-indexes on Threads. The founder/builder audience
-  rewards raw transparency, and a real metric (good or ugly) is the easiest reply
-  magnet you have. Replies are the heaviest signal.
-- **Insight** is where reposts live. Lists, frameworks, data points, and "how i"
-  threads get reposted, and a repost is the closest Threads analog to a save.
-- **Engagement** is a pillar, not a chore. Early growth on Threads comes more
-  from replying well on other people's posts than from your own timeline. Budget
-  daily reply time.
-- **Promotion** is capped low. Threads punishes a timeline that reads like an ad.
-  Prefer results that imply the product over direct pitches.
+- **公開建構**在 Threads 上特別有效(假設)。創作者與開發者受眾獎勵坦白,一個真實的數字(好看或難看)是最容易引來回覆的磁鐵,而回覆是最重的訊號。
+- **觀點**是轉發的來源。清單、框架、數據與「我是怎麼做的」串文會被轉發,而轉發最接近 Threads 上的收藏。
+- **互動**是一根支柱,不是雜務。Threads 早期成長多半來自在別人的貼文底下好好回覆,多於自己的時間軸。每天要預留回覆時間。
+- **推廣**要壓低。Threads 會懲罰讀起來像廣告的時間軸。比起直接推銷,更好的做法是讓成果自然帶出產品。
 
-## Cadence
+## 頻率
 
-- **2-3 posts/day** is normal for an active Threads account.
-- **Singles for presence, threads for depth.** A ~65/35 single-to-thread mix
-  keeps you in the feed daily while still earning the repost-heavy threads.
-- **Reply blocks daily.** 5-10 substantive replies a day on accounts in your
-  niche compounds into profile visits and follows.
+- 活躍的 Threads 帳號**一天 2 到 3 則**很正常。
+- **單則維持存在感,串文撐深度。** 單則與串文約 65/35,讓你每天都在動態裡,又能賺到轉發多的串文。
+- **每天固定回覆時段。** 每天在你的利基領域帳號底下留 5 到 10 則有內容的回覆,會累積成個人檔案造訪與追蹤。
 
-## Goal balance
+## 台灣語境的節奏提醒(假設,待驗證)
 
-Spread the week across replies, reposts, likes, and quotes. Replies get a weekly
-target of at least 2 because Threads is conversation-first and weights replies
-heaviest. Reposts get at least 2 because they are the platform's save analog: a
-repost is a stronger quality signal than a like and rewards reference-worthy
-content. See the root `references/hook-formulas.md` "Engagement-goal split" and
-`references/algorithm-heuristics.md` "Reposts are the underrated lever".
+- 時間以台灣時間(UTC+8)排。通勤早晨、午休、晚上 21 到 23 點是常見的起點,請以洞察校正。
+- 在地節點(報稅季、連假、雙 11、母親節、中秋、農曆新年、颱風假)可作為切角,前提是你有真實經驗,不要硬蹭。
+- 中文每字資訊量高,單則假設 80 到 250 字最容易被讀完。
 
-## Anti-patterns
+## 目標平衡
 
-- All-repost-bait week (reads as a content farm).
-- All-promotion week (kills trust fast on Threads).
-- Zero reply budget (you post into the void on a conversation-first platform).
-- Repeating the same formula every day (the pattern becomes visible).
-- A cold, combative X tone imported wholesale (out of place on Threads).
+一週要分散在回覆、轉發、按讚與引用。回覆每週目標至少 2 則,因為 Threads 以對話為先,回覆權重最重。轉發每週至少 2 則,因為它是平台上的收藏等價物:轉發是比按讚更強的品質訊號,獎勵值得參考的內容。見根目錄 `references/hook-formulas.md` 的「互動目標分流」與 `references/algorithm-heuristics.md` 的「轉發是被低估的槓桿」。
+
+## 反模式
+
+- 整週都是轉發誘餌(讀起來像內容農場)。
+- 整週都在推廣(在 Threads 上信任掉得很快)。
+- 完全沒有回覆預算(在以對話為先的平台上對著空氣發文)。
+- 每天重複同一個公式(模式會被看穿)。
+- 整套搬來冷硬、好戰的 X 語氣(在 Threads 上格格不入)。
+- 為了蹭節慶而寫沒有真實經驗支撐的泛泛祝賀文。

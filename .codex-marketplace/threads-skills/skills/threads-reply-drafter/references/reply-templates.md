@@ -1,85 +1,77 @@
-# Threads Reply and Quote-Post Templates
+# Threads 回覆與引用貼文範本
 
-Five shapes. All stay under 500 chars with at most one hashtag. Pick by what the
-counterpart said and what you want the reply to do. Em dashes capped (a reply
-is short, so at most one, and none if it reads fine without); use `..` for
-soft pauses. Keep it warm, this is Threads.
+五種形狀。全部控制在 500 字元內,最多一個主題標籤。依對方說了什麼、你想讓回覆做什麼來挑。破折號要節制(回覆很短,最多一個,沒有它也通順就不用);軟停頓用「⋯⋯」或換行。保持溫暖,這裡是 Threads。台灣用語、全形標點、中英之間加半形空格。
 
-## R1 - Answer-Their-Question
+## R1 - 回答他的問題
 
-When they asked something. Answer plainly, add one real detail, stop.
+對方問了問題。直接回答,補一個真實細節,然後停。
 
 ```
-{Direct answer in one line.}
+{一句話的直接回答。}
 
-{One concrete detail or number that proves you actually know.}
+{一個證明你真的懂的具體細節或數字。}
 ```
 
-Example:
-> we use 6-minute deploys now. cut it by killing the full image rebuild on every
-> push and caching the layer that never changes.
+範例:
+> 我們現在部署 6 分鐘就好。做法是不要每次 push 都重建整個 image,把幾乎不會變的那一層快取起來。
 
-## R2 - Concede-Then-Sharpen
+## R2 - 先認同再磨利
 
-When they pushed back and they are partly right. Concede first, then sharpen.
-
-```
-fair on {their valid point}.
-
-where i would push: {the sharper angle or the missing piece}.
-```
-
-Example:
-> fair, consistency matters more than i said. where i would push: consistency
-> without a hook just trains people to scroll past you faster.
-
-## R3 - Extend-Their-Point
-
-When they are right and you can take it one layer deeper.
+對方反駁,而且有一部分說得對。先認同,再磨利。
 
 ```
-{Restate their point in your words, briefly.} and the part that compounds: {the deeper layer}.
+{他說得對的那一點},這我同意。
+
+我想再推一把的是:{更銳利的角度,或被漏掉的那一塊}。
 ```
 
-Example:
-> totally, shipping fast builds momentum. and the part that compounds: every fast
-> ship teaches you what to measure next, so you ship smarter, not just more.
+範例:
+> 持續比我講的更重要,這點我認同。我想再推一把的是:只持續、沒有鉤子,只會讓大家更快滑過你。
 
-## R4 - Share-Lived-Experience
+## R3 - 延伸他的觀點
 
-When a real story from your own work adds weight.
-
-```
-we hit this {timeframe} ago.
-
-{What broke, the number, what you changed.}
-```
-
-Example:
-> we hit this last quarter. signups looked flat until we found the email
-> confirmation was landing in spam for 30% of users. one DNS fix, signups up 22%.
-
-## R5 - Value-Add Quote (quote post, T4 shape)
-
-When your point deserves its own reach. Quote the post, add the missing nuance,
-land a reframe. Never a cheap dunk.
+對方是對的,而你可以再往下一層。
 
 ```
-{Concede or restate the quoted take in a few words}, but {the missing nuance}.
-
-{One memorable reframe line.}
+{用你的話簡短複述他的觀點。}然後會越滾越大的是:{更深的一層}。
 ```
 
-Example (quoting a "just ship it" take):
-> true, but ship it without a way to measure if it worked and you are just
-> gambling with extra steps. ship it AND instrument it.
+範例:
+> 對,快速上線會累積動能。然後會越滾越大的是:每次快速上線,都在教你下一步該量什麼,所以你不只是做得更多,而是越做越準。
 
-## Rules for all five
+## R4 - 分享親身經驗
 
-- One idea per reply. If you have two, pick the stronger.
-- React to what they actually said, not a strawman.
-- A specific number or named detail beats a general agreement.
-- End on a landing or a warm, answerable question, not "what do you think?".
-- Keep the tone warm. A reply that reads as a cold X dunk lands badly on Threads.
-- If the conversation is stale (days old) and the point is strong, a fresh
-  standalone post or a quote post often beats a late reply.
+自己工作中的真實故事能加重分量時。
+
+```
+我們{多久之前}也踩過這個。
+
+{壞在哪、數字、你改了什麼。}
+```
+
+範例:
+> 我們上一季也踩過。註冊數一直持平,後來才發現確認信有 30% 的使用者都進了垃圾信件匣。改一個 DNS 設定,註冊數就多了 22%。
+
+## R5 - 加值引用(引用貼文,T4 的形狀)
+
+你的觀點值得自己的觸及時。引用那則貼文,補上被漏掉的細節,落在一句重新定義上。絕不是廉價的嗆聲。
+
+```
+{用幾個字承認或複述被引用的觀點},不過{被漏掉的細節}。
+
+{一句讓人記得住的重新定義。}
+```
+
+範例(引用一則「先上線再說」的觀點):
+> 沒錯,不過上線後沒有辦法衡量有沒有用,就只是換個方式賭運氣。上線,而且要能量測。
+
+## 五種通用規則
+
+- 一則回覆一個想法。有兩個,就挑較強的那個。
+- 回應他真正說的話,不是你想像出來的稻草人。
+- 一個具體數字或具名細節,勝過籠統的同意。
+- 用落點或溫暖、答得出來的問題收尾,不要用「你覺得呢?」。
+- 保持溫暖。讀起來像冷硬 X 嗆聲的回覆,在 Threads 會很難看。
+- 不要空泛稱讚(「好文」「推」「受教了」),也不要複述對方的觀點(「說得太對了」)。
+- 稱呼對方用「你」,除非對方是長輩或正式合作對象才用「您」。
+- 如果討論已經過時(幾天前),而你的觀點很強,新發一則獨立貼文或引用貼文,通常比遲到的回覆好。
