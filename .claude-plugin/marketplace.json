@@ -12,7 +12,7 @@
       "name": "threads-skills",
       "source": "./",
       "description": "8 個 Threads(Meta)行銷 skill 的組合包,繁體中文台灣版,含 Threads 原生鉤子公式、貼文與串文撰寫、統一的 humanizer(改寫加發佈前審稿)、鉤子拆解、回覆草擬、內容改寫、個人檔案優化、受眾洞察與一週規劃。發佈層中立,可手動、自建 poster 或選用轉接器。",
-      "version": "1.0.35",
+      "version": "1.0.36",
       "author": {
         "name": "chichinliu",
         "url": "https://chichinliu.com"

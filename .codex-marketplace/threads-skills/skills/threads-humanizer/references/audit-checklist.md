@@ -1,75 +1,61 @@
-# Pre-Publish Audit Checklist (Threads)
+# 發佈前檢查表(Threads・繁體中文台灣版)
 
-The thresholds the `--mode audit` pass applies. Mirror of the root
-`references/algorithm-heuristics.md` checklist, with the humanizer's blocker
-distinctions. V3 (2026-09): AI tells are scored by density per post; em dashes
-are capped at one per post, not banned; forced rhythm is a tell and uniform
-rhythm is fine at every length on Threads.
+`--mode audit` 套用的閾值。對應根目錄 `references/algorithm-heuristics.md` 的檢查表,並加上人性化處理的 Blocker 區分。V3(2026-09):AI 腔依每則密度計分;破折號上限為每則 1 個,不是全面禁用;硬塞節奏是破綻,Threads 上各種長度的均勻節奏都沒問題。
 
-## Blockers (auto-fail)
+> 中文版的數字閾值(emoji、語氣詞、斷句長度、單則有效字數)是待驗證的假設,請用自己帳號的洞察數據校正。500 字元與單一主題標籤是平台限制,以 App 內實際行為為準。
 
-- [ ] No post with more than one em dash (`—`); no en dash (`–`) between
-      clauses; no double dash (`--`). A single em dash in a post that needs it
-      is not a blocker.
-- [ ] Single post within 500 chars (10,000 only with a text attachment).
-- [ ] At most one hashtag (Threads rejects a second).
-- [ ] No external link in post 1 (single post or thread opener).
-- [ ] No "In today's fast-paced world" or equivalent opener; no reveal-bridge
-      opener ("Here's what", "Stop X, start Y"); no sincerity announcement
-      opener ("let me be honest", "not gonna lie", "unpopular opinion:" on a
-      popular take).
-- [ ] No "What do you think?" / "Thoughts?" / "Let that sink in." dead closer
-      (a specific warm question is fine and wanted).
-- [ ] No post with 3+ vocabulary / grammar markers (one marker per post is
-      fine); no "It's not X, it's Y" negative parallelism; no "The result?"
-      reveal bridge.
-- [ ] First line stands alone as a hook (the feed truncates with "more").
-- [ ] No engagement bait ("repost if you agree", "reply YES").
+## Blockers(自動不通過)
 
-## Warnings (flag with fix)
+- [ ] 沒有任何一則含超過 1 個破折號(「——」連續算一個);子句之間沒有英文 en dash(`–`);沒有雙連字號(`--`)。需要它的那一則裡的單一破折號不算 blocker。
+- [ ] 單則在 500 字元內(只有長文附件才到 10,000)。
+- [ ] 最多 1 個主題標籤(Threads 會拒絕第二個)。
+- [ ] 第一則(單則或串文開頭)沒有外部連結。
+- [ ] 沒有「在這個快速變遷的時代」「在當今……的時代」或同類開場;沒有揭曉橋段開場(「以下是」「結果呢?」「別再 X 了,開始 Y」「重點來了」);沒有真誠宣告開場(「老實說」「坦白講」「說真的」,或對其實很多人同意的觀點冠上「這個觀點可能不受歡迎」)。
+- [ ] 沒有「你怎麼看?」「歡迎留言討論」「值得細品」這類死結尾(具體、溫暖的提問是好的,也是需要的)。
+- [ ] 沒有任何一則含 3 個以上詞彙或文法標記(每則一個標記沒問題);沒有「這不只是 X,而是 Y」式否定對仗;沒有「結果呢?」揭曉橋段。
+- [ ] 第一行能獨立成為鉤子(動態消息會在「顯示更多」處截斷)。
+- [ ] 沒有互動誘餌(「按讚收藏」「求轉發」「同意的留言 1」)。
+- [ ] 沒有簡體字、沒有大陸慣用詞(視頻、信息、質量、軟件、用戶、網絡、項目、默認),沒有「家人們」「寶子們」「乾貨滿滿」等大陸社媒腔。
+- [ ] 沒有 Markdown 殘留(`**粗體**`、`# 標題`)和範本空格(`【你的名字】`、`XXX`)。
 
-- [ ] 0 or 1 hashtag, at the end.
-- [ ] 0-2 emoji, none on a serious take.
-- [ ] No staccato stacks ("Short. Punchy. Done.", "No X. No Y. Just Z."),
-      no one-word lines for drama, at most 2 standalone fragments per thread,
-      no inserted 3-word "punch post" that carries no content, no
-      long/short/long/short seesaw across a thread.
-- [ ] Do NOT flag uniform post or sentence length. On Threads uniform rhythm
-      wins at every length in our corpus; never suggest adding variance.
-- [ ] At least one odd-precision number WITH a named referent where the claim
-      allows (a bare number does not clear this).
-- [ ] At least one named entity.
-- [ ] At most one natural rule-of-three per post; no stacked or perfectly
-      parallel triads, no hollow triads without concrete items.
-- [ ] No hedging stack ("perhaps", "it seems", "I might be wrong but", "just
-      my two cents") and no framed confession ("ngl this hurt: ..."). A flat
-      dated fact is fine.
-- [ ] Only when auditing a humanizer rewrite with the original in hand, not a fresh draft: not over-scrubbed, i.e. the author's warmth, reactions, lowercase register
-      and one natural triad survived.
-- [ ] Thread post 1 opens a loop and does not close it.
-- [ ] Best item/beat is front-loaded, not buried at the end.
-- [ ] One clear primary goal (replies / reposts / likes / quotes).
-- [ ] One idea per post.
-- [ ] Warm, conversational tone (not a transplanted X dunk).
+## Warnings(標示並給修正)
 
-## Thresholds quick reference
+- [ ] 主題標籤 0 或 1 個,放在最後。
+- [ ] Emoji 0 到 2 個,嚴肅議題不用。
+- [ ] 標點為全形(,。?!:;),引述用「」;沒有 `!!!`、`???`、`。。。` 連環標點。
+- [ ] 中文與英文、數字之間有半形空格(`用 Claude 寫了 3 篇`);品牌與產品名維持官方寫法。
+- [ ] 句尾語氣詞(啦、喔、欸、吧、耶、嘛)每則不超過 2 個;沒有注音文、火星文。
+- [ ] 沒有斷句堆疊(「簡單。有效。就這樣。」「沒有 X。沒有 Y。只有 Z。」)、沒有為戲劇效果單獨成行的一個字、每串最多 2 個獨立片段、沒有為節奏插入且沒有內容的 3 到 5 字「重拳貼文」、整串沒有長短長短的蹺蹺板。
+- [ ] **不要**標示單則或句子長度一致。Threads 上各種長度的均勻節奏都贏;絕不建議增加變化。
+- [ ] 主張允許時,至少有一個**有指涉對象的**精確數字(孤立的數字不算過關)。
+- [ ] 至少一個具名實體(人、公司、地名、工具)。
+- [ ] 每則最多一組自然三段式;沒有堆疊或完美對仗的三項,沒有沒有具體內容的空洞三項。
+- [ ] 沒有堆疊的猶豫語氣(「或許」「似乎」「可能是我錯了,但」「個人淺見」「僅供參考」),也沒有框架式告白(「說真的,這個真的很痛:……」)。平鋪直敘有日期的事實沒問題。
+- [ ] 僅限審核「有原稿可比對的去 AI 味改寫」,不是全新草稿:沒有過度清除,也就是作者的溫度、反應、口語感與那一組自然三項都還在。
+- [ ] 串文第一則打開一個迴圈而沒有把它關上。
+- [ ] 最好的那一項或那一拍放在前面,不是埋在最後。
+- [ ] 一個明確的主要目標(回覆 / 轉發 / 按讚 / 引用)。
+- [ ] 每則一個想法。
+- [ ] 口語、溫暖的語氣(不是移植來的 X 嗆聲腔);稱呼用「你」,沒有公文腔(筆者、本人)。
 
-| Metric | Value |
+## 閾值速查
+
+| 指標 | 數值 |
 |---|---|
-| Per-post char limit | 500 (10,000 with text attachment) |
-| Hashtags | 0-1 (platform hard cap is 1) |
-| Links | up to 5 per post, none in post 1 |
-| Emoji per post | 0-2 |
-| Em dashes per post | 0-1 (about 1 per 100 words in a long text-attachment post) |
-| Vocabulary / grammar markers per post | 0-2 |
-| Standalone fragments | 1 per post, 2 per thread |
-| Teaching/list thread length | 4-7 posts |
+| 每則字元上限 | 500(長文附件 10,000) |
+| 主題標籤 | 0 到 1 個(平台硬上限為 1) |
+| 連結 | 每則最多 5 個,第一則不放 |
+| 每則 Emoji | 0 到 2 個 |
+| 每則破折號 | 0 到 1 個(長文附件約每 300 字 1 個) |
+| 每則詞彙 / 文法標記 | 0 到 2 個 |
+| 每則句尾語氣詞 | 0 到 2 個(假設) |
+| 獨立片段 | 每則 1 個,每串 2 個 |
+| 教學 / 清單類串文長度 | 4 到 7 則 |
+| 單則有效字數 | 80 到 250 字最容易讀完(假設,待驗證) |
 
-## Scoring
+## 評分
 
-- Any blocker -> **FAIL**, return fixes, offer auto-rewrite via `threads-humanizer`.
-- No blockers, any warnings -> **PASS with warnings**, list each with a fix.
-- Clean -> **PASS**, add the timing note and a single post vs thread sanity check.
-- Report per-post tell density (markers, em dashes, fragments, triads). Do
-  not estimate a detector score: on post-length text those are noise and this
-  skill does not promise to beat them.
+- 任何 blocker -> **FAIL**,回傳修正,並提議用 `threads-humanizer` 自動改寫。
+- 沒有 blocker、有 warning -> **PASS with warnings**,逐條列出修正。
+- 乾淨 -> **PASS**,加上發佈時段備註(以台灣時間為準,依你帳號的洞察數據校正),以及單則 vs 串文的合理性檢查。
+- 回報每則的破綻密度(標記、破折號、片段、三項)。不要估計偵測器分數:對貼文長度的文字,那些分數是雜訊,本 skill 不承諾能打敗它們。

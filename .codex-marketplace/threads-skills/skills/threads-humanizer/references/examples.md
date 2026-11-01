@@ -1,79 +1,98 @@
-# Worked Humanizer Examples
+# 人性化處理範例(繁體中文・台灣口吻)
 
-## Example 1 - Single post, AI vocab + em dash
+以下範例的數字與人事皆為示範,不是事實;實際改寫時只能用使用者提供的素材。
 
-**Before:**
-> In today's fast-paced world, founders must leverage AI tools to fundamentally
-> streamline their workflow — it's a game-changer.
+## 範例 1:單則貼文,企業黑話加破折號
 
-Tells: the post scores 4 markers ("in today's fast-paced world", leverage,
-fundamentally, streamline) plus "game-changer", so the whole post is rewritten
-rather than word-swapped; zero specifics; no first line that lands alone. The
-single em dash was under the cap (one per post) and was not a tell on its own;
-it went only because the sentence around it was rewritten. It was not replaced
-with a period.
+**改寫前:**
+> 在這個快速變遷的時代,創業者必須善用 AI 工具,全方位賦能工作流程——這是一個遊戲規則改變者。
 
-**After:**
-> most founders use AI to write faster.
+破綻:這則命中 5 個標記(「在這個快速變遷的時代」、善用、全方位、賦能、遊戲規則改變者),所以整則重寫,而不是逐字換詞;零個具體資訊;第一行無法獨立成立。單一破折號沒超過上限,本身不是破綻,是因為整句被重寫才消失的。沒有被換成句號。
+
+**改寫後:**
+> 多數創業者拿 AI 來寫得更快。
 >
-> the ones who win use it to decide faster. same tools, different job. what are
-> you using it for?
+> 贏的人拿它來決定得更快。同樣的工具,不同的工作。你拿它做什麼?
 
-Why it is better: a complete warm-contrarian (T1) take, lands in the first line,
-no marker cluster, one clear idea, and a soft question that invites the reply
-Threads rewards. Pass 2 left the rhythm alone (uniform rhythm wins on Threads).
-Pass 4: nothing was inserted, no hedge, no "not gonna lie" frame.
+為什麼比較好:這是完整的溫暖逆向觀點(T1),第一行就成立,沒有標記聚集,一個清楚的想法,結尾是柔性提問,邀請 Threads 獎勵的那種回覆。Pass 2 沒動節奏(Threads 上均勻節奏有效)。Pass 4:沒有插入任何東西,沒有猶豫語氣,沒有「老實說」框架。
 
-## Example 2 - Post over 500 chars
+## 範例 2:大陸腔與簡繁混用
 
-**Before** (a 560-char block trying to do everything at once):
-> shipping season is here and we cut our deploy time from 40 minutes to 6 minutes
-> and honestly it changed how the whole team works because now we ship small
-> changes constantly instead of batching everything into a scary friday release
-> and the one change that did most of it was... [continues past 500]
+**改寫前:**
+> 家人們,今天分享一个干货!我用 Claude 做了个视频脚本,效率直接拉滿,建議收藏!!!
 
-Tells: over 500 chars, two ideas (the result + the how), weak trailing hook.
+破綻:簡體字(一个、干货、做了个、视频)、大陸社媒腔(家人們、乾貨、建議收藏)、連環驚嘆號、「拉滿」。這些在 forensic 層不計密度,直接轉換,其餘依計分處理。
 
-**After** (single post, under 500):
-> we cut deploy time from 40 min to 6 min.
+**改寫後:**
+> 今天用 Claude 寫了一份影片腳本,從 2 小時縮到 25 分鐘。
 >
-> one change did most of it: we stopped rebuilding the whole image on every push.
-> here is how.
+> 流程我整理在回覆。你平常怎麼寫腳本?
 
-Or escalate to a thread if the "how" needs real steps (use threads-post-writer).
+注意:25 分鐘與 2 小時在這裡是示範用的數字;實際改寫時如果原稿沒有數字,要向使用者要,不要編。中英間距(Claude 前後)、全形標點、影片取代視頻,都是機械式修正。
 
-## Example 3 - Thread opener that closes its own loop
+## 範例 3:超過 500 字元的貼文
 
-**Before (post 1):**
-> Here are 5 ways to grow on Threads: post consistently, engage with others,
-> write threads, use good hooks, and be authentic.
+**改寫前**(560 字元的一整塊,想一次講完所有事):
+> 最近是出貨旺季,我們把部署時間從 40 分鐘壓到 6 分鐘,老實說這真的改變了整個團隊的工作方式,因為現在我們可以天天小批次上線,不用再把所有東西集中到一次可怕的週五發版,而做到這件事的關鍵改變是⋯⋯【超過 500 字元之後還有】
 
-Tells: the whole payoff is in post 1, so no one taps in; vague items; rule of
-five with no specifics.
+破綻:超過 500 字元;兩個想法(結果加做法);結尾鉤子很弱;「老實說」是真誠宣告開場。
 
-**After (post 1):**
-> i grew from 200 to 11,000 followers on Threads in 7 months.
+**改寫後**(單則,500 字元內):
+> 我們把部署時間從 40 分鐘壓到 6 分鐘。
 >
-> 5 things did most of it. number 3 is the one nobody talks about.
+> 大部分功勞來自一個改變:不再每次推送都重建整個 image。
+> 做法在下面。
 
-Now the loop is open (what is number 3?), post 1 promises a real result, and the
-body has room to teach each item with a concrete example.
+如果「做法」需要實際步驟,就升級成串文(用 `threads-post-writer`)。
 
-## Example 4 - Negative parallelism + cold X tone
+## 範例 4:串文第一則自己把迴圈關掉
 
-**Before:**
-> It's not about posting more. It's about posting better.
+**改寫前(第一則):**
+> 分享 5 個經營 Threads 的方法:穩定發文、多與人互動、寫串文、用好鉤子、保持真實。
 
-**After:**
-> posting more did nothing for me. posting one sharp thing a day did. what
-> changed it for you?
+破綻:整個收穫都在第一則,沒有人會點開;項目空泛;五項沒有一個具體。
 
-Direct claim, first-person, a specific contrast instead of the AI "not X, it's Y"
-rhythm, plus a warm question that fits the Threads register.
+**改寫後(第一則):**
+> 我在 7 個月內,把 Threads 追蹤者從 200 人養到 11,000 人。
+>
+> 有 5 件事貢獻最大。第 3 件,幾乎沒人提。
 
-## What to preserve
+現在迴圈是開的(第 3 件是什麼?),第一則承諾了一個真實的成果,後面有空間用具體例子逐項教學。(數字為示範;只有使用者真的有這個數字時才能這樣寫。)
 
-- The user's real claim and numbers.
-- The warm, lowercase-casual voice if that is their register.
-- `..` soft pauses.
-- Their actual story. Never invent a detail to make a post land.
+## 範例 5:否定式對仗加冷硬語氣
+
+**改寫前:**
+> 重點從來不是發更多文,而是發更好的文。
+
+**改寫後:**
+> 發更多文,對我沒用。每天只發一則真正想講的,才有用。是什麼讓你改變的?
+
+直接的主張、第一人稱、用具體對比取代 AI 式的「不是 X,而是 Y」節奏,加上符合 Threads 語氣的溫暖提問。
+
+## 範例 6:標點與中英間距(機械式修正,不計入標記)
+
+**改寫前:**
+> 昨天用Claude寫了3篇貼文,覺得還不錯...大家覺得呢??
+
+**改寫後:**
+> 昨天用 Claude 寫了 3 篇貼文,覺得還不錯⋯⋯你覺得哪一篇最好?
+
+修正:中英數字間補空格、半形逗號與問號改全形、`...` 改成「⋯⋯」、連環問號縮成一個、死結尾「大家覺得呢」改成具體提問。
+
+## 範例 7:真誠宣告與框架式告白
+
+**改寫前:**
+> 說真的,這個我一直不想講,但我必須承認,今年很難熬。我們失去了一個很重要的客戶。
+
+**改寫後:**
+> 2 月 14 日,我們失去了最大的那個客戶。佔營收 38%。
+
+拿掉「說真的」「我必須承認」這層框架,只留下有日期、有數字的事實。事實本身承載脆弱;框架把它變成表演。如果原稿沒有日期和數字,就向使用者要,不要補。
+
+## 要保留的
+
+- 使用者真正的主張與數字。
+- 溫暖、口語的聲音,如果那是他的語氣。
+- 適量的句尾語氣詞(啦、欸、吧),如果那是他的習慣。
+- 「⋯⋯」軟停頓。
+- 他們真實的故事。絕不為了讓貼文好看而編造細節。

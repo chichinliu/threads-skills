@@ -1,7 +1,7 @@
 {
   "name": "threads-skills",
   "description": "8 個 Claude Code 與 Codex 的 Threads(Meta)行銷 skill,繁體中文台灣版:單則貼文與串文撰寫、去 AI 味與發佈前審稿、爆文鉤子拆解、回覆與引用草擬、個人檔案優化、內容改寫、受眾洞察、一週內容規劃。發佈層中立:預設手動貼上,可接自建 poster 或選用轉接器。",
-  "version": "1.0.35",
+  "version": "1.0.36",
   "author": {
     "name": "chichinliu",
     "url": "https://chichinliu.com"
